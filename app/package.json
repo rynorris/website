@@ -18,6 +18,7 @@
   "homepage": "https://github.com/DiscoViking/website#readme",
   "devDependencies": {
     "typescript": "^2.1.4",
+    "typings": "^2.0.0",
     "webpack": "^1.14.0"
   }
 }
