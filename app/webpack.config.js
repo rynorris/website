@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   context: __dirname,
@@ -16,5 +17,15 @@ module.exports = {
   module: {
     loaders: [
     ]
-  }
+  },
+  plugins: [
+      new HtmlWebpackPlugin({
+	  inject: false,
+	  minify: {
+	      collapseWhitespace: true,
+	  },
+	  template: path.resolve(__dirname, "src/index.html"),
+	  title: "Application",
+      }),
+  ]
 };
