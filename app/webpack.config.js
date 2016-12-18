@@ -1,10 +1,14 @@
+"use strict";
+
 module.exports = {
-  // configuration
   context: __dirname,
-  entry: "./src/index.js",
+  entry: {
+    app: [
+      "./build/tmp/index.js",
+    ]
+  },
   output: {
-    path: __dirname + "/build",
-    publicPath: "/assets/",
-    filename: "app_[hash].js"
+    path: path.join(__dirname, "build", "src"),
+    filename: "app.js"
   }
 };
