@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "outDir": "build/tmp",
+        "removeComments": false,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "target": "ES5"
+    },
+    "include": [
+        "src/**/*",
+        "typings/index.d.ts"
+    ]
+}
