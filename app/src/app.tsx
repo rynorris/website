@@ -1,3 +1,4 @@
+import "es6-shim";
 import * as React from "react";
 import * as ReactDOM from "react-dom"
 import {createHistory} from "history";
@@ -14,4 +15,6 @@ if (appElement != null) {
       <Route path="/" component={Container} />
     </Router>
   ), appElement);
+} else {
+  console.error("Did not find element with id 'app'");
 }
