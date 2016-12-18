@@ -1,0 +1,19 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Website frontend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DiscoViking/website.git"
+  },
+  "author": "Ryan Norris",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DiscoViking/website/issues"
+  },
+  "homepage": "https://github.com/DiscoViking/website#readme"
+}
