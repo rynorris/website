@@ -17,8 +17,8 @@ func main() {
 		http.ServeFile(w, r, "../app/build/src/app.js")
 	})
 
-	fs := http.FileServer(http.Dir("../app/build/src/assets"))
-	r.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	fs := http.FileServer(http.Dir("../app/build/src/assets/"))
+	r.Handle("/assets/{assetPath:.*}", http.StripPrefix("/assets/", fs))
 
 	http.Handle("/", r)
 

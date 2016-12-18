@@ -3,6 +3,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
+const staticFileRegex = /\.(woff|svg|ttf|eot|gif|jpeg|jpg|png)([\?]?.*)$/;
+
 module.exports = {
   context: __dirname,
   
@@ -10,15 +12,32 @@ module.exports = {
 
   entry: {
     app: [
-      "./src/app.tsx"
+      "./src/app.tsx",
+      "./src/app.less"
     ]
   },
 
   module: {
     loaders: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loader: "awesome-typescript-loader" }
+      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+
+      // Handle less with less-loader.
+      { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+
+      // Load in static files.
+      {
+	  test: staticFileRegex,
+	  include: [
+	      path.resolve(__dirname, "node_modules"),
+	  ],
+	  loader: "file-loader",
+	  query: {
+	      name: "assets/[path][name].[ext]",
+	  },
+      }
     ],
+
     preLoaders: [
       { test: /\.js$/, loader: "source-map-loader" }
     ]
