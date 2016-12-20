@@ -1,6 +1,8 @@
 "use strict";
 
 const path = require("path");
+
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const staticFileRegex = /\.(woff|svg|ttf|eot|gif|jpeg|jpg|png)([\?]?.*)$/;
@@ -35,7 +37,8 @@ module.exports = {
 	  query: {
 	      name: "assets/[path][name].[ext]",
 	  },
-      }
+      },
+
     ],
 
     preLoaders: [
@@ -49,14 +52,14 @@ module.exports = {
   },
 
   plugins: [
-      new HtmlWebpackPlugin({
-	  inject: false,
-	  minify: {
-	      collapseWhitespace: true,
-	  },
-	  template: path.resolve(__dirname, "src/index.html"),
-	  title: "Application",
-      }),
+    new HtmlWebpackPlugin({
+      inject: false,
+      minify: {
+        collapseWhitespace: true,
+      },
+      template: path.resolve(__dirname, "src/index.html"),
+      title: "Application",
+    }),
   ],
 
   resolve: {
