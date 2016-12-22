@@ -18,14 +18,12 @@ export default class Navbar extends React.Component<INavbarProps, {}> {
 
     return (
       <Toolbar className="app-navbar">
-        <ToolbarGroup>
+        <ToolbarGroup className="mobile-hide">
           {navItems}
         </ToolbarGroup>
 
         <ToolbarGroup>
-          <div>
-            Call us at <a href="tel://07999-888-777">07999-888-777</a> or <a href="tel://07666-555-444">07666-555-444</a>
-          </div>
+          <Link to="/contact"><FlatButton label="Contact Us" /></Link>
         </ToolbarGroup>
       </Toolbar>
     );

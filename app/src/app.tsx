@@ -8,6 +8,7 @@ import {Redirect, Route, Router, useRouterHistory} from "react-router";
 import {Container} from "./container";
 import FrontPage from "./pages/front-page";
 import TeachersPage from "./pages/teachers-page";
+import ContactPage from "./pages/contact-page";
 
 // Needed for onTouchTap.
 // http://stackoverflow.com/a/34015469/988941
@@ -25,6 +26,7 @@ if (appElement != null) {
         <Route path="/" component={Container}>
           <Route path="front" component={FrontPage} />
           <Route path="teachers" component={TeachersPage} />
+          <Route path="contact" component={ContactPage} />
         </Route>
       </Router>
     </MuiThemeProvider>
