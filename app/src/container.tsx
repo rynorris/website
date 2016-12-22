@@ -17,10 +17,15 @@ export var Container = React.createClass({
   render() {
     return (
       <div className="app-container">
-        <Paper zDepth={1}>
-          <div style={{height: 100, background: Colors.red500}}></div>
-          <Navbar links={navbarLinks} titles={navbarTitles} />
-        </Paper>
+        <div className="app-header">
+          <Paper zDepth={1} rounded={false}>
+            <div style={{height: 100, background: Colors.red500}}></div>
+            <Navbar links={navbarLinks} titles={navbarTitles} />
+          </Paper>
+        </div>
+        <div className="app-body">
+          {this.props.children}
+        </div>
       </div>
     );
   }
