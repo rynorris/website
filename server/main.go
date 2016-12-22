@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/NYTimes/gziphandler"
+	"github.com/discoviking/website/server/storage"
+	"github.com/discoviking/website/server/storage/dir"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -33,6 +35,14 @@ func main() {
 
 	fs := http.FileServer(http.Dir("../app/build/src/assets/"))
 	r.Handle("/assets/{assetPath:.*}", http.StripPrefix("/assets/", fs))
+
+	storageService, err := dir.NewService("./storage")
+	if err != nil {
+		log.Fatal("failed to create storage service: %v", err)
+	}
+
+	storageHandler := storage.NewHandler(storageService)
+	r.Handle("/storage/{key}", http.StripPrefix("/storage", storageHandler))
 
 	if conf.Ssl.On {
 		// Main server over HTTPS.

@@ -11,7 +11,7 @@ type Service struct {
 	dirname string
 }
 
-func New(dirname string) (*Service, error) {
+func NewService(dirname string) (*Service, error) {
 	// Check it's actually a directory.
 	stat, err := os.Stat(dirname)
 	if err != nil {
