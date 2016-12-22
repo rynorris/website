@@ -2,10 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/NYTimes/gziphandler"
-	"github.com/discoviking/website/server/storage"
 	"github.com/discoviking/website/server/storage/dir"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"time"
@@ -17,32 +14,13 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to load config: %v", err)
 	}
-	// Main Router.
-	r := mux.NewRouter()
-
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "../app/build/src/index.html")
-	})
-
-	r.HandleFunc("/app/{path:.*}", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "../app/build/src/index.html")
-	})
-
-	appHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "../app/build/src/app.js")
-	})
-	r.Handle("/app.js", gziphandler.GzipHandler(appHandler))
-
-	fs := http.FileServer(http.Dir("../app/build/src/assets/"))
-	r.Handle("/assets/{assetPath:.*}", http.StripPrefix("/assets/", fs))
 
 	storageService, err := dir.NewService("./storage")
 	if err != nil {
 		log.Fatal("failed to create storage service: %v", err)
 	}
 
-	storageHandler := storage.NewHandler(storageService)
-	r.Handle("/storage/{key}", http.StripPrefix("/storage", storageHandler))
+	router := createRouter(storageService)
 
 	if conf.Ssl.On {
 		// Main server over HTTPS.
@@ -53,7 +31,7 @@ func main() {
 			WriteTimeout: time.Duration(conf.WriteTimeout) * time.Second,
 			// IdleTimeout:  120 * time.Second, // Go 1.8 only.
 			TLSConfig: getTlsConfig(),
-			Handler:   r,
+			Handler:   router,
 		}
 		log.Fatal(mainSrv.ListenAndServeTLS(conf.Ssl.Cert, conf.Ssl.Key))
 	} else {
@@ -63,7 +41,7 @@ func main() {
 			ReadTimeout:  time.Duration(conf.ReadTimeout) * time.Second,
 			WriteTimeout: time.Duration(conf.WriteTimeout) * time.Second,
 			// IdleTimeout:  120 * time.Second, // Go 1.8 only.
-			Handler: r,
+			Handler: router,
 		}
 		log.Fatal(mainSrv.ListenAndServe())
 	}
