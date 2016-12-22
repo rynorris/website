@@ -18,7 +18,7 @@ const teachers = [
 export default class TeachersPage extends React.Component<{}, {}> {
   render() {
     let cards = _.map(teachers, function(t, ix) {
-      return <BioCard name={t.name} text={t.text} image={t.image} />
+      return <BioCard key={"bio_" + ix} name={t.name} text={t.text} image={t.image} />
     });
 
     return (

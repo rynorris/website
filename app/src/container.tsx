@@ -4,13 +4,17 @@ import * as Colors from "material-ui/styles/colors";
 import Navbar from "./components/navbar";
 
 let navbarLinks: string[] = [
-  "/one",
-  "/two"
+  "/front",
+  "/about",
+  "/teachers",
+  "/services"
 ];
 
 let navbarTitles: string[] = [
-  "One",
-  "Two"
+  "Home",
+  "About",
+  "Our Teachers",
+  "Our Services",
 ];
 
 export var Container = React.createClass({

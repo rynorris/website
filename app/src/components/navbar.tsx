@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as _ from "lodash";
+import {Link} from "react-router";
 import FlatButton from 'material-ui/FlatButton';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
@@ -12,17 +13,19 @@ export default class Navbar extends React.Component<INavbarProps, {}> {
   render() {
     let navItems = _.map(_.zip(this.props.links, this.props.titles), 
                          function(item: string[], ix: number) {
-      return <FlatButton key={"nav-item-" + ix} href={item[0]} label={item[1]} />;
+      return <Link key={"nav-item-" + ix} to={item[0]}><FlatButton label={item[1]} /></Link>;
     });
 
     return (
       <Toolbar className="app-navbar">
         <ToolbarGroup>
-          <ToolbarTitle text="Website" />
-          <ToolbarSeparator />
-        </ToolbarGroup>
-        <ToolbarGroup>
           {navItems}
+        </ToolbarGroup>
+
+        <ToolbarGroup>
+          <div>
+            Call us at <a href="tel://07999-888-777">07999-888-777</a> or <a href="tel://07666-555-444">07666-555-444</a>
+          </div>
         </ToolbarGroup>
       </Toolbar>
     );

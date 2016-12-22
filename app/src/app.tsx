@@ -13,7 +13,7 @@ import TeachersPage from "./pages/teachers-page";
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
-const history = useRouterHistory(createHistory)({basename: "/app"});
+const history = useRouterHistory(createHistory)({basename: "/"});
 
 const appElement = document.getElementById("app");
 
