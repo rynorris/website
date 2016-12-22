@@ -1,0 +1,7 @@
+port: 8080
+read-timeout: 5
+write-timeout: 10
+
+ssl:
+  on: false
+
