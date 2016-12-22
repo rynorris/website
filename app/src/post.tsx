@@ -3,7 +3,6 @@ import {Card, CardTitle, CardText} from "material-ui/Card";
 
 interface IPostProps {
   title: string;
-  text: string;
 }
 
 export default class Post extends React.Component<IPostProps, {}> {
@@ -12,7 +11,7 @@ export default class Post extends React.Component<IPostProps, {}> {
       <div className="app-post">
         <Card>
           <CardTitle title={this.props.title} />
-          <CardText>{this.props.text}</CardText>
+          <CardText>{this.props.children}</CardText>
         </Card>
       </div>
     );

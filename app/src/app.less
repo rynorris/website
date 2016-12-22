@@ -1,9 +1,33 @@
+
+// Colors.
+@background-color: #DDDDDD;
+@primary-color: #64FFDA;
+@navbar-color: #1DE9B6;
+
+// Sizes.
+@header-height: 200px;
+@grid-width: 20px;
+
 body {
   margin: 0px;
+  background-color: @background-color;
+}
+
+.app-header-image {
+  height: @header-height;
+  background-color: @primary-color;
+}
+
+.app-navbar {
+  background-color: @navbar-color !important;
 }
 
 .app-body {
-  padding-top: 20px;
   padding-left: 15%;
   padding-right: 15%;
+}
+
+.app-post {
+  margin-top: @grid-width;
+  margin-bottom: @grid-width;
 }

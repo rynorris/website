@@ -19,7 +19,7 @@ export var Container = React.createClass({
       <div className="app-container">
         <div className="app-header">
           <Paper zDepth={1} rounded={false}>
-            <div style={{height: 100, background: Colors.red500}}></div>
+            <div className="app-header-image"></div>
             <Navbar links={navbarLinks} titles={navbarTitles} />
           </Paper>
         </div>

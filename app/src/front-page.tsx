@@ -11,10 +11,25 @@ If you need help and advice, please contact us at the Dyslexia Tuition Centre.
 We're here to help your child enjoy their education and to give them the confidence to become independent learners.`
 );
 
+const servicesText = (
+  <div>
+    <p>Our services include:</p>
+    <ul>
+      <li>Assessments</li>
+      <li>Individual Tuition</li>
+      <li>Advice</li>
+      <li>School Liaison</li>
+    </ul>
+  </div>
+);
+
 export default class FrontPage extends React.Component<{}, {}> {
   render() {
     return (
-      <Post title="Welcome" text={welcomeText} />
+      <div className="front-page">
+        <Post title="Welcome">{welcomeText}</Post>
+        <Post title="Our Services">{servicesText}</Post>
+      </div>
     );
   }
 }

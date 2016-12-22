@@ -16,7 +16,7 @@ export default class Navbar extends React.Component<INavbarProps, {}> {
     });
 
     return (
-      <Toolbar>
+      <Toolbar className="app-navbar">
         <ToolbarGroup>
           <ToolbarTitle text="Website" />
           <ToolbarSeparator />
