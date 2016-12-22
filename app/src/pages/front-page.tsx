@@ -1,5 +1,5 @@
 import * as React from "react";
-import Post from "./post";
+import Post from "../components/post";
 
 const welcomeText: string = (
 `Are you concerned that your child may have dyslexia or is struggling at school?

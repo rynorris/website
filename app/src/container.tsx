@@ -1,7 +1,7 @@
 import * as React from "react";
 import Paper from "material-ui/Paper";
 import * as Colors from "material-ui/styles/colors";
-import Navbar from "./navbar";
+import Navbar from "./components/navbar";
 
 let navbarLinks: string[] = [
   "/one",

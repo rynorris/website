@@ -5,6 +5,7 @@
 @navbar-color: #1DE9B6;
 
 // Sizes.
+@app-width: 70%;
 @header-height: 200px;
 @grid-width: 20px;
 
@@ -23,11 +24,34 @@ body {
 }
 
 .app-body {
-  padding-left: 15%;
-  padding-right: 15%;
+  padding-left: (100% - @app-width) / 2;
+  padding-right: (100% - @app-width) / 2;
 }
 
+// Post styling.
 .app-post {
   margin-top: @grid-width;
   margin-bottom: @grid-width;
+}
+
+// BioCard styling.
+@bio-height: 150px;
+
+.app-bio {
+  margin-top: @grid-width;
+  margin-bottom: @grid-width;
+}
+
+.app-bio-image {
+  width: @bio-height;
+  height: @bio-height;
+  background-color: @primary-color;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.app-bio-content {
+  height: @bio-height;
+  display: inline-block;
+  vertical-align: top;
 }

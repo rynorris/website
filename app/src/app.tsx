@@ -6,7 +6,8 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {createHistory} from "history";
 import {Redirect, Route, Router, useRouterHistory} from "react-router";
 import {Container} from "./container";
-import FrontPage from "./front-page";
+import FrontPage from "./pages/front-page";
+import TeachersPage from "./pages/teachers-page";
 
 // Needed for onTouchTap.
 // http://stackoverflow.com/a/34015469/988941
@@ -23,6 +24,7 @@ if (appElement != null) {
         <Redirect from="/" to="/front" />
         <Route path="/" component={Container}>
           <Route path="front" component={FrontPage} />
+          <Route path="teachers" component={TeachersPage} />
         </Route>
       </Router>
     </MuiThemeProvider>
