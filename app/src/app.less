@@ -10,15 +10,20 @@
 @header-height: 200px;
 @grid-width: 20px;
 
-// Only on Mobile.
-@media screen and (max-width: 480px) {
-  .mobile-hide {
+// Media queries.
+@mobile: ~"screen and (max-width: 630px)";
+@desktop: ~"screen and (min-width: 630px)";
+
+.mobile-hide {
+  @media @mobile {
     display: none !important;
   }
 }
 
-// Only on Desktop.
-@media screen and (min-width: 480px) {
+.desktop-hide {
+  @media @desktop {
+    display: none !important;
+  }
 }
 
 body {
@@ -39,7 +44,7 @@ body {
   padding-left: (100% - @app-width) / 2;
   padding-right: (100% - @app-width) / 2;
 
-  @media screen and (max-width: 480px) {
+  @media @mobile {
     padding-left: (100% - @app-width-mobile) / 2;
     padding-right: (100% - @app-width-mobile) / 2;
   }
@@ -59,7 +64,7 @@ body {
   padding-left: 25%;
   padding-right: 25%;
 
-  @media screen and (max-width: 480px) {
+  @media @mobile {
     padding-left: 5%;
     padding-right: 5%;
   }
