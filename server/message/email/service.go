@@ -2,6 +2,7 @@ package email
 
 import (
 	"github.com/discoviking/website/server/message"
+	"log"
 )
 
 type Service struct {
@@ -16,5 +17,6 @@ func NewService(target string) *Service {
 
 func (s *Service) Send(m message.Message) error {
 	// Send email.
+	log.Printf("Send Email: %#v", m)
 	return nil
 }

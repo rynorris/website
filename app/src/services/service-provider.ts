@@ -1,9 +1,9 @@
 import {MessageService} from "./message-service";
 
 export default class ServiceProvider {
-  private messageService: MessageService;
+  private static messageService: MessageService;
 
-  public MessageService() {
+  public static MessageService() {
     if (!this.messageService) {
       this.messageService = new MessageService("/api/message");
     }

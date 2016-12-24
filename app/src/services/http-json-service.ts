@@ -5,11 +5,11 @@ export default class HttpJsonService {
     this.basePath = basePath;
   }
 
-  public get(url): any {
+  public get(url: string): any {
     return this.fetch("GET", url, null);
   }
 
-  public post(url, body): any {
+  public post(url: string, body: any): any {
     return this.fetch("POST", url, body);
   }
 
@@ -24,7 +24,7 @@ export default class HttpJsonService {
     }
 
     if ((method != "HEAD") && (method != "GET")) {
-      requestInit.body = body;
+      requestInit.body = JSON.stringify(body);
     }
 
     return (window as any).fetch(url, requestInit);
