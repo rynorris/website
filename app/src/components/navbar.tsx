@@ -52,7 +52,8 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
           </ToolbarGroup>
         </Toolbar>
 
-        <Drawer
+        <Drawer 
+          containerClassName="app-navdrawer"
           open={this.state.drawerOpen} 
           docked={false}
           onRequestChange={this.setDrawer.bind(this)}>
