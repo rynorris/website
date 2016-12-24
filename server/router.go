@@ -18,8 +18,8 @@ func createRouter(storageService storage.Service, messageService message.Service
 	messageHandler := message.Handler(messageService)
 	api.PathPrefix("/message/").Handler(http.StripPrefix("/message/", messageHandler))
 
-	storageHandler := storage.NewHandler(storageService)
-	r.Handle("/storage/{key}", http.StripPrefix("/storage", storageHandler))
+	storageHandler := storage.Handler(storageService)
+	api.PathPrefix("/storage/").Handler(http.StripPrefix("/storage/", storageHandler))
 
 	// Serve static assets.
 	fs := http.FileServer(http.Dir("../app/build/src/assets/"))

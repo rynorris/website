@@ -14,6 +14,7 @@ func NewService(target string) *Service {
 	}
 }
 
-func (s *Service) Send(m message.Message) {
+func (s *Service) Send(m message.Message) error {
 	// Send email.
+	return nil
 }

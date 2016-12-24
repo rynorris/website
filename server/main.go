@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/discoviking/website/server/message/email"
 	"github.com/discoviking/website/server/storage/dir"
 	"log"
 	"net/http"
@@ -20,7 +21,9 @@ func main() {
 		log.Fatal("failed to create storage service: %v", err)
 	}
 
-	router := createRouter(storageService)
+	messageService := email.NewService("test@email.com")
+
+	router := createRouter(storageService, messageService)
 
 	if conf.Ssl.On {
 		// Main server over HTTPS.
