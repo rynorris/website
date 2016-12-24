@@ -2,14 +2,21 @@ package main
 
 import (
 	"github.com/NYTimes/gziphandler"
+	"github.com/discoviking/website/server/message"
 	"github.com/discoviking/website/server/storage"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
-func createRouter(storageService storage.Service) *mux.Router {
+func createRouter(storageService storage.Service, messageService message.Service) *mux.Router {
 	// Main Router.
 	r := mux.NewRouter()
+
+	// REST API.
+	api := r.PathPrefix("/api/").Subrouter()
+
+	messageHandler := message.Handler(messageService)
+	api.PathPrefix("/message/").Handler(http.StripPrefix("/message/", messageHandler))
 
 	storageHandler := storage.NewHandler(storageService)
 	r.Handle("/storage/{key}", http.StripPrefix("/storage", storageHandler))
