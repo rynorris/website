@@ -47,7 +47,7 @@ module.exports = {
   },
 
   output: {
-    path: path.join(__dirname, "build", "src"),
+    path: path.join(__dirname, "build", "src", "assets"),
     filename: "app.js"
   },
 
