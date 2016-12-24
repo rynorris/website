@@ -26,12 +26,22 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
   render() {
     let navItems = _.map(_.zip(this.props.links, this.props.titles), 
                          function(item: string[], ix: number) {
-      return <Link key={"nav-item-" + ix} to={item[0]}><FlatButton label={item[1]} /></Link>;
+      return (
+        <Link key={"nav-item-" + ix} to={item[0]}>
+          <FlatButton label={item[1]} />
+        </Link>
+      );
     });
 
     let drawerItems = _.map(_.zip(this.props.links, this.props.titles), 
                          function(item: string[], ix: number) {
-      return <MenuItem onTouchTap={this.closeDrawer.bind(this)}>{item[1]}</MenuItem>;
+      return (
+        <Link key={"drawer-item-" + ix} to={item[0]}>
+          <MenuItem onTouchTap={this.closeDrawer.bind(this)}>
+            {item[1]}
+          </MenuItem>
+        </Link>
+      );
     }.bind(this));
 
     return (
@@ -39,7 +49,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
         <Toolbar className="app-navbar">
           <ToolbarGroup className="desktop-hide" firstChild={true}>
             <IconButton onTouchTap={this.toggleDrawer.bind(this)}>
-              <NavigationMenu />
+             <NavigationMenu />
             </IconButton>
           </ToolbarGroup>
 
