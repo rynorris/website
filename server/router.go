@@ -11,9 +11,6 @@ func createRouter(storageService storage.Service) *mux.Router {
 	// Main Router.
 	r := mux.NewRouter()
 
-	fs := http.FileServer(http.Dir("../app/build/src/assets/"))
-	r.Handle("/assets/{assetPath:.*}", http.StripPrefix("/assets/", fs))
-
 	storageHandler := storage.NewHandler(storageService)
 	r.Handle("/storage/{key}", http.StripPrefix("/storage", storageHandler))
 
@@ -22,8 +19,12 @@ func createRouter(storageService storage.Service) *mux.Router {
 	})
 	r.Handle("/app.js", gziphandler.GzipHandler(appHandler))
 
+	// Serve static assets.
+	fs := http.FileServer(http.Dir("../app/build/src/assets/"))
+	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
+
 	// For all other paths just serve the app and defer to the front-end to handle it.
-	r.HandleFunc("/{path:.*}", func(w http.ResponseWriter, r *http.Request) {
+	r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../app/build/src/index.html")
 	})
 
