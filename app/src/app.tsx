@@ -7,7 +7,9 @@ import {createHistory} from "history";
 import {Redirect, Route, Router, useRouterHistory} from "react-router";
 import {Container} from "./container";
 import FrontPage from "./pages/front-page";
+import AboutPage from "./pages/about-page";
 import TeachersPage from "./pages/teachers-page";
+import ServicesPage from "./pages/services-page";
 import ContactPage from "./pages/contact-page";
 
 // Needed for onTouchTap.
@@ -25,7 +27,9 @@ if (appElement != null) {
         <Redirect from="/" to="/front" />
         <Route path="/" component={Container}>
           <Route path="front" component={FrontPage} />
+          <Route path="about" component={AboutPage} />
           <Route path="teachers" component={TeachersPage} />
+          <Route path="services" component={ServicesPage} />
           <Route path="contact" component={ContactPage} />
         </Route>
       </Router>
