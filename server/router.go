@@ -5,6 +5,7 @@ import (
 	"github.com/discoviking/website/server/message"
 	"github.com/discoviking/website/server/storage"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 )
 
@@ -15,11 +16,9 @@ func createRouter(storageService storage.Service, messageService message.Service
 	// REST API.
 	api := r.PathPrefix("/api/").Subrouter()
 
-	messageHandler := message.Handler(messageService)
-	api.PathPrefix("/message/").Handler(http.StripPrefix("/message/", messageHandler))
+	message.AddRoutes(api.PathPrefix("/message/").Subrouter(), messageService)
 
-	storageHandler := storage.Handler(storageService)
-	api.PathPrefix("/storage/").Handler(http.StripPrefix("/storage/", storageHandler))
+	storage.AddRoutes(api.PathPrefix("/storage/").Subrouter(), storageService)
 
 	// Serve static assets.
 	fs := http.FileServer(http.Dir("../app/build/src/assets/"))
@@ -28,6 +27,7 @@ func createRouter(storageService storage.Service, messageService message.Service
 
 	// For all other paths just serve the app and defer to the front-end to handle it.
 	r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Print("Serving index")
 		http.ServeFile(w, r, "../app/build/src/assets/index.html")
 	})
 

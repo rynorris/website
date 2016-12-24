@@ -27,6 +27,7 @@ func main() {
 
 	if conf.Ssl.On {
 		// Main server over HTTPS.
+		log.Print("SSL On")
 		startHttpRedirectServer(conf.Port)
 		mainSrv := &http.Server{
 			Addr:         fmt.Sprintf(":%v", conf.Ssl.Port),
@@ -36,9 +37,11 @@ func main() {
 			TLSConfig: getTlsConfig(),
 			Handler:   router,
 		}
+		log.Print("Begin serving")
 		log.Fatal(mainSrv.ListenAndServeTLS(conf.Ssl.Cert, conf.Ssl.Key))
 	} else {
 		// Main Server over HTTP.
+		log.Print("SSL Off")
 		mainSrv := &http.Server{
 			Addr:         fmt.Sprintf(":%v", conf.Port),
 			ReadTimeout:  time.Duration(conf.ReadTimeout) * time.Second,
@@ -46,6 +49,7 @@ func main() {
 			// IdleTimeout:  120 * time.Second, // Go 1.8 only.
 			Handler: router,
 		}
+		log.Print("Begin serving")
 		log.Fatal(mainSrv.ListenAndServe())
 	}
 }

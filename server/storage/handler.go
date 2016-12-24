@@ -6,9 +6,7 @@ import (
 	"net/http"
 )
 
-func Handler(service Service) http.Handler {
-	r := mux.NewRouter()
-
+func AddRoutes(r *mux.Router, service Service) {
 	r.HandleFunc("/{key}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		key := vars["key"]
@@ -32,6 +30,4 @@ func Handler(service Service) http.Handler {
 
 		return
 	}).Methods("GET")
-
-	return r
 }
