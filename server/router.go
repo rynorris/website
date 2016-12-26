@@ -3,13 +3,13 @@ package main
 import (
 	"github.com/NYTimes/gziphandler"
 	"github.com/discoviking/website/server/message"
-	"github.com/discoviking/website/server/storage"
+	"github.com/discoviking/website/server/pages"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func createRouter(indexPage, assetsDir string, storageService storage.Service, messageService message.Service) *mux.Router {
+func createRouter(indexPage, assetsDir string, pagesService pages.Service, messageService message.Service) *mux.Router {
 	// Main Router.
 	r := mux.NewRouter()
 
@@ -18,7 +18,7 @@ func createRouter(indexPage, assetsDir string, storageService storage.Service, m
 
 	message.AddRoutes(api.PathPrefix("/message/").Subrouter(), messageService)
 
-	storage.AddRoutes(api.PathPrefix("/storage/").Subrouter(), storageService)
+	pages.AddRoutes(api.PathPrefix("/pages/").Subrouter(), pagesService)
 
 	// Serve static assets.
 	fs := http.FileServer(http.Dir(assetsDir))

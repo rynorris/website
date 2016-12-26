@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/discoviking/website/server/message/email"
+	pages "github.com/discoviking/website/server/pages/storage"
 	"github.com/discoviking/website/server/storage/dir"
 	"log"
 	"net/http"
@@ -16,17 +17,19 @@ func main() {
 		log.Fatal("failed to load config: %v", err)
 	}
 
-	storageService, err := dir.NewService("./storage")
+	storageService, err := dir.NewService("./test/pages")
 	if err != nil {
 		log.Fatal("failed to create storage service: %v", err)
 	}
+
+	pagesService := pages.NewService(storageService)
 
 	messageService := email.NewService(conf.Contact.Email.To)
 
 	router := createRouter(
 		conf.Server.Serve.Index,
 		conf.Server.Serve.Assets,
-		storageService,
+		pagesService,
 		messageService,
 	)
 
