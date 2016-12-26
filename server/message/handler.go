@@ -13,6 +13,11 @@ func AddRoutes(r *mux.Router, service Service) {
 		m := Message{}
 		d := json.NewDecoder(r.Body)
 		d.Decode(&m)
-		service.Send(m)
+
+		err := service.Send(m)
+		if err != nil {
+			log.Printf("failed to send message: %v", err)
+			http.Error(w, "failed to send message", 503)
+		}
 	}).Methods("POST")
 }
