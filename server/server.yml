@@ -7,6 +7,10 @@ server:
   read-timeout: 5
   write-timeout: 10
 
+  serve:
+    assets: ../app/build/src/assets/
+    index: ../app/build/src/assets/index.html
+
   ssl:
     on: false
 

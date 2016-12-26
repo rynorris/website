@@ -11,10 +11,16 @@ type Config struct {
 }
 
 type ServerConfig struct {
-	Port         int       `yaml:"port"`
-	Ssl          SslConfig `yaml:"ssl"`
-	ReadTimeout  int       `yaml:"read-timeout"`
-	WriteTimeout int       `yaml:"write-timeout"`
+	Port         int         `yaml:"port"`
+	Serve        ServeConfig `yaml:"serve"`
+	Ssl          SslConfig   `yaml:"ssl"`
+	ReadTimeout  int         `yaml:"read-timeout"`
+	WriteTimeout int         `yaml:"write-timeout"`
+}
+
+type ServeConfig struct {
+	Assets string `yaml:"assets"`
+	Index  string `yaml:"index"`
 }
 
 type SslConfig struct {

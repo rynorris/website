@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func createRouter(storageService storage.Service, messageService message.Service) *mux.Router {
+func createRouter(indexPage, assetsDir string, storageService storage.Service, messageService message.Service) *mux.Router {
 	// Main Router.
 	r := mux.NewRouter()
 
@@ -21,14 +21,14 @@ func createRouter(storageService storage.Service, messageService message.Service
 	storage.AddRoutes(api.PathPrefix("/storage/").Subrouter(), storageService)
 
 	// Serve static assets.
-	fs := http.FileServer(http.Dir("../app/build/src/assets/"))
+	fs := http.FileServer(http.Dir(assetsDir))
 	fs = gziphandler.GzipHandler(fs)
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
 
 	// For all other paths just serve the app and defer to the front-end to handle it.
 	r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Print("Serving index")
-		http.ServeFile(w, r, "../app/build/src/assets/index.html")
+		http.ServeFile(w, r, indexPage)
 	})
 
 	return r

@@ -23,7 +23,12 @@ func main() {
 
 	messageService := email.NewService(conf.Contact.Email.To)
 
-	router := createRouter(storageService, messageService)
+	router := createRouter(
+		conf.Server.Serve.Index,
+		conf.Server.Serve.Assets,
+		storageService,
+		messageService,
+	)
 
 	if conf.Server.Ssl.On {
 		// Main server over HTTPS.
