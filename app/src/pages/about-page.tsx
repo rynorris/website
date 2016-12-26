@@ -1,4 +1,5 @@
 import * as React from "react";
+import DynamicPage from "./dynamic-page";
 import Post from "../components/post";
 
 const aboutText: string = (
@@ -10,7 +11,7 @@ export default class AboutPage extends React.Component<{}, {}> {
   render() {
     return (
       <div className="about-page">
-        <Post title="About">{aboutText}</Post>
+        <DynamicPage pageId="about" />
       </div>
     );
   }
