@@ -1,0 +1,15 @@
+{
+  "title": "Our Teachers",
+  "cards": [
+    {
+      "type": "bio",
+      "title": "Ailsa Norris",
+      "text": "Ailsa is a teacher."
+    },
+    {
+      "type": "bio",
+      "title": "Margaret Brown",
+      "text": "Margaret is a teacher."
+    }
+  ]
+}

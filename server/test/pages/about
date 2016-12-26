@@ -1,0 +1,10 @@
+{
+  "title": "About",
+  "cards": [
+    {
+      "type": "post",
+      "title": "About us",
+      "text": "We can do lots of stuff."
+    }
+  ]
+}

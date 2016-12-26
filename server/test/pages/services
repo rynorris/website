@@ -1,0 +1,25 @@
+{
+  "title": "Our Services",
+  "cards": [
+    {
+      "type": "post",
+      "title": "Assessments",
+      "text": "We can do it."
+    },
+    {
+      "type": "post",
+      "title": "Individual Tuition",
+      "text": "We can do it."
+    },
+    {
+      "type": "post",
+      "title": "Something",
+      "text": "We can do it."
+    },
+    {
+      "type": "post",
+      "title": "Something else",
+      "text": "We can do it."
+    },
+  ]
+}
