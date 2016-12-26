@@ -13,6 +13,10 @@ export default class HttpJsonService {
     return this.fetch("POST", url, body);
   }
 
+  public put(url: string, body: any): Promise<any> {
+    return this.fetch("PUT", url, body);
+  }
+
   public fetch(method: string, url: string, body: any): Promise<any> {
     url = this.basePath + url;
 
@@ -28,7 +32,7 @@ export default class HttpJsonService {
     }
 
     return ((window as any).fetch(url, requestInit)
-                           .then((response: any) => response.json())
+                           .then((response: any) => response.status == 204 ? null : response.json())
                            .catch((error: any) => Promise.reject(error.message || error)));
   }
 }

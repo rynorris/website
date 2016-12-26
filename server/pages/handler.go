@@ -51,6 +51,7 @@ func AddRoutes(r *mux.Router, service Service) {
 			return
 		}
 
+		w.WriteHeader(http.StatusNoContent)
 		return
 	}).Methods("PUT")
 

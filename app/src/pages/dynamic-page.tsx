@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import {Card, Page, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
 import BioCard from "../components/bio-card";
+import CardEditor from "../components/card-editor";
 import EditContainer from "../components/edit-container";
 import Post from "../components/post";
 
@@ -13,6 +14,8 @@ interface IDynamicPageProps {
 interface IDynamicPageState {
   page: Page;
   editable: boolean;
+  editorOpen: boolean;
+  cardToEdit: number;
 }
 
 export default class DynamicPage extends React.Component<IDynamicPageProps, IDynamicPageState> {
@@ -21,6 +24,8 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     this.state = {
       page: {title: "", cards: []},
       editable: true,
+      editorOpen: false,
+      cardToEdit: 0,
     };
   }
 
@@ -28,7 +33,9 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     let pageService: PagesService = ServiceProvider.PagesService();
     let response: Promise<Page> = pageService.loadPage(this.props.pageId);
     Promise.resolve(response).then((page) => {
-      this.setState({page: page, editable: this.state.editable});
+      let newState = this.state;
+      newState.page = page;
+      this.setState(newState);
     }, () => {
     });
   }
@@ -45,7 +52,10 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
 
     let wrapped: any = _.map(cards, (card: Card, ix: number) => {
       return (
-        <EditContainer key={"card_" + ix} editable={this.state.editable}>
+        <EditContainer
+          key={"card_" + ix}
+          editable={this.state.editable}
+          onEditButtonClick={(() => this.editCard(ix)).bind(this)}>
           {card}
         </EditContainer>
       );
@@ -54,7 +64,42 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     return (
       <div>
         {wrapped}
+        <CardEditor
+          open={this.state.editorOpen}
+          onRequestClose={this.handleClose.bind(this)}
+          card={this.state.page.cards[this.state.cardToEdit]}
+          onSave={((card: Card) => {this.saveCard(this.state.cardToEdit, card)}).bind(this)}
+          />
       </div>
     );
+  }
+
+  private handleClose() {
+    let newState = this.state;
+    newState.editorOpen = false;
+    this.setState(newState);
+  }
+
+  private editCard(ix: number) {
+    let newState = this.state;
+    newState.cardToEdit = ix;
+    newState.editorOpen = true;
+    this.setState(newState);
+  }
+
+  private saveCard(ix: number, card: Card) {
+    // Clone page in case the set operation fails.
+    let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    newPage.cards[ix] = card;
+    let pageService: PagesService = ServiceProvider.PagesService();
+    let response: Promise<any> = pageService.savePage(this.props.pageId, newPage)
+    Promise.resolve(response).then(() => {
+      let newState = this.state;
+      newState.page = newPage;
+      newState.editorOpen = false;
+      this.setState(newState);
+    }, (e) => {
+      console.log("Something went wrong: ", e);
+    });
   }
 }

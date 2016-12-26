@@ -18,6 +18,6 @@ export class PagesService extends HttpJsonService {
   }
 
   public savePage(key: string, page: Page): Promise<any> {
-    return this.post(`/${key}`, page);
+    return this.put(`/${key}`, page);
   }
 }

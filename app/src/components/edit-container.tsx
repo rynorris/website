@@ -6,6 +6,7 @@ import {Card} from "../services/pages-service";
 
 interface IEditContainerProps {
   editable: boolean;
+  onEditButtonClick: any;
 }
 
 export default class EditContainer extends React.Component<IEditContainerProps, {}> {
@@ -16,7 +17,7 @@ export default class EditContainer extends React.Component<IEditContainerProps, 
 
     let editButton: JSX.Element = (
       <div className="edit-button">
-        <FlatButton>
+        <FlatButton onClick={this.props.onEditButtonClick}>
           <ContentCreate />
         </FlatButton>
       </div>
