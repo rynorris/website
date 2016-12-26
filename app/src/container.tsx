@@ -17,7 +17,7 @@ let navbarTitles: string[] = [
   "Our Services",
 ];
 
-export var Container = React.createClass({
+export let Container = React.createClass({
   render() {
     return (
       <div className="app-container">

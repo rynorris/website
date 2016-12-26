@@ -1,7 +1,7 @@
 import "es6-shim";
 import * as React from "react";
-import * as ReactDOM from "react-dom"
-import * as injectTapEventPlugin from 'react-tap-event-plugin';
+import * as ReactDOM from "react-dom";
+import * as injectTapEventPlugin from "react-tap-event-plugin";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {createHistory} from "history";
 import {Redirect, Route, Router, useRouterHistory} from "react-router";
