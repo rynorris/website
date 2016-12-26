@@ -17,6 +17,6 @@ func NewService(target string) *Service {
 
 func (s *Service) Send(m message.Message) error {
 	// Send email.
-	log.Printf("Send Email: %#v", m)
+	log.Printf("Send Email to %v: %#v", s.target, m)
 	return nil
 }

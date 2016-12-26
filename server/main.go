@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	// Load Config.
+	// Load config.
 	conf, err := LoadConfig("./server.yml")
 	if err != nil {
 		log.Fatal("failed to load config: %v", err)
@@ -21,31 +21,31 @@ func main() {
 		log.Fatal("failed to create storage service: %v", err)
 	}
 
-	messageService := email.NewService("test@email.com")
+	messageService := email.NewService(conf.Contact.Email.To)
 
 	router := createRouter(storageService, messageService)
 
-	if conf.Ssl.On {
+	if conf.Server.Ssl.On {
 		// Main server over HTTPS.
 		log.Print("SSL On")
-		startHttpRedirectServer(conf.Port)
+		startHttpRedirectServer(conf.Server.Port)
 		mainSrv := &http.Server{
-			Addr:         fmt.Sprintf(":%v", conf.Ssl.Port),
-			ReadTimeout:  time.Duration(conf.ReadTimeout) * time.Second,
-			WriteTimeout: time.Duration(conf.WriteTimeout) * time.Second,
+			Addr:         fmt.Sprintf(":%v", conf.Server.Ssl.Port),
+			ReadTimeout:  time.Duration(conf.Server.ReadTimeout) * time.Second,
+			WriteTimeout: time.Duration(conf.Server.WriteTimeout) * time.Second,
 			// IdleTimeout:  120 * time.Second, // Go 1.8 only.
 			TLSConfig: getTlsConfig(),
 			Handler:   router,
 		}
 		log.Print("Begin serving")
-		log.Fatal(mainSrv.ListenAndServeTLS(conf.Ssl.Cert, conf.Ssl.Key))
+		log.Fatal(mainSrv.ListenAndServeTLS(conf.Server.Ssl.Cert, conf.Server.Ssl.Key))
 	} else {
 		// Main Server over HTTP.
 		log.Print("SSL Off")
 		mainSrv := &http.Server{
-			Addr:         fmt.Sprintf(":%v", conf.Port),
-			ReadTimeout:  time.Duration(conf.ReadTimeout) * time.Second,
-			WriteTimeout: time.Duration(conf.WriteTimeout) * time.Second,
+			Addr:         fmt.Sprintf(":%v", conf.Server.Port),
+			ReadTimeout:  time.Duration(conf.Server.ReadTimeout) * time.Second,
+			WriteTimeout: time.Duration(conf.Server.WriteTimeout) * time.Second,
 			// IdleTimeout:  120 * time.Second, // Go 1.8 only.
 			Handler: router,
 		}

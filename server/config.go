@@ -6,6 +6,11 @@ import (
 )
 
 type Config struct {
+	Contact ContactConfig `yaml:"contact"`
+	Server  ServerConfig  `yaml:"server"`
+}
+
+type ServerConfig struct {
 	Port         int       `yaml:"port"`
 	Ssl          SslConfig `yaml:"ssl"`
 	ReadTimeout  int       `yaml:"read-timeout"`
@@ -17,6 +22,14 @@ type SslConfig struct {
 	Port int    `yaml:"port"`
 	Cert string `yaml:"certificate"`
 	Key  string `yaml:"private-key"`
+}
+
+type ContactConfig struct {
+	Email EmailContactConfig `yaml:"email"`
+}
+
+type EmailContactConfig struct {
+	To string `yaml:"to"`
 }
 
 func LoadConfig(filename string) (Config, error) {

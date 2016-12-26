@@ -1,9 +1,9 @@
 package message
 
 type Message struct {
-	sender  string
-	email   string
-	message string
+	Sender  string `json:"sender"`
+	Email   string `json:"email"`
+	Message string `json:"message"`
 }
 
 type Service interface {
