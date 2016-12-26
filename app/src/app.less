@@ -2,7 +2,8 @@
 // Colors.
 @background-color: #DDDDDD;
 @primary-color: #64FFDA;
-@navbar-color: #1DE9B6;
+@primary-color-dark: #1DE9B6;
+@navbar-color: @primary-color-dark;
 
 // Sizes.
 @app-width: 70%;
@@ -99,4 +100,27 @@ body {
   height: @bio-height;
   display: inline-block;
   vertical-align: top;
+}
+
+// Element edit Button
+.edit-container {
+  position: relative;
+}
+
+.edit-button {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  z-index: 1000;
+
+  button {
+    // Override some material-ui styles.
+    min-width: 0px !important;
+    height: auto !important;
+    line-height: inherit !important;
+
+    svg {
+      color: @primary-color-dark !important;
+    }
+  }
 }

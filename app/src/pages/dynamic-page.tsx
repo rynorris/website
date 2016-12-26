@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import {Card, Page, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
 import BioCard from "../components/bio-card";
+import EditContainer from "../components/edit-container";
 import Post from "../components/post";
 
 interface IDynamicPageProps {
@@ -11,6 +12,7 @@ interface IDynamicPageProps {
 
 interface IDynamicPageState {
   page: Page;
+  editable: boolean;
 }
 
 export default class DynamicPage extends React.Component<IDynamicPageProps, IDynamicPageState> {
@@ -18,6 +20,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     super(props);
     this.state = {
       page: {title: "", cards: []},
+      editable: true,
     };
   }
 
@@ -25,7 +28,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     let pageService: PagesService = ServiceProvider.PagesService();
     let response: Promise<Page> = pageService.loadPage(this.props.pageId);
     Promise.resolve(response).then((page) => {
-      this.setState({page: page});
+      this.setState({page: page, editable: this.state.editable});
     }, () => {
     });
   }
@@ -34,15 +37,23 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     let cards: any = _.map(this.state.page.cards, (card: Card, ix: number) => {
       switch (card.type) {
         case "post":
-          return <Post key={"card_" + ix} title={card.title}>{card.text}</Post>;
+          return <Post title={card.title}>{card.text}</Post>;
         case "bio":
-          return <BioCard key={"card_" + ix} name={card.title} text={card.text} image={card.image} />;
+          return <BioCard name={card.title} text={card.text} image={card.image} />;
       }
+    });
+
+    let wrapped: any = _.map(cards, (card: Card, ix: number) => {
+      return (
+        <EditContainer key={"card_" + ix} editable={this.state.editable}>
+          {card}
+        </EditContainer>
+      );
     });
 
     return (
       <div>
-        {cards}
+        {wrapped}
       </div>
     );
   }
