@@ -5,15 +5,15 @@ export default class HttpJsonService {
     this.basePath = basePath;
   }
 
-  public get(url: string): any {
+  public get(url: string): Promise<any> {
     return this.fetch("GET", url, null);
   }
 
-  public post(url: string, body: any): any {
+  public post(url: string, body: any): Promise<any> {
     return this.fetch("POST", url, body);
   }
 
-  public fetch(method: string, url: string, body: any): any {
+  public fetch(method: string, url: string, body: any): Promise<any> {
     url = this.basePath + url;
 
     let requestInit: any = {
@@ -27,6 +27,8 @@ export default class HttpJsonService {
       requestInit.body = JSON.stringify(body);
     }
 
-    return (window as any).fetch(url, requestInit);
+    return ((window as any).fetch(url, requestInit)
+                           .then((response: any) => response.json())
+                           .catch((error: any) => Promise.reject(error.message || error)));
   }
 }

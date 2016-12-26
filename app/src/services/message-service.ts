@@ -7,7 +7,7 @@ export interface Message {
 }
 
 export class MessageService extends HttpJsonService {
-  public send(m: Message) {
-    this.post("/send", m);
+  public send(m: Message): Promise<any> {
+    return this.post("/send", m);
   }
 }

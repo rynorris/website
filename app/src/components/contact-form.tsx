@@ -32,13 +32,16 @@ export default class ContactForm extends React.Component<{}, IContactFormState> 
       message: this.state.message,
     };
 
-    service.send(message);
-
-    this.toaster.toast("Message Sent!");
-    this.setState({
-      name: "",
-      email: "",
-      message: "",
+    let response: Promise<any> = service.send(message);
+    Promise.resolve(response).then(() => {
+      this.toaster.toast("Message Sent!");
+      this.setState({
+        name: "",
+        email: "",
+        message: "",
+      });
+    }, () => {
+      this.toaster.toast("Failed to send. Please email or call us directly.");
     });
   }
 
