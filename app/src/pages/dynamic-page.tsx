@@ -1,5 +1,8 @@
 import * as React from "react";
 import * as _ from "lodash";
+import ContentCreate from "material-ui/svg-icons/content/create";
+import FloatingActionButton from "material-ui/FloatingActionButton";
+
 import {Card, Page, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
 import BioCard from "../components/bio-card";
@@ -64,6 +67,9 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     return (
       <div>
         {wrapped}
+        <FloatingActionButton className="edit-mode-button" mini={true}>
+          {this.state.editable ? <ContentCreate /> : <ContentCreate />}
+        </FloatingActionButton>
         <CardEditor
           open={this.state.editorOpen}
           onRequestClose={this.handleClose.bind(this)}
