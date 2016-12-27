@@ -6,6 +6,7 @@ import (
 	"github.com/discoviking/website/server/message/email"
 	pages "github.com/discoviking/website/server/pages/storage"
 	"github.com/discoviking/website/server/storage/dir"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"time"
@@ -38,6 +39,19 @@ func main() {
 		pagesService,
 		messageService,
 	)
+
+	// Print out configured routes.
+	log.Print("Serving the following routes:")
+	router.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
+		template, err := route.GetPathTemplate()
+		if err != nil {
+			log.Print("Unknown route")
+			return nil
+		}
+
+		log.Print(template)
+		return nil
+	})
 
 	if conf.Server.Ssl.On {
 		// Main server over HTTPS.
