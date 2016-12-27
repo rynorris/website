@@ -27,11 +27,13 @@ func AddRoutes(r *mux.Router, service Service) {
 		if err != nil {
 			// Explicitly do not pass up the reason for login failure.
 			http.Error(w, "Invalid username or password.", 403)
+			return
 		}
 
 		signedString, err := service.Sign(token)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("failed to issue token: %v", err), 503)
+			return
 		}
 
 		// Return token as a cookie.
