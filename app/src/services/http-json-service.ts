@@ -25,14 +25,14 @@ export default class HttpJsonService {
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    };
 
-    if ((method != "HEAD") && (method != "GET")) {
+    if ((method !== "HEAD") && (method !== "GET")) {
       requestInit.body = JSON.stringify(body);
     }
 
     return ((window as any).fetch(url, requestInit)
-                           .then((response: any) => response.status == 204 ? null : response.json())
+                           .then((response: any) => response.status === 204 ? null : response.json())
                            .catch((error: any) => Promise.reject(error.message || error)));
   }
 }

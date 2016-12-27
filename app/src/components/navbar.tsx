@@ -2,11 +2,11 @@ import * as React from "react";
 import * as _ from "lodash";
 import {Link} from "react-router";
 import Drawer from "material-ui/Drawer";
-import FlatButton from 'material-ui/FlatButton';
+import FlatButton from "material-ui/FlatButton";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
 import NavigationMenu from "material-ui/svg-icons/navigation/menu";
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from "material-ui/Toolbar";
 
 interface INavbarProps {
   links: string[];
@@ -24,7 +24,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
   }
 
   render() {
-    let navItems = _.map(_.zip(this.props.links, this.props.titles), 
+    let navItems = _.map(_.zip(this.props.links, this.props.titles),
                          function(item: string[], ix: number) {
       return (
         <Link key={"nav-item-" + ix} to={item[0]}>
@@ -33,7 +33,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
       );
     });
 
-    let drawerItems = _.map(_.zip(this.props.links, this.props.titles), 
+    let drawerItems = _.map(_.zip(this.props.links, this.props.titles),
                          function(item: string[], ix: number) {
       return (
         <Link key={"drawer-item-" + ix} to={item[0]}>
@@ -62,9 +62,9 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
           </ToolbarGroup>
         </Toolbar>
 
-        <Drawer 
+        <Drawer
           containerClassName="app-navdrawer"
-          open={this.state.drawerOpen} 
+          open={this.state.drawerOpen}
           docked={false}
           onRequestChange={this.setDrawer.bind(this)}>
           {drawerItems}

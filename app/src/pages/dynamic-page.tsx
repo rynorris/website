@@ -68,7 +68,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
           open={this.state.editorOpen}
           onRequestClose={this.handleClose.bind(this)}
           card={this.state.page.cards[this.state.cardToEdit]}
-          onSave={((card: Card) => {this.saveCard(this.state.cardToEdit, card)}).bind(this)}
+          onSave={((card: Card) => {this.saveCard(this.state.cardToEdit, card);}).bind(this)}
           />
       </div>
     );
@@ -92,7 +92,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
     newPage.cards[ix] = card;
     let pageService: PagesService = ServiceProvider.PagesService();
-    let response: Promise<any> = pageService.savePage(this.props.pageId, newPage)
+    let response: Promise<any> = pageService.savePage(this.props.pageId, newPage);
     Promise.resolve(response).then(() => {
       let newState = this.state;
       newState.page = newPage;

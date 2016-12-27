@@ -42,11 +42,11 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
     }
 
     let actions: any[] = [
-      <FlatButton 
-        label="Cancel" 
+      <FlatButton
+        label="Cancel"
         onTouchTap={this.props.onRequestClose} />,
-      <FlatButton 
-        label="Save" 
+      <FlatButton
+        label="Save"
         onTouchTap={(() => this.state.card ? this.props.onSave(this.state.card) : null).bind(this)} />
     ];
 
@@ -61,20 +61,20 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
         modal={true}
         >
         <div className="card-editor">
-          <TextField 
-            id="text-field-title" 
-            floatingLabelText="Title" 
+          <TextField
+            id="text-field-title"
+            floatingLabelText="Title"
             value={this.state.card.title}
             onChange={this.setTitle.bind(this)}
             fullWidth={true} />
           <br/>
-          <TextField 
-            id="text-field-text" 
+          <TextField
+            id="text-field-text"
             floatingLabelText="Text"
             value={this.state.card.text}
             onChange={this.setText.bind(this)}
             fullWidth={true}
-            multiLine={true} 
+            multiLine={true}
             rows={4} />
         </div>
         <h3>Preview</h3>

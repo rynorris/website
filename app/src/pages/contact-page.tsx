@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Card, CardTitle, CardText} from "material-ui/Card";
-import Divider from 'material-ui/Divider';
-import RaisedButton from 'material-ui/RaisedButton';
+import Divider from "material-ui/Divider";
+import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 
 import ContactForm from "../components/contact-form";

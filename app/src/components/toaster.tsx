@@ -13,7 +13,7 @@ interface IToasterState {
 export default class Toaster extends React.Component<IToasterProps, IToasterState> {
   constructor(props: IToasterProps) {
     super(props);
-    this.state = { 
+    this.state = {
       open: false ,
       text: "",
     };
