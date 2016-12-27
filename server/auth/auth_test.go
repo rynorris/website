@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"strings"
 	"testing"
 	"time"
 )
@@ -13,6 +14,7 @@ const (
 	// Test tokens generated using the fantastic debugger at jwt.io
 	validToken       = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXIifQ.n5QUuguJ-7zeNgqezW99cQQLrvkb_lWo7ooZQzvUPSY"
 	badlySignedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXIifQ.YxfoKnP8UxOhu-D6POVsx3NbNRNUMCp1Qr-nGcD7ZPU"
+	expiredToken     = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXIiLCJpYXQiOjAsImV4cCI6MX0.xJgiNt_gb3q75AwDEEmGLd7rEZOyVq3XJdWSPVeJMqc"
 )
 
 func createTestService() Service {
@@ -66,6 +68,22 @@ func TestRejectBadlySignedToken(t *testing.T) {
 	_, err := s.Parse(badlySignedToken)
 	if err == nil {
 		t.Fatal("parsed badly signed token without error")
+	}
+
+	if !strings.Contains(err.Error(), "signature is invalid") {
+		t.Fatalf("expected bad signature error, got: \"%v\"", err)
+	}
+}
+
+func TestRejectExpiredToken(t *testing.T) {
+	s := createTestService()
+	_, err := s.Parse(expiredToken)
+	if err == nil {
+		t.Fatal("parsed expired token without error")
+	}
+
+	if !strings.Contains(err.Error(), "expired") {
+		t.Fatalf("expected expired error, got: \"%v\"", err)
 	}
 }
 
