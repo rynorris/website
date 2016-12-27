@@ -5,8 +5,12 @@ import (
 )
 
 type LoginRequest struct {
-	Username string
-	Password string
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type UserInfo struct {
+	Username string `json:"username"`
 }
 
 type Service interface {
