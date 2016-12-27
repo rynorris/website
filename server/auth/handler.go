@@ -12,7 +12,7 @@ const (
 )
 
 func AddRoutes(r *mux.Router, service Service) {
-	// Explicitly only serve login over https.
+	// Do not serve these routes over http.
 	r.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 
 		decoder := json.NewDecoder(r.Body)
@@ -38,5 +38,5 @@ func AddRoutes(r *mux.Router, service Service) {
 		w.Header().Add("Set-Cookie", fmt.Sprintf("%v=%v; Path=/api; Secure; HttpOnly;", tokenCookieName, signedString))
 
 		w.WriteHeader(http.StatusNoContent)
-	}).Methods("POST").Schemes("https")
+	}).Methods("POST")
 }
