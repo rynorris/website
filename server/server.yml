@@ -2,6 +2,12 @@ contact:
   email:
     to: test@test.test
 
+auth:
+  token-duration: 3600
+  secret: test-secret
+  users:
+    admin: $2y$10$PC9DVQstDfvr2aUJIJqSiungLt1DRSWvCmkgiBbyCavA8CMLvk2p2
+
 server:
   port: 8080
   read-timeout: 5
@@ -12,5 +18,8 @@ server:
     index: ../app/build/src/assets/index.html
 
   ssl:
-    on: false
+    on: true
+    port: 8081
+    certificate: ./test/cert.pem
+    private-key: ./test/key.pem
 
