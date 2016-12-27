@@ -43,6 +43,9 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
 
     let actions: any[] = [
       <FlatButton 
+        label="Cancel" 
+        onTouchTap={this.props.onRequestClose} />,
+      <FlatButton 
         label="Save" 
         onTouchTap={(() => this.state.card ? this.props.onSave(this.state.card) : null).bind(this)} />
     ];
@@ -55,6 +58,7 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
         onRequestClose={this.props.onRequestClose}
         autoScrollBodyContent={true}
         contentClassName="card-editor-dialog"
+        modal={true}
         >
         <div className="card-editor">
           <TextField 
