@@ -37,7 +37,14 @@ func AddRoutes(r *mux.Router, service Service) {
 		}
 
 		// Return token as a cookie.
-		w.Header().Add("Set-Cookie", fmt.Sprintf("%v=%v; Path=/api; Secure; HttpOnly;", tokenCookieName, signedString))
+		cookie := &http.Cookie{
+			Name:     tokenCookieName,
+			Value:    signedString,
+			Path:     "/api",
+			Secure:   true,
+			HttpOnly: true,
+		}
+		http.SetCookie(w, cookie)
 
 		w.WriteHeader(http.StatusNoContent)
 	}).Methods("POST")
