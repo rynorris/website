@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -36,15 +37,17 @@ func getTlsConfig() *tls.Config {
 	}
 }
 
-func startHttpRedirectServer(port int) {
+func startHttpRedirectServer(fromPort, toPort int) {
 	// Redirect http to https.
 	redirectSrv := &http.Server{
-		Addr:         fmt.Sprintf(":%v", port),
+		Addr:         fmt.Sprintf(":%v", fromPort),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			w.Header().Set("Connection", "close")
-			url := "https://" + req.Host + req.URL.String()
+			host := req.Host
+			httpsHost := strings.Split(host, ":")[0] + fmt.Sprintf(":%v", toPort)
+			url := "https://" + httpsHost + req.URL.String()
 			http.Redirect(w, req, url, http.StatusMovedPermanently)
 		}),
 	}
