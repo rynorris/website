@@ -6,8 +6,15 @@ import (
 )
 
 type Config struct {
+	Auth    AuthConfig    `yaml:"auth"`
 	Contact ContactConfig `yaml:"contact"`
 	Server  ServerConfig  `yaml:"server"`
+}
+
+type AuthConfig struct {
+	TokenDuration int               `yaml:"token-duration"`
+	Secret        string            `yaml:"secret"`
+	Users         map[string]string `yaml:"users"`
 }
 
 type ServerConfig struct {

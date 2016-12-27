@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/NYTimes/gziphandler"
+	"github.com/discoviking/website/server/auth"
 	"github.com/discoviking/website/server/message"
 	"github.com/discoviking/website/server/pages"
 	"github.com/gorilla/mux"
@@ -9,15 +10,20 @@ import (
 	"net/http"
 )
 
-func createRouter(indexPage, assetsDir string, pagesService pages.Service, messageService message.Service) *mux.Router {
+func createRouter(
+	indexPage, assetsDir string,
+	authService auth.Service,
+	pagesService pages.Service,
+	messageService message.Service) *mux.Router {
+
 	// Main Router.
 	r := mux.NewRouter()
 
 	// REST API.
 	api := r.PathPrefix("/api/").Subrouter()
 
+	auth.AddRoutes(api.PathPrefix("/auth/").Subrouter(), authService)
 	message.AddRoutes(api.PathPrefix("/message/").Subrouter(), messageService)
-
 	pages.AddRoutes(api.PathPrefix("/pages/").Subrouter(), pagesService)
 
 	// Serve static assets.

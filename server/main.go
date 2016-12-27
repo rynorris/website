@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/discoviking/website/server/auth"
 	"github.com/discoviking/website/server/message/email"
 	pages "github.com/discoviking/website/server/pages/storage"
 	"github.com/discoviking/website/server/storage/dir"
@@ -22,13 +23,18 @@ func main() {
 		log.Fatal("failed to create storage service: %v", err)
 	}
 
+	authService := auth.NewService(
+		conf.Auth.Secret,
+		time.Duration(conf.Auth.TokenDuration)*time.Second,
+		conf.Auth.Users,
+	)
 	pagesService := pages.NewService(storageService)
-
 	messageService := email.NewService(conf.Contact.Email.To)
 
 	router := createRouter(
 		conf.Server.Serve.Index,
 		conf.Server.Serve.Assets,
+		authService,
 		pagesService,
 		messageService,
 	)
