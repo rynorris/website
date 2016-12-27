@@ -5,10 +5,9 @@ import FloatingActionButton from "material-ui/FloatingActionButton";
 
 import {Card, Page, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
-import BioCard from "../components/bio-card";
 import CardEditor from "../components/card-editor";
+import DynamicCard from "../components/dynamic-card";
 import EditContainer from "../components/edit-container";
-import Post from "../components/post";
 
 interface IDynamicPageProps {
   pageId: string;
@@ -45,12 +44,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
 
   render() {
     let cards: any = _.map(this.state.page.cards, (card: Card, ix: number) => {
-      switch (card.type) {
-        case "post":
-          return <Post title={card.title}>{card.text}</Post>;
-        case "bio":
-          return <BioCard name={card.title} text={card.text} image={card.image} />;
-      }
+      return <DynamicCard card={card} />;
     });
 
     let wrapped: any = _.map(cards, (card: Card, ix: number) => {
