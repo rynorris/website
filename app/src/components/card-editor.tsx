@@ -3,6 +3,7 @@ import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 import {Card} from "../services/pages-service";
+import DynamicCard from "./dynamic-card";
 
 interface ICardEditorProps {
   onSave: (card: Card) => void;
@@ -70,6 +71,8 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
             multiLine={true} 
             rows={4} />
         </div>
+        <h3>Preview</h3>
+        <DynamicCard card={this.state.card} />
       </Dialog>
     );
   }
