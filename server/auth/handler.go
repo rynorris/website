@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+const (
+	tokenCookieName = "access_token"
+)
+
 func AddRoutes(r *mux.Router, service Service) {
 	// Explicitly only serve login over https.
 	r.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
@@ -30,9 +34,9 @@ func AddRoutes(r *mux.Router, service Service) {
 			http.Error(w, fmt.Sprintf("failed to issue token: %v", err), 503)
 		}
 
-		n, err := w.Write([]byte(signedString))
-		if err != nil || n != len(signedString) {
-			http.Error(w, fmt.Sprintf("failed to write response: %v", err), 503)
-		}
+		// Return token as a cookie.
+		w.Header().Add("Set-Cookie", fmt.Sprintf("%v=%v; Secure; HttpOnly;", tokenCookieName, signedString))
+
+		w.WriteHeader(http.StatusNoContent)
 	}).Methods("POST").Schemes("https")
 }
