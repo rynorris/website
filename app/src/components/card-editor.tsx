@@ -53,6 +53,8 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
         actions={actions}
         open={this.props.open}
         onRequestClose={this.props.onRequestClose}
+        autoScrollBodyContent={true}
+        contentClassName="card-editor-dialog"
         >
         <div className="card-editor">
           <TextField 
