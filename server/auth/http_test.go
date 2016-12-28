@@ -17,7 +17,27 @@ const (
 )
 
 var (
+	dummyCookie *http.Cookie = &http.Cookie{
+		Name:  tokenCookieName,
+		Value: "dummy-token",
+	}
+
 	dummyToken *jwt.Token = jwt.New(jwt.SigningMethodHS256)
+
+	userInfoClaims = &Claims{
+		jwt.StandardClaims{
+			Subject: "test-user",
+		},
+	}
+	dummyTokenWithUserInfo *jwt.Token = jwt.NewWithClaims(jwt.SigningMethodHS256, userInfoClaims)
+
+	badClaims = &badClaimsType{
+		Extra: "unexpected-data",
+		StandardClaims: jwt.StandardClaims{
+			Subject: "test-user",
+		},
+	}
+	dummyTokenWithBadClaims *jwt.Token = jwt.NewWithClaims(jwt.SigningMethodHS256, badClaims)
 )
 
 func TestLoginSuccess(t *testing.T) {
@@ -80,6 +100,75 @@ func TestLoginWithNoBody(t *testing.T) {
 	}
 }
 
+func TestUserInfoSuccess(t *testing.T) {
+	svc := &dummyService{}
+	svr := createServer(svc)
+	defer svr.Close()
+
+	svc.nextParse = dummyTokenWithUserInfo
+
+	req, err := http.NewRequest("GET", svr.URL+"/user", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req.AddCookie(dummyCookie)
+	client := http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if resp.StatusCode != 200 {
+		t.Errorf("Should return 200 for successful user info request.  Got %v.", resp.StatusCode)
+	}
+}
+
+func TestUserInfoNoCookie(t *testing.T) {
+	svc := &dummyService{}
+	svr := createServer(svc)
+	defer svr.Close()
+
+	req, err := http.NewRequest("GET", svr.URL+"/user", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	client := http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if resp.StatusCode != 403 {
+		t.Errorf("Should return 403 when no token cookie provided.  Got %v.", resp.StatusCode)
+	}
+}
+
+func TestUserInfoBadCookie(t *testing.T) {
+	svc := &dummyService{}
+	svr := createServer(svc)
+	defer svr.Close()
+
+	svc.nextParse = dummyTokenWithBadClaims
+
+	req, err := http.NewRequest("GET", svr.URL+"/user", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req.AddCookie(dummyCookie)
+	client := http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if resp.StatusCode != 403 {
+		t.Errorf("Should return 403 for invalid token.  Got %v.", resp.StatusCode)
+	}
+}
+
 func createServer(service Service) *httptest.Server {
 	r := mux.NewRouter()
 	AddRoutes(r, service)
@@ -127,4 +216,9 @@ func (s *dummyService) Parse(ss string) (*jwt.Token, error) {
 	token := s.nextParse
 	s.nextParse = nil
 	return token, nil
+}
+
+type badClaimsType struct {
+	Extra string
+	jwt.StandardClaims
 }
