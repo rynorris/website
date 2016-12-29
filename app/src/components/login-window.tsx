@@ -38,7 +38,7 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
     let actions: any[] = [
       <FlatButton
         label="Cancel"
-        onTouchTap={this.props.onRequestClose} />,
+        onTouchTap={this.cancelLogin.bind(this)} />,
       <FlatButton
         label="Login"
         disabled={this.state.loginInProgress}
@@ -92,7 +92,12 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
       password: this.state.password
     }).then(() => {
       this.props.onSuccess();
-      this.setState(Object.assign({}, this.state, { loginInProgress: false, errorMessage: "" }));
+      this.setState(Object.assign({}, this.state, {
+        loginInProgress: false,
+        errorMessage: "",
+        username: "",
+        password: ""
+      }));
       store.dispatch(Login());
     }).catch((e) => {
       this.props.onFailure();
@@ -105,7 +110,8 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
   }
 
   private cancelLogin() {
-    this.setState(Object.assign({}, this.state, { dialogOpen: false }));
+    this.setState(Object.assign({}, this.state, { username: "", password: "" }));
+    this.props.onRequestClose();
   }
 
   private setUsername(ev: any) {
