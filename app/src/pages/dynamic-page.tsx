@@ -35,7 +35,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     this.state = {
       initialPage: {title: "", cards: []},
       page: {title: "", cards: []},
-      allowedToEdit: false,
+      allowedToEdit: store.getState().auth.loggedIn,
       editable: false,
       editorOpen: false,
       cardToEdit: 0,
