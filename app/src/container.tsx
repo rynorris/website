@@ -1,6 +1,7 @@
 import * as React from "react";
 import Paper from "material-ui/Paper";
 import * as Colors from "material-ui/styles/colors";
+import LoginWidget from "./components/login-widget";
 import Navbar from "./components/navbar";
 
 let navbarLinks: string[] = [
@@ -23,6 +24,7 @@ export let Container = React.createClass({
       <div className="app-container">
         <div className="app-header">
           <Paper zDepth={1} rounded={false}>
+            <LoginWidget />
             <div className="app-header-image"></div>
             <Navbar links={navbarLinks} titles={navbarTitles} />
           </Paper>

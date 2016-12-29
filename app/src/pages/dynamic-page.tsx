@@ -12,6 +12,8 @@ import DynamicCard from "../components/dynamic-card";
 import EditContainer from "../components/edit-container";
 import Toaster from "../components/toaster";
 
+import {store} from "../redux/state";
+
 interface IDynamicPageProps {
   pageId: string;
 }
@@ -19,6 +21,7 @@ interface IDynamicPageProps {
 interface IDynamicPageState {
   initialPage: Page;
   page: Page;
+  allowedToEdit: boolean;
   editable: boolean;
   editorOpen: boolean;
   cardToEdit: number;
@@ -32,6 +35,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     this.state = {
       initialPage: {title: "", cards: []},
       page: {title: "", cards: []},
+      allowedToEdit: false,
       editable: false,
       editorOpen: false,
       cardToEdit: 0,
@@ -47,6 +51,13 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
       newState.page = page;
       this.setState(newState);
     }, () => {
+    });
+
+    store.subscribe(() => {
+      let loggedIn = store.getState().auth.loggedIn;
+      if (loggedIn !== this.state.allowedToEdit) {
+        this.setState(Object.assign({}, this.state, { allowedToEdit: loggedIn }));
+      }
     });
   }
 
@@ -84,9 +95,8 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
       </FloatingActionButton>
     );
 
-    return (
+    let editorControls: JSX.Element = (
       <div>
-        {wrapped}
         <div className="floating-buttons">
           {this.state.editable ? null : editButton}
           {!this.state.editable ? null : cancelButton}
@@ -99,6 +109,13 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
           onSave={((card: Card) => {this.saveCard(this.state.cardToEdit, card);}).bind(this)}
           />
         <Toaster ref={(t) => { this.toaster = t; }} />
+      </div>
+    );
+
+    return (
+      <div>
+        {wrapped}
+        {this.state.allowedToEdit ? editorControls : null}
       </div>
     );
   }
