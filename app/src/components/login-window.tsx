@@ -16,6 +16,7 @@ interface ILoginWindowState {
   username: string;
   password: string;
   loginInProgress: boolean;
+  errorMessage: string;
 }
 
 export default class LoginWindow extends React.Component<ILoginWindowProps, ILoginWindowState> {
@@ -25,6 +26,7 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
       username: "",
       password: "",
       loginInProgress: false,
+      errorMessage: "",
     };
   }
 
@@ -59,6 +61,7 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
           onChange={this.setPassword.bind(this)}
           fullWidth={true}
           />
+        <div className="login-error-message">{this.state.errorMessage}</div>
       </div>
     );
 
@@ -85,10 +88,13 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
       password: this.state.password
     }).then(() => {
       store.dispatch(Login());
-      this.setState(Object.assign({}, this.state, { loginInProgress: false }));
+      this.setState(Object.assign({}, this.state, { loginInProgress: false, errorMessage: "" }));
     }).catch((e) => {
-      console.log(e);
-      this.setState(Object.assign({}, this.state, { loginInProgress: false }));
+      this.setState(Object.assign({}, this.state, {
+        loginInProgress: false,
+        errorMessage: e.message,
+        password: "",
+      }));
     });
   }
 

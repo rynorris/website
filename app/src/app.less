@@ -3,6 +3,7 @@
 @background-color: #DDDDDD;
 @primary-color: #64FFDA;
 @primary-color-dark: #1DE9B6;
+@error-color: #FF7777;
 @navbar-color: @primary-color-dark;
 
 // Sizes.
@@ -43,10 +44,14 @@ body {
 
 .login-window {
   max-width: 500px !important;
+
+  @media @mobile {
+    width: @app-width-mobile !important;
+  }
 }
 
 .login-window-body {
-  min-height: 200px !important;
+  height: 200px !important;
 }
 
 .login-spinner {
@@ -55,6 +60,12 @@ body {
   width: 100px;
   height: 100px;
   top: 50px;
+}
+
+.login-error-message {
+  text-align: center;
+  margin-top: @grid-width;
+  color: @error-color;
 }
 
 .app-navbar, .app-navdrawer {
