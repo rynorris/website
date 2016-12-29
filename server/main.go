@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/discoviking/website/server/auth"
 	"github.com/discoviking/website/server/message/email"
@@ -12,14 +13,20 @@ import (
 	"time"
 )
 
+var (
+	configFile = flag.String("config", "./server.yml", "Config File")
+)
+
 func main() {
+	flag.Parse()
+
 	// Load config.
-	conf, err := LoadConfig("./server.yml")
+	conf, err := LoadConfig(*configFile)
 	if err != nil {
 		log.Fatal("failed to load config: %v", err)
 	}
 
-	storageService, err := dir.NewService("./test/pages")
+	storageService, err := dir.NewService(conf.Pages.Directory)
 	if err != nil {
 		log.Fatal("failed to create storage service: %v", err)
 	}

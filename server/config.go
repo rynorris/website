@@ -8,6 +8,7 @@ import (
 type Config struct {
 	Auth    AuthConfig    `yaml:"auth"`
 	Contact ContactConfig `yaml:"contact"`
+	Pages   PagesConfig   `yaml:"pages"`
 	Server  ServerConfig  `yaml:"server"`
 }
 
@@ -15,6 +16,10 @@ type AuthConfig struct {
 	TokenDuration int               `yaml:"token-duration"`
 	Secret        string            `yaml:"secret"`
 	Users         map[string]string `yaml:"users"`
+}
+
+type PagesConfig struct {
+	Directory string `yaml:"directory"`
 }
 
 type ServerConfig struct {

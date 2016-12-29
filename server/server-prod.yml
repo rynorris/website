@@ -9,20 +9,20 @@ auth:
     admin: $2y$10$PC9DVQstDfvr2aUJIJqSiungLt1DRSWvCmkgiBbyCavA8CMLvk2p2
 
 pages:
-  directory: ./test/pages
+  directory: ../var/data/pages
 
 server:
-  port: 8080
+  port: 80
   read-timeout: 5
   write-timeout: 10
 
   serve:
-    assets: ../app/build/src/assets/
-    index: ../app/build/src/assets/index.html
+    assets: ./assets/
+    index: ./assets/index.html
 
   ssl:
     on: true
-    port: 8081
-    certificate: ./test/cert.pem
-    private-key: ./test/key.pem
+    port: 443
+    certificate: ../var/test/cert.pem
+    private-key: ../var/test/key.pem
 
