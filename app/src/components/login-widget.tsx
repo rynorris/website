@@ -4,7 +4,7 @@ import FlatButton from "material-ui/FlatButton";
 
 import LoginWindow from "./login-window";
 import ServiceProvider from "../services/service-provider";
-import {Logout, store} from "../redux/state";
+import {Login, Logout, store} from "../redux/state";
 
 interface ILoginWidgetState {
   loggedIn: boolean;

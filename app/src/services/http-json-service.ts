@@ -25,6 +25,7 @@ export default class HttpJsonService {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "same-origin",
     };
 
     if ((method !== "HEAD") && (method !== "GET")) {
