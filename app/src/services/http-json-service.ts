@@ -33,7 +33,23 @@ export default class HttpJsonService {
     }
 
     return ((window as any).fetch(url, requestInit)
-                           .then((response: any) => response.status === 204 ? null : response.json())
-                           .catch((error: any) => Promise.reject(error.message || error)));
+                           .then(this.checkStatus)
+                           .then(this.parseJson,
+                                 this.parseError));
+  }
+
+  private checkStatus(response: any): Promise<any> {
+    if (response.status >= 400) {
+      return Promise.reject(response);
+    }
+    return response;
+  }
+
+  private parseJson(response: any): Promise<any> {
+    return response.json();
+  }
+
+  private parseError(response: any): Promise<any> {
+    return response.json().then((data: any) => Promise.reject(data));
   }
 }

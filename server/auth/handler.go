@@ -12,6 +12,13 @@ const (
 	tokenCookieName = "access_token"
 )
 
+func respondError(w http.ResponseWriter, message string, status int) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	encoder := json.NewEncoder(w)
+	encoder.Encode(map[string]string{"message": message})
+}
+
 func AddRoutes(r *mux.Router, service Service) {
 	// Do not serve these routes over http.
 	r.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
@@ -19,20 +26,20 @@ func AddRoutes(r *mux.Router, service Service) {
 		req := LoginRequest{}
 		err := decoder.Decode(&req)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("failed to decode login request from request body: %v", err), 400)
+			respondError(w, fmt.Sprintf("failed to decode login request from request body: %v", err), 400)
 			return
 		}
 
 		token, err := service.Login(req)
 		if err != nil {
 			// Explicitly do not pass up the reason for login failure.
-			http.Error(w, "Invalid username or password.", 403)
+			respondError(w, "Invalid username or password.", 403)
 			return
 		}
 
 		signedString, err := service.Sign(token)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("failed to issue token: %v", err), 503)
+			respondError(w, fmt.Sprintf("failed to issue token: %v", err), 503)
 			return
 		}
 
@@ -53,7 +60,7 @@ func AddRoutes(r *mux.Router, service Service) {
 		cookie, err := r.Cookie(tokenCookieName)
 		if err != nil {
 			log.Printf("no token provided: %v", err)
-			http.Error(w, "no access token provided", 403)
+			respondError(w, "no access token provided", 403)
 			return
 		}
 
@@ -61,14 +68,14 @@ func AddRoutes(r *mux.Router, service Service) {
 		token, err := service.Parse(ss)
 		if err != nil {
 			log.Printf("invalid token: %v", err)
-			http.Error(w, "invalid token", 403)
+			respondError(w, "invalid token", 403)
 			return
 		}
 
 		claims, ok := token.Claims.(*Claims)
 		if !ok {
 			log.Printf("invalid token claims")
-			http.Error(w, "invalid token", 403)
+			respondError(w, "invalid token", 403)
 			return
 		}
 
@@ -80,7 +87,7 @@ func AddRoutes(r *mux.Router, service Service) {
 		err = encoder.Encode(info)
 		if err != nil {
 			log.Printf("failed to encode user info: %v", err)
-			http.Error(w, "failed to return user info", 503)
+			respondError(w, "failed to return user info", 503)
 			return
 		}
 	}).Methods("GET")
