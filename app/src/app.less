@@ -125,10 +125,19 @@ body {
   }
 }
 
-.edit-mode-button {
+.floating-buttons {
   position: fixed;
   right: @grid-width;
   bottom: @grid-width;
+  z-index: 2000;
+}
+
+.floating-button {
+  margin-left: @grid-width;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1.0;
+  }
 }
 
 // Card Editor.

@@ -46,7 +46,7 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
         label="Cancel"
         onTouchTap={this.props.onRequestClose} />,
       <FlatButton
-        label="Save"
+        label="Ok"
         onTouchTap={(() => this.state.card ? this.props.onSave(this.state.card) : null).bind(this)} />
     ];
 
