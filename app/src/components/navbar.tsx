@@ -1,5 +1,6 @@
 import * as React from "react";
-import * as _ from "lodash";
+import * as map from "lodash/map";
+import * as zip from "lodash/zip";
 import {Link} from "react-router";
 import Drawer from "material-ui/Drawer";
 import FlatButton from "material-ui/FlatButton";
@@ -24,7 +25,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
   }
 
   render() {
-    let navItems = _.map(_.zip(this.props.links, this.props.titles),
+    let navItems = map(zip(this.props.links, this.props.titles),
                          function(item: string[], ix: number) {
       return (
         <Link key={"nav-item-" + ix} to={item[0]}>
@@ -33,7 +34,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
       );
     });
 
-    let drawerItems = _.map(_.zip(this.props.links, this.props.titles),
+    let drawerItems = map(zip(this.props.links, this.props.titles),
                          function(item: string[], ix: number) {
       return (
         <Link key={"drawer-item-" + ix} to={item[0]}>

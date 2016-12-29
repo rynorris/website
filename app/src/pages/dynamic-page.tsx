@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as _ from "lodash";
+import * as map from "lodash/map";
 import ContentCreate from "material-ui/svg-icons/content/create";
 import ContentSave from "material-ui/svg-icons/content/save";
 import FloatingActionButton from "material-ui/FloatingActionButton";
@@ -51,11 +51,11 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
   }
 
   render() {
-    let cards: JSX.Element[] = _.map(this.state.page.cards, (card: Card, ix: number) => {
+    let cards: JSX.Element[] = map(this.state.page.cards, (card: Card, ix: number) => {
       return <DynamicCard card={card} />;
     });
 
-    let wrapped: any = _.map(cards, (card: Card, ix: number) => {
+    let wrapped: any = map(cards, (card: Card, ix: number) => {
       return (
         <EditContainer
           key={"card_" + ix}
