@@ -46,6 +46,9 @@ export default class HttpJsonService {
   }
 
   private parseJson(response: any): Promise<any> {
+    if (response.status === 204) {
+      return Promise.resolve(null);
+    }
     return response.json();
   }
 
