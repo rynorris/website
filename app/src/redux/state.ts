@@ -18,8 +18,12 @@ let initialState: AppState = {
 interface LoginAction extends Action {
   type: "LOGIN";
 }
-
 export let Login: ActionCreator<LoginAction> = () => { return {type: "LOGIN"}; };
+
+interface LogoutAction extends Action {
+  type: "LOGOUT";
+}
+export let Logout: ActionCreator<LogoutAction> = () => { return {type: "LOGOUT"}; };
 
 let appReducer: Reducer<AppState> = (state = initialState, action: Action) => {
   switch (action.type) {
@@ -27,6 +31,13 @@ let appReducer: Reducer<AppState> = (state = initialState, action: Action) => {
       return Object.assign({}, state, {
         auth: {
           loggedIn: true
+        }
+      });
+
+    case "LOGOUT":
+      return Object.assign({}, state, {
+        auth: {
+          loggedIn: false
         }
       });
 

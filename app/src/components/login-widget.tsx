@@ -2,10 +2,13 @@ import * as React from "react";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 
-import {Login, store} from "../redux/state";
+import LoginWindow from "./login-window";
+import ServiceProvider from "../services/service-provider";
+import {Logout, store} from "../redux/state";
 
 interface ILoginWidgetState {
   loggedIn: boolean;
+  dialogOpen: boolean;
 }
 
 export default class LoginWidget extends React.Component<{}, ILoginWidgetState> {
@@ -13,6 +16,7 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
     super(props);
     this.state = {
       loggedIn: false,
+      dialogOpen: false,
     };
   }
 
@@ -22,6 +26,13 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
       if (loggedIn !== this.state.loggedIn) {
         this.setState(Object.assign({}, this.state, { loggedIn: loggedIn }));
       }
+    });
+
+    let auth = ServiceProvider.AuthService();
+    auth.whoAmI().then((userInfo) => {
+      store.dispatch(Login());
+    }).catch(() => {
+      store.dispatch(Logout());
     });
   }
 
@@ -35,13 +46,21 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
     } else {
       return (
         <div className="login-widget">
-          <FlatButton label="Login" onTouchTap={this.handleLogin.bind(this)} />
+          <FlatButton label="Login" onTouchTap={this.openDialog.bind(this)} />
+          <LoginWindow
+            open={this.state.dialogOpen}
+            onRequestClose={this.closeDialog.bind(this)}
+            />
         </div>
       );
     }
   }
 
-  private handleLogin() {
-    store.dispatch(Login());
+  private closeDialog() {
+    this.setState(Object.assign({}, this.state, { dialogOpen: false }));
+  }
+
+  private openDialog() {
+    this.setState(Object.assign({}, this.state, { dialogOpen: true }));
   }
 }
