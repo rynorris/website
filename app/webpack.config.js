@@ -28,6 +28,9 @@ module.exports = {
       // Handle less with less-loader.
       { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
 
+      // JSON Loader.  Needed for react-markdown.
+      { test: /\.json$/, loader: 'json' },
+
       // Load in static files.
       {
 	  test: staticFileRegex,
