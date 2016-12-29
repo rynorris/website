@@ -16,6 +16,18 @@ server:
   read-timeout: 5
   write-timeout: 10
 
+  log:
+    filename: ../var/log/server.log
+    max-size: 100
+    max-backups: 5
+    max-age: 30
+
+  request-log:
+    filename: ../var/log/request.log
+    max-size: 100
+    max-backups: 5
+    max-age: 30
+
   serve:
     assets: ./assets/
     index: ./assets/index.html

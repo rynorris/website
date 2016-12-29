@@ -7,7 +7,9 @@ import (
 	"github.com/discoviking/website/server/message/email"
 	pages "github.com/discoviking/website/server/pages/storage"
 	"github.com/discoviking/website/server/storage/dir"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"log"
 	"net/http"
 	"time"
@@ -25,6 +27,15 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to load config: %v", err)
 	}
+
+	// Redirect log output.
+	logger := &lumberjack.Logger{
+		Filename:   conf.Server.Log.Filename,
+		MaxSize:    conf.Server.Log.MaxSize, // megabytes
+		MaxBackups: conf.Server.Log.MaxBackups,
+		MaxAge:     conf.Server.Log.MaxAge, //days
+	}
+	log.SetOutput(logger)
 
 	storageService, err := dir.NewService(conf.Pages.Directory)
 	if err != nil {
@@ -60,6 +71,15 @@ func main() {
 		return nil
 	})
 
+	// Add logging to all routes.
+	requestLog := &lumberjack.Logger{
+		Filename:   conf.Server.RequestLog.Filename,
+		MaxSize:    conf.Server.RequestLog.MaxSize, // megabytes
+		MaxBackups: conf.Server.RequestLog.MaxBackups,
+		MaxAge:     conf.Server.RequestLog.MaxAge, //days
+	}
+	loggingHandler := handlers.CombinedLoggingHandler(requestLog, router)
+
 	if conf.Server.Ssl.On {
 		// Main server over HTTPS.
 		log.Print("SSL On")
@@ -70,7 +90,7 @@ func main() {
 			WriteTimeout: time.Duration(conf.Server.WriteTimeout) * time.Second,
 			// IdleTimeout:  120 * time.Second, // Go 1.8 only.
 			TLSConfig: getTlsConfig(),
-			Handler:   router,
+			Handler:   loggingHandler,
 		}
 		log.Print("Begin serving")
 		log.Fatal(mainSrv.ListenAndServeTLS(conf.Server.Ssl.Cert, conf.Server.Ssl.Key))
@@ -82,7 +102,7 @@ func main() {
 			ReadTimeout:  time.Duration(conf.Server.ReadTimeout) * time.Second,
 			WriteTimeout: time.Duration(conf.Server.WriteTimeout) * time.Second,
 			// IdleTimeout:  120 * time.Second, // Go 1.8 only.
-			Handler: router,
+			Handler: loggingHandler,
 		}
 		log.Print("Begin serving")
 		log.Fatal(mainSrv.ListenAndServe())

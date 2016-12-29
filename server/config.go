@@ -23,11 +23,20 @@ type PagesConfig struct {
 }
 
 type ServerConfig struct {
-	Port         int         `yaml:"port"`
-	Serve        ServeConfig `yaml:"serve"`
-	Ssl          SslConfig   `yaml:"ssl"`
-	ReadTimeout  int         `yaml:"read-timeout"`
-	WriteTimeout int         `yaml:"write-timeout"`
+	Port         int           `yaml:"port"`
+	Serve        ServeConfig   `yaml:"serve"`
+	Ssl          SslConfig     `yaml:"ssl"`
+	ReadTimeout  int           `yaml:"read-timeout"`
+	WriteTimeout int           `yaml:"write-timeout"`
+	Log          LoggingConfig `yaml:"log"`
+	RequestLog   LoggingConfig `yaml:"request-log"`
+}
+
+type LoggingConfig struct {
+	Filename   string `yaml:"filename"`
+	MaxSize    int    `yaml:"max-size"`
+	MaxBackups int    `yaml:"max-backups"`
+	MaxAge     int    `yaml:"max-age"`
 }
 
 type ServeConfig struct {
