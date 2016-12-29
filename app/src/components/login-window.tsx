@@ -10,6 +10,8 @@ import {Login, store} from "../redux/state";
 interface ILoginWindowProps {
   open: boolean;
   onRequestClose: () => void;
+  onSuccess: () => void;
+  onFailure: () => void;
 }
 
 interface ILoginWindowState {
@@ -66,17 +68,19 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
     );
 
     return (
-      <Dialog
-        title="Login"
-        open={this.props.open}
-        actions={actions}
-        onRequestClose={this.props.onRequestClose}
-        autoScrollBodyContent={true}
-        contentClassName="login-window"
-        bodyClassName="login-window-body"
-        >
-        {this.state.loginInProgress ? <div className="login-spinner"><CircularProgress size={100}/></div> : inputFields}
-      </Dialog>
+      <div>
+        <Dialog
+          title="Login"
+          open={this.props.open}
+          actions={actions}
+          onRequestClose={this.props.onRequestClose}
+          autoScrollBodyContent={true}
+          contentClassName="login-window"
+          bodyClassName="login-window-body"
+          >
+          {this.state.loginInProgress ? <div className="login-spinner"><CircularProgress size={100}/></div> : inputFields}
+        </Dialog>
+      </div>
     );
   }
 
@@ -87,9 +91,11 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
       username: this.state.username,
       password: this.state.password
     }).then(() => {
-      store.dispatch(Login());
+      this.props.onSuccess();
       this.setState(Object.assign({}, this.state, { loginInProgress: false, errorMessage: "" }));
+      store.dispatch(Login());
     }).catch((e) => {
+      this.props.onFailure();
       this.setState(Object.assign({}, this.state, {
         loginInProgress: false,
         errorMessage: e.message,

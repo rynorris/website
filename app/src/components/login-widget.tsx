@@ -3,6 +3,7 @@ import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 
 import LoginWindow from "./login-window";
+import Toaster from "./toaster";
 import ServiceProvider from "../services/service-provider";
 import {Login, Logout, store} from "../redux/state";
 
@@ -12,6 +13,8 @@ interface ILoginWidgetState {
 }
 
 export default class LoginWidget extends React.Component<{}, ILoginWidgetState> {
+  private toaster: Toaster;
+
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -37,23 +40,34 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
   }
 
   render() {
+    let loginButton: JSX.Element;
     if (this.state.loggedIn) {
-      return (
-        <div className="login-widget">
-          <FlatButton label="Logged in" disabled={true} />
-        </div>
-      );
+      loginButton = <FlatButton label="Logged in" disabled={true} />;
     } else {
-      return (
-        <div className="login-widget">
-          <FlatButton label="Login" onTouchTap={this.openDialog.bind(this)} />
-          <LoginWindow
-            open={this.state.dialogOpen}
-            onRequestClose={this.closeDialog.bind(this)}
-            />
-        </div>
-      );
+      loginButton = <FlatButton label="Login" onTouchTap={this.openDialog.bind(this)} />;
     }
+
+    return (
+      <div className="login-widget">
+        {loginButton}
+        <LoginWindow
+          open={this.state.dialogOpen}
+          onRequestClose={this.closeDialog.bind(this)}
+          onSuccess={this.onLoginSuccess.bind(this)}
+          onFailure={this.onLoginFailure.bind(this)}
+          />
+        <Toaster ref={(t) => { this.toaster = t; }} />
+      </div>
+    );
+  }
+
+  private onLoginSuccess() {
+    this.toaster.toast("Login Successful");
+    this.closeDialog();
+  }
+
+  private onLoginFailure() {
+    this.toaster.toast("Login Failed");
   }
 
   private closeDialog() {
