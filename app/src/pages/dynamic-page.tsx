@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as map from "lodash/map";
+import {Unsubscribe} from "redux";
 import ContentCreate from "material-ui/svg-icons/content/create";
 import ContentSave from "material-ui/svg-icons/content/save";
 import FloatingActionButton from "material-ui/FloatingActionButton";
@@ -29,6 +30,7 @@ interface IDynamicPageState {
 
 export default class DynamicPage extends React.Component<IDynamicPageProps, IDynamicPageState> {
   private toaster: Toaster;
+  private unsubscribe: Unsubscribe;
 
   constructor(props: IDynamicPageProps) {
     super(props);
@@ -53,12 +55,16 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     }, () => {
     });
 
-    store.subscribe(() => {
+    this.unsubscribe = store.subscribe(() => {
       let loggedIn = store.getState().auth.loggedIn;
       if (loggedIn !== this.state.allowedToEdit) {
         this.setState(Object.assign({}, this.state, { allowedToEdit: loggedIn }));
       }
     });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   render() {

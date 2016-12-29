@@ -1,4 +1,5 @@
 import * as React from "react";
+import {Unsubscribe} from "redux";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 
@@ -14,6 +15,7 @@ interface ILoginWidgetState {
 
 export default class LoginWidget extends React.Component<{}, ILoginWidgetState> {
   private toaster: Toaster;
+  private unsubscribe: Unsubscribe;
 
   constructor(props: {}) {
     super(props);
@@ -24,7 +26,7 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
   }
 
   componentDidMount() {
-    store.subscribe(() => {
+      this.unsubscribe = store.subscribe(() => {
       let loggedIn = store.getState().auth.loggedIn;
       if (loggedIn !== this.state.loggedIn) {
         this.setState(Object.assign({}, this.state, { loggedIn: loggedIn }));
@@ -37,6 +39,10 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
     }).catch(() => {
       store.dispatch(Logout());
     });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   render() {
