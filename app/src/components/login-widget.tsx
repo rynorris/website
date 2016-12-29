@@ -42,13 +42,14 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
   render() {
     let loginButton: JSX.Element;
     if (this.state.loggedIn) {
-      loginButton = <FlatButton label="Logged in" disabled={true} />;
+      loginButton = <FlatButton label="Logout" onTouchTap={this.doLogout.bind(this)} />;
     } else {
       loginButton = <FlatButton label="Login" onTouchTap={this.openDialog.bind(this)} />;
     }
 
     return (
       <div className="login-widget">
+        {this.state.loggedIn ? <span>Logged in</span> : null}
         {loginButton}
         <LoginWindow
           open={this.state.dialogOpen}
@@ -59,6 +60,16 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
         <Toaster ref={(t) => { this.toaster = t; }} />
       </div>
     );
+  }
+
+  private doLogout() {
+    let auth = ServiceProvider.AuthService();
+    auth.logout().then(() => {
+      store.dispatch(Logout());
+      this.toaster.toast("Logged out");
+    }).catch(() => {
+      this.toaster.toast("Failed to log out");
+    });
   }
 
   private onLoginSuccess() {

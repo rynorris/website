@@ -14,6 +14,10 @@ export class AuthService extends HttpJsonService {
     return this.post("/login", r);
   }
 
+  public logout(): Promise<any> {
+    return this.post("/logout", null);
+  }
+
   public whoAmI(): Promise<UserInfo> {
     return this.get("/user");
   }
