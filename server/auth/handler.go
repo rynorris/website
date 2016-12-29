@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"time"
 )
 
 const (
@@ -75,6 +76,22 @@ func AddRoutes(r *mux.Router, service Service) {
 			return
 		}
 	}).Methods("GET")
+
+	r.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
+		// Delete login cookie by setting one with 0 life.
+		cookie := &http.Cookie{
+			Name:     tokenCookieName,
+			Value:    "",
+			Path:     "/api",
+			Secure:   true,
+			HttpOnly: true,
+			Expires:  time.Unix(0, 0),
+			MaxAge:   -1,
+		}
+		http.SetCookie(w, cookie)
+
+		w.WriteHeader(http.StatusNoContent)
+	}).Methods("POST")
 }
 
 func AuthenticateFunc(service Service, f http.HandlerFunc) http.HandlerFunc {
