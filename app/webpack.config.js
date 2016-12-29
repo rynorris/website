@@ -14,6 +14,7 @@ module.exports = {
 
   entry: {
     app: [
+      "whatwg-fetch",
       "./src/app.tsx",
       "./src/app.less"
     ]
