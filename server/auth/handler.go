@@ -57,25 +57,9 @@ func AddRoutes(r *mux.Router, service Service) {
 	}).Methods("POST")
 
 	r.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		cookie, err := r.Cookie(tokenCookieName)
+		claims, err := validateRequest(r, service)
 		if err != nil {
-			log.Printf("no token provided: %v", err)
-			respondError(w, "no access token provided", 403)
-			return
-		}
-
-		ss := cookie.Value
-		token, err := service.Parse(ss)
-		if err != nil {
-			log.Printf("invalid token: %v", err)
-			respondError(w, "invalid token", 403)
-			return
-		}
-
-		claims, ok := token.Claims.(*Claims)
-		if !ok {
-			log.Printf("invalid token claims")
-			respondError(w, "invalid token", 403)
+			respondError(w, err.Error(), 403)
 			return
 		}
 
@@ -91,4 +75,38 @@ func AddRoutes(r *mux.Router, service Service) {
 			return
 		}
 	}).Methods("GET")
+}
+
+func AuthenticateFunc(service Service, f http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		_, err := validateRequest(r, service)
+		if err != nil {
+			respondError(w, err.Error(), 403)
+		}
+
+		f(w, r)
+	}
+}
+
+func validateRequest(r *http.Request, service Service) (*Claims, error) {
+	cookie, err := r.Cookie(tokenCookieName)
+	if err != nil {
+		log.Printf("no token provided: %v", err)
+		return nil, fmt.Errorf("no access token provided")
+	}
+
+	ss := cookie.Value
+	token, err := service.Parse(ss)
+	if err != nil {
+		log.Printf("invalid token: %v", err)
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	claims, ok := token.Claims.(*Claims)
+	if !ok {
+		log.Printf("invalid token claims")
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	return claims, nil
 }

@@ -3,12 +3,13 @@ package pages
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/discoviking/website/server/auth"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func AddRoutes(r *mux.Router, service Service) {
+func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 	r.HandleFunc("/{key}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		key := vars["key"]
@@ -31,7 +32,7 @@ func AddRoutes(r *mux.Router, service Service) {
 		return
 	}).Methods("GET")
 
-	r.HandleFunc("/{key}", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/{key}", auth.AuthenticateFunc(authService, func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		key := vars["key"]
 
@@ -53,7 +54,7 @@ func AddRoutes(r *mux.Router, service Service) {
 
 		w.WriteHeader(http.StatusNoContent)
 		return
-	}).Methods("PUT")
+	})).Methods("PUT")
 
 	r.HandleFunc("/{key}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)

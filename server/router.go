@@ -24,7 +24,7 @@ func createRouter(
 
 	auth.AddRoutes(api.PathPrefix("/auth/").Subrouter(), authService)
 	message.AddRoutes(api.PathPrefix("/message/").Subrouter(), messageService)
-	pages.AddRoutes(api.PathPrefix("/pages/").Subrouter(), pagesService)
+	pages.AddRoutes(api.PathPrefix("/pages/").Subrouter(), pagesService, authService)
 
 	// Serve static assets.
 	fs := http.FileServer(http.Dir(assetsDir))
