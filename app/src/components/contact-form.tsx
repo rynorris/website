@@ -13,7 +13,6 @@ interface IContactFormState {
 }
 
 export default class ContactForm extends React.Component<{}, IContactFormState> {
-  private toaster: Toaster;
 
   constructor(props: {}) {
     super(props);
@@ -34,14 +33,14 @@ export default class ContactForm extends React.Component<{}, IContactFormState> 
 
     let response: Promise<any> = service.send(message);
     Promise.resolve(response).then(() => {
-      this.toaster.toast("Message Sent!");
+      Toaster.toast("Message Sent!");
       this.setState({
         name: "",
         email: "",
         message: "",
       });
     }, () => {
-      this.toaster.toast("Failed to send. Please email or call us directly.");
+      Toaster.toast("Failed to send. Please email or call us directly.");
     });
   }
 
@@ -76,7 +75,6 @@ export default class ContactForm extends React.Component<{}, IContactFormState> 
           labelPosition="before"
           onTouchTap={this.handleSubmit.bind(this)}
           icon={<ContentSend />} />
-        <Toaster ref={(t) => { this.toaster = t; }} />
       </div>
     );
   }

@@ -29,7 +29,6 @@ interface IDynamicPageState {
 }
 
 export default class DynamicPage extends React.Component<IDynamicPageProps, IDynamicPageState> {
-  private toaster: Toaster;
   private unsubscribe: Unsubscribe;
 
   constructor(props: IDynamicPageProps) {
@@ -114,7 +113,6 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
           card={this.state.page.cards[this.state.cardToEdit]}
           onSave={((card: Card) => {this.saveCard(this.state.cardToEdit, card);}).bind(this)}
           />
-        <Toaster ref={(t) => { this.toaster = t; }} />
       </div>
     );
 
@@ -183,10 +181,10 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
       newState.initialPage = newState.page;
       this.setState(newState);
       this.editModeOff();
-      this.toaster.toast("Page saved!");
+      Toaster.toast("Page saved!");
     }, (e) => {
       console.log("Something went wrong: ", e);
-      this.toaster.toast("Failed to save.");
+      Toaster.toast("Failed to save.");
     });
   }
 }

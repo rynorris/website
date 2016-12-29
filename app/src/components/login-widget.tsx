@@ -14,7 +14,6 @@ interface ILoginWidgetState {
 }
 
 export default class LoginWidget extends React.Component<{}, ILoginWidgetState> {
-  private toaster: Toaster;
   private unsubscribe: Unsubscribe;
 
   constructor(props: {}) {
@@ -63,7 +62,6 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
           onSuccess={this.onLoginSuccess.bind(this)}
           onFailure={this.onLoginFailure.bind(this)}
           />
-        <Toaster ref={(t) => { this.toaster = t; }} />
       </div>
     );
   }
@@ -72,19 +70,19 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
     let auth = ServiceProvider.AuthService();
     auth.logout().then(() => {
       store.dispatch(Logout());
-      this.toaster.toast("Logged out");
+      Toaster.toast("Logged out");
     }).catch(() => {
-      this.toaster.toast("Failed to log out");
+      Toaster.toast("Failed to log out");
     });
   }
 
   private onLoginSuccess() {
-    this.toaster.toast("Login Successful");
+    Toaster.toast("Login Successful");
     this.closeDialog();
   }
 
   private onLoginFailure() {
-    this.toaster.toast("Login Failed");
+    Toaster.toast("Login Failed");
   }
 
   private closeDialog() {

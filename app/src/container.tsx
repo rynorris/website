@@ -3,6 +3,7 @@ import Paper from "material-ui/Paper";
 import * as Colors from "material-ui/styles/colors";
 import LoginWidget from "./components/login-widget";
 import Navbar from "./components/navbar";
+import Toaster from "./components/toaster";
 
 let navbarLinks: string[] = [
   "/front",
@@ -32,6 +33,7 @@ export let Container = React.createClass({
         <div className="app-body">
           {this.props.children}
         </div>
+        <Toaster />
       </div>
     );
   }

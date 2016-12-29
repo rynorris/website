@@ -1,5 +1,8 @@
 import * as React from "react";
+import {Unsubscribe} from "redux";
 import Snackbar from "material-ui/Snackbar";
+
+import {store, Toast} from "../redux/state";
 
 interface IToasterProps {
   duration?: number;
@@ -11,6 +14,8 @@ interface IToasterState {
 }
 
 export default class Toaster extends React.Component<IToasterProps, IToasterState> {
+  private unsubscribe: Unsubscribe;
+
   constructor(props: IToasterProps) {
     super(props);
     this.state = {
@@ -23,11 +28,25 @@ export default class Toaster extends React.Component<IToasterProps, IToasterStat
     duration: 2000,
   };
 
-  public toast(text: string) {
-    this.setState({
-      open: true,
-      text: text,
+  public static toast(text: string) {
+    store.dispatch(Toast(text));
+  }
+
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => {
+      let toaster: any = store.getState().toaster;
+      if ((toaster.open !== this.state.open) ||
+          (toaster.text !== this.state.text)) {
+        this.setState({
+          open: toaster.open,
+          text: toaster.text,
+        });
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   render() {
