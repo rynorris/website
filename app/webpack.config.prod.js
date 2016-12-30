@@ -4,6 +4,7 @@ const path = require("path");
 
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const baseConfig = require("./webpack.config");
 
@@ -16,7 +17,9 @@ module.exports = Object.assign({}, baseConfig, {
   },
 
   plugins: [
-    ...baseConfig.plugins,
+    ...baseConfig.plugins.filter((plugin) => !(plugin instanceof ExtractTextPlugin)),
+
+    new ExtractTextPlugin("[name]-[hash].css"),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("production")

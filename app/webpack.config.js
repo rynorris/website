@@ -4,6 +4,7 @@ const path = require("path");
 
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const staticFileRegex = /\.(woff|svg|ttf|eot|gif|jpeg|jpg|png)([\?]?.*)$/;
 
@@ -26,7 +27,7 @@ module.exports = {
       { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
 
       // Handle less with less-loader.
-      { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
+      { test: /\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader") },
 
       // JSON Loader.  Needed for react-markdown.
       { test: /\.json$/, loader: 'json' },
@@ -56,6 +57,7 @@ module.exports = {
   },
 
   plugins: [
+    new ExtractTextPlugin("[name].css"),
     new HtmlWebpackPlugin({
       inject: false,
       minify: {
