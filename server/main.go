@@ -27,7 +27,7 @@ func main() {
 	// Load config.
 	conf, err := LoadConfig(*configFile)
 	if err != nil {
-		log.Fatal("failed to load config: %v", err)
+		log.Fatalf("failed to load config: %v", err)
 	}
 
 	// Redirect log output.
@@ -41,12 +41,12 @@ func main() {
 
 	pageStorage, err := dir.NewService(conf.Pages.Directory)
 	if err != nil {
-		log.Fatal("failed to create page storage service: %v", err)
+		log.Fatalf("failed to create page storage service: %v", err)
 	}
 
 	imageStorage, err := dir.NewService(conf.Images.Directory)
 	if err != nil {
-		log.Fatal("failed to create image storage service: %v", err)
+		log.Fatalf("failed to create image storage service: %v", err)
 	}
 
 	authService := auth.NewService(
