@@ -3,15 +3,15 @@ package main
 import (
 	"crypto/tls"
 	"fmt"
+	"golang.org/x/crypto/acme/autocert"
 	"log"
 	"net/http"
 	"strings"
 	"time"
 )
 
-func getTlsConfig() *tls.Config {
-	// TLS Config.
-	return &tls.Config{
+func getTlsConfig(useAcme bool) *tls.Config {
+	config := &tls.Config{
 		// Causes servers to use Go's default ciphersuite preferences,
 		// which are tuned to avoid attacks. Does nothing on clients.
 		PreferServerCipherSuites: true,
@@ -35,6 +35,17 @@ func getTlsConfig() *tls.Config {
 			// tls.TLS_RSA_WITH_AES_128_GCM_SHA256,
 		},
 	}
+
+	// If desired used ACME to automatically get a certificate.
+	if useAcme {
+		m := autocert.Manager{
+			Prompt: autocert.AcceptTOS,
+		}
+
+		config.GetCertificate = m.GetCertificate
+	}
+
+	return config
 }
 
 func startHttpRedirectServer(fromPort, toPort int) {

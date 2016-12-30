@@ -89,7 +89,7 @@ func main() {
 			ReadTimeout:  time.Duration(conf.Server.ReadTimeout) * time.Second,
 			WriteTimeout: time.Duration(conf.Server.WriteTimeout) * time.Second,
 			// IdleTimeout:  120 * time.Second, // Go 1.8 only.
-			TLSConfig: getTlsConfig(),
+			TLSConfig: getTlsConfig(conf.Server.Ssl.AutoCert),
 			Handler:   loggingHandler,
 		}
 		log.Print("Begin serving")

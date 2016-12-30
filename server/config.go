@@ -45,10 +45,11 @@ type ServeConfig struct {
 }
 
 type SslConfig struct {
-	On   bool   `yaml:"on"`
-	Port int    `yaml:"port"`
-	Cert string `yaml:"certificate"`
-	Key  string `yaml:"private-key"`
+	On       bool   `yaml:"on"`
+	Port     int    `yaml:"port"`
+	Cert     string `yaml:"certificate"`
+	Key      string `yaml:"private-key"`
+	AutoCert bool   `yaml:"autocert"`
 }
 
 type ContactConfig struct {
