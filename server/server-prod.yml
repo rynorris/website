@@ -35,6 +35,11 @@ server:
   ssl:
     on: true
     port: 443
-    certificate: ../var/test/cert.pem
-    private-key: ../var/test/key.pem
+    certificate: ../var/data/cert.pem
+    private-key: ../var/data/key.pem
+    acme:
+      on: true
+      cache-dir: ../var/acme
+      domains:
+        - example.com
 

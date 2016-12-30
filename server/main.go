@@ -89,8 +89,12 @@ func main() {
 			ReadTimeout:  time.Duration(conf.Server.ReadTimeout) * time.Second,
 			WriteTimeout: time.Duration(conf.Server.WriteTimeout) * time.Second,
 			// IdleTimeout:  120 * time.Second, // Go 1.8 only.
-			TLSConfig: getTlsConfig(conf.Server.Ssl.AutoCert),
-			Handler:   loggingHandler,
+			TLSConfig: getTlsConfig(
+				conf.Server.Ssl.Acme.On,
+				conf.Server.Ssl.Acme.CacheDir,
+				conf.Server.Ssl.Acme.Domains,
+			),
+			Handler: loggingHandler,
 		}
 		log.Print("Begin serving")
 		log.Fatal(mainSrv.ListenAndServeTLS(conf.Server.Ssl.Cert, conf.Server.Ssl.Key))

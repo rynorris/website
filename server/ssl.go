@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func getTlsConfig(useAcme bool) *tls.Config {
+func getTlsConfig(useAcme bool, cacheDir string, domains []string) *tls.Config {
 	config := &tls.Config{
 		// Causes servers to use Go's default ciphersuite preferences,
 		// which are tuned to avoid attacks. Does nothing on clients.
@@ -38,8 +38,13 @@ func getTlsConfig(useAcme bool) *tls.Config {
 
 	// If desired used ACME to automatically get a certificate.
 	if useAcme {
+		cache := autocert.DirCache(cacheDir)
+		hostPolicy := autocert.HostWhitelist(domains...)
+
 		m := autocert.Manager{
-			Prompt: autocert.AcceptTOS,
+			Prompt:     autocert.AcceptTOS,
+			Cache:      cache,
+			HostPolicy: hostPolicy,
 		}
 
 		config.GetCertificate = m.GetCertificate

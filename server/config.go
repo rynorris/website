@@ -45,11 +45,17 @@ type ServeConfig struct {
 }
 
 type SslConfig struct {
-	On       bool   `yaml:"on"`
-	Port     int    `yaml:"port"`
-	Cert     string `yaml:"certificate"`
-	Key      string `yaml:"private-key"`
-	AutoCert bool   `yaml:"autocert"`
+	On   bool       `yaml:"on"`
+	Port int        `yaml:"port"`
+	Cert string     `yaml:"certificate"`
+	Key  string     `yaml:"private-key"`
+	Acme AcmeConfig `yaml:"acme"`
+}
+
+type AcmeConfig struct {
+	On       bool     `yaml:"on"`
+	CacheDir string   `yaml:"cache-dir"`
+	Domains  []string `yaml:"domains"`
 }
 
 type ContactConfig struct {
