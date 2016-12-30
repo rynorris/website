@@ -1,10 +1,13 @@
 
 PHONY: app app-prod app-clean app-clean-prod server server-prod dist-clean dist
 
-app:
+app-deps:
+	cd app && npm install && typings install
+
+app: app-deps
 	cd app && webpack
 
-app-prod:
+app-prod: app-deps
 	cd app && webpack --config ./webpack.config.prod.js
 
 app-clean:
