@@ -13,6 +13,4 @@ before_install:
   - npm install -g webpack typings
 
 script:
-  - make app-prod
-  - make server
-  - cd server && go test ./... -cover
+  - make dist

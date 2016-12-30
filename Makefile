@@ -1,5 +1,5 @@
 
-PHONY: app app-prod app-clean app-clean-prod server server-prod dist-clean dist
+.PHONY: app app-deps app-prod app-clean app-clean-prod server server-deps server-prod dist-clean dist
 
 app-deps:
 	cd app && npm install && typings install
@@ -16,10 +16,13 @@ app-clean:
 app-clean-prod:
 	rm -rf ./app/build/min
 
-server:
+server-deps:
+	cd server && go get
+
+server: server-deps
 	cd server && GOARCH=amd64 && GOOS=linux go build
 
-server-prod:
+server-prod: server-deps
 	cd server && GOARCH=amd64 && GOOS=linux go build -o ./server-linux
 
 dist-clean:
