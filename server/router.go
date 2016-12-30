@@ -6,6 +6,7 @@ import (
 
 	"github.com/NYTimes/gziphandler"
 	"github.com/discoviking/website/server/auth"
+	"github.com/discoviking/website/server/images"
 	"github.com/discoviking/website/server/message"
 	"github.com/discoviking/website/server/pages"
 	"github.com/gorilla/mux"
@@ -14,6 +15,7 @@ import (
 func createRouter(
 	indexPage, assetsDir string,
 	authService auth.Service,
+	imageService images.Service,
 	pagesService pages.Service,
 	messageService message.Service) *mux.Router {
 
@@ -24,6 +26,7 @@ func createRouter(
 	api := r.PathPrefix("/api/").Subrouter()
 
 	auth.AddRoutes(api.PathPrefix("/auth/").Subrouter(), authService)
+	images.AddRoutes(api.PathPrefix("/images/").Subrouter(), imageService, authService)
 	message.AddRoutes(api.PathPrefix("/message/").Subrouter(), messageService)
 	pages.AddRoutes(api.PathPrefix("/pages/").Subrouter(), pagesService, authService)
 

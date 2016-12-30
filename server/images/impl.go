@@ -19,6 +19,12 @@ var extToType = map[string]ImageType{
 
 const defaultType = PNG
 
+func NewService(s storage.Service) Service {
+	return &serviceImpl{
+		storage: s,
+	}
+}
+
 func (s *serviceImpl) Get(key string) (Image, error) {
 	blob, err := s.storage.Get(key)
 	if err != nil {
@@ -48,7 +54,7 @@ func keyToType(key string) ImageType {
 		return defaultType
 	}
 
-	ext := strings.ToLower(key[lastDot:])
+	ext := strings.ToLower(key[lastDot+1:])
 	t, ok := extToType[ext]
 	if !ok {
 		// Unknown extension,  return default.

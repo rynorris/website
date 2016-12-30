@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/discoviking/website/server/auth"
+	"github.com/discoviking/website/server/images"
 	"github.com/discoviking/website/server/message/email"
 	pages "github.com/discoviking/website/server/pages/storage"
 	"github.com/discoviking/website/server/storage/dir"
@@ -38,9 +39,14 @@ func main() {
 	}
 	log.SetOutput(logger)
 
-	storageService, err := dir.NewService(conf.Pages.Directory)
+	pageStorage, err := dir.NewService(conf.Pages.Directory)
 	if err != nil {
-		log.Fatal("failed to create storage service: %v", err)
+		log.Fatal("failed to create page storage service: %v", err)
+	}
+
+	imageStorage, err := dir.NewService(conf.Images.Directory)
+	if err != nil {
+		log.Fatal("failed to create image storage service: %v", err)
 	}
 
 	authService := auth.NewService(
@@ -48,13 +54,15 @@ func main() {
 		time.Duration(conf.Auth.TokenDuration)*time.Second,
 		conf.Auth.Users,
 	)
-	pagesService := pages.NewService(storageService)
+	imageService := images.NewService(imageStorage)
+	pagesService := pages.NewService(pageStorage)
 	messageService := email.NewService(conf.Contact.Email.To)
 
 	router := createRouter(
 		conf.Server.Serve.Index,
 		conf.Server.Serve.Assets,
 		authService,
+		imageService,
 		pagesService,
 		messageService,
 	)
