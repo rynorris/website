@@ -14,3 +14,4 @@ before_install:
 
 script:
   - make dist
+  - cd server && go test ./...
