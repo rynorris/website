@@ -2,12 +2,13 @@ package auth
 
 import (
 	"fmt"
-	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/gorilla/mux"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/gorilla/mux"
 )
 
 const (

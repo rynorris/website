@@ -3,11 +3,12 @@ package main
 import (
 	"crypto/tls"
 	"fmt"
-	"golang.org/x/crypto/acme/autocert"
 	"log"
 	"net/http"
 	"strings"
 	"time"
+
+	"golang.org/x/crypto/acme/autocert"
 )
 
 func getTlsConfig(useAcme bool, cacheDir string, domains []string) *tls.Config {

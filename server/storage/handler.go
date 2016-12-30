@@ -2,8 +2,9 @@ package storage
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func AddRoutes(r *mux.Router, service Service) {

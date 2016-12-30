@@ -3,6 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"net/http"
+	"time"
+
 	"github.com/discoviking/website/server/auth"
 	"github.com/discoviking/website/server/message/email"
 	pages "github.com/discoviking/website/server/pages/storage"
@@ -10,9 +14,6 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"log"
-	"net/http"
-	"time"
 )
 
 var (

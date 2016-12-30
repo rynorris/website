@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/go-yaml/yaml"
 	"io/ioutil"
+
+	"github.com/go-yaml/yaml"
 )
 
 type Config struct {

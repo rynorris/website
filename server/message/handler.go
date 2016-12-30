@@ -2,9 +2,10 @@ package message
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func AddRoutes(r *mux.Router, service Service) {

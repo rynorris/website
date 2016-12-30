@@ -2,9 +2,10 @@ package email
 
 import (
 	"bytes"
-	"github.com/discoviking/website/server/message"
 	"log"
 	"net/smtp"
+
+	"github.com/discoviking/website/server/message"
 )
 
 type Service struct {

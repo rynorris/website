@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/NYTimes/gziphandler"
 	"github.com/discoviking/website/server/auth"
 	"github.com/discoviking/website/server/message"
 	"github.com/discoviking/website/server/pages"
 	"github.com/gorilla/mux"
-	"log"
-	"net/http"
 )
 
 func createRouter(
