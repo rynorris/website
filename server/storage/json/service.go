@@ -44,3 +44,14 @@ func (s *Service) Delete(key string) error {
 	delete(s.store, key)
 	return nil
 }
+
+func (s *Service) List() ([]string, error) {
+	keys := make([]string, len(s.store))
+	ix := 0
+	for k, _ := range s.store {
+		keys[ix] = k
+		ix++
+	}
+
+	return keys, nil
+}

@@ -42,6 +42,25 @@ func (s *Service) Delete(key string) error {
 	return os.Remove(path)
 }
 
+func (s *Service) List() ([]string, error) {
+	files, err := filepath.Glob(s.dirname + "/*")
+	if err != nil {
+		return nil, err
+	}
+
+	// Glob returns nil if there are no matches.  We'd prefer an empty slice.
+	if files == nil {
+		return []string{}, nil
+	}
+
+	keys := make([]string, len(files))
+	for ix, file := range files {
+		keys[ix] = filepath.Base(file)
+	}
+
+	return keys, nil
+}
+
 func (s *Service) getPath(key string) string {
 	return filepath.Join(s.dirname, key)
 }
