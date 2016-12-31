@@ -215,3 +215,33 @@ body {
     width: @app-width-mobile !important;
   }
 }
+
+// Image Selector.
+.image-selector-body {
+  height: 300px !important;
+}
+
+.image-selector-list {
+  float: left;
+  height: 300px;
+  width: 25%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  @media @mobile {
+    width: 100%;
+  }
+}
+
+.image-selector-preview {
+  .--responsive-image-container;
+  float: right;
+  width: 75%;
+  @media @mobile {
+    display: none;
+  }
+}
+
+.image-selector-preview>img{
+  .--responsive-image;
+}

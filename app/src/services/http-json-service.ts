@@ -1,5 +1,5 @@
 export default class HttpJsonService {
-  private basePath: string;
+  protected basePath: string;
 
   constructor(basePath: string) {
     this.basePath = basePath;
