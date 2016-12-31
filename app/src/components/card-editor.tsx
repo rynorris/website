@@ -80,6 +80,7 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
             rows={4} />
         </div>
         <FlatButton label="Choose Image" onTouchTap={this.openImageSelector.bind(this)} />
+        <FlatButton label="Remove Image" onTouchTap={(() => { this.setImage(""); }).bind(this)} />
         <h3>Preview</h3>
         <DynamicCard card={this.state.card} />
         <ImageSelector
