@@ -47,6 +47,10 @@ func (s *serviceImpl) Delete(key string) error {
 	return s.storage.Delete(key)
 }
 
+func (s *serviceImpl) List() ([]string, error) {
+	return s.storage.List()
+}
+
 func keyToType(key string) ImageType {
 	lastDot := strings.LastIndex(key, ".")
 	if lastDot == -1 {

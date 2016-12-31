@@ -1,6 +1,7 @@
 package images
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -11,6 +12,16 @@ import (
 )
 
 func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		keys, err := service.List()
+		if err != nil {
+			http.Error(w, fmt.Sprintf("failed to list images"), 503)
+			return
+		}
+		encoder := json.NewEncoder(w)
+		encoder.Encode(keys)
+	}).Methods("GET")
+
 	r.HandleFunc("/{key}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		key := vars["key"]

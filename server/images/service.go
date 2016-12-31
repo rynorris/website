@@ -17,4 +17,5 @@ type Service interface {
 	Get(key string) (Image, error)
 	Put(key string, image Image) error
 	Delete(key string) error
+	List() ([]string, error)
 }
