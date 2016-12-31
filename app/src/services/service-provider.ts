@@ -1,9 +1,11 @@
 import {AuthService} from "./auth-service";
+import {ImageService} from "./image-service";
 import {MessageService} from "./message-service";
 import {PagesService} from "./pages-service";
 
 export default class ServiceProvider {
   private static authService: AuthService;
+  private static imageService: ImageService;
   private static messageService: MessageService;
   private static pagesService: PagesService;
 
@@ -15,6 +17,13 @@ export default class ServiceProvider {
     return this.authService;
   }
 
+  public static ImageService() {
+    if (!this.imageService) {
+      this.imageService = new ImageService("/api/images");
+    }
+
+    return this.imageService;
+  }
 
   public static MessageService() {
     if (!this.messageService) {
