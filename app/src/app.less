@@ -16,6 +16,7 @@
 @mobile: ~"screen and (max-width: 630px)";
 @desktop: ~"screen and (min-width: 630px)";
 
+// Mixins.
 .mobile-hide {
   @media @mobile {
     display: none !important;
@@ -28,19 +29,39 @@
   }
 }
 
+.--responsive-image-container() {
+  overflow: hidden;
+  text-align: center;
+}
+
+.--responsive-image() {
+  position: relative;
+  max-width: 100%;
+  min-width: 600px;
+  left: 100%;
+  margin-left: -200%;
+}
+
+// App Styling.
 body {
   margin: 0px;
   background-color: @background-color;
 }
 
-.app-header-image {
+.app-header-image-container {
+  .--responsive-image-container;
   height: @header-height;
   background-color: @primary-color;
+}
+
+.app-header-image {
+  .--responsive-image;
 }
 
 .login-widget {
   position: absolute;
   margin-left: @grid-width;
+  z-index: 1000;
 }
 
 .login-window {
@@ -110,6 +131,15 @@ body {
 .app-post {
   margin-top: @grid-width;
   margin-bottom: @grid-width;
+}
+
+.post-header-image-container {
+  .--responsive-image-container;
+  height: 300px;
+}
+
+.post-header-image {
+  .--responsive-image;
 }
 
 // BioCard styling.
