@@ -151,17 +151,18 @@ body {
   margin-bottom: @grid-width;
 }
 
-.app-bio-image {
+.app-bio-image-container {
+  .--responsive-image-container;
   width: @bio-height;
   height: @bio-height;
   background-color: @primary-color;
   display: inline-block;
   vertical-align: top;
   overflow: hidden;
+}
 
-  img {
-    width: 100%;
-  }
+.app-bio-image {
+  .--responsive-image;
 }
 
 .app-bio-content {

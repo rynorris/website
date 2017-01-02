@@ -11,8 +11,8 @@ export default class BioCard extends React.Component<IBioCardProps, {}> {
     return (
       <div className="app-bio">
         <Card>
-          <div className="app-bio-image">
-            <img src="/api/images/placeholder-150x150.png" alt={this.props.name} />
+          <div className="app-bio-image-container">
+          {this.props.image ? <img className="app-bio-image" src={this.props.image} alt={this.props.name} /> : null}
           </div>
           <div className="app-bio-content">
             <CardTitle title={this.props.name} />
