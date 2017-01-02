@@ -20,5 +20,7 @@ func AddRoutes(r *mux.Router, service Service) {
 			log.Printf("failed to send message: %v", err)
 			http.Error(w, "failed to send message", 503)
 		}
+
+		w.WriteHeader(http.StatusNoContent)
 	}).Methods("POST")
 }
