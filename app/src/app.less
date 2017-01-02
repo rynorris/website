@@ -7,8 +7,9 @@
 @navbar-color: @primary-color-dark;
 
 // Sizes.
-@app-width: 70%;
-@app-width-mobile: 90%;
+@app-width: 75%;
+@app-width-mobile: 95%;
+@app-max-width: 800px;
 @header-height: 200px;
 @grid-width: 20px;
 
@@ -36,8 +37,8 @@
 
 .--responsive-image() {
   position: relative;
-  max-width: 100%;
-  min-width: 600px;
+  height: 100%;
+  min-width: 100%;
   left: 100%;
   margin-left: -200%;
 }
@@ -98,12 +99,12 @@ body {
 }
 
 .app-body {
-  padding-left: (100% - @app-width) / 2;
-  padding-right: (100% - @app-width) / 2;
+  width: @app-width;
+  max-width: @app-max-width;
+  margin: auto;
 
   @media @mobile {
-    padding-left: (100% - @app-width-mobile) / 2;
-    padding-right: (100% - @app-width-mobile) / 2;
+    width: @app-width-mobile;
   }
 }
 
@@ -164,7 +165,7 @@ body {
 }
 
 .app-bio-content {
-  height: @bio-height;
+  width: calc(~"100% -" @bio-height);
   display: inline-block;
   vertical-align: top;
 }
