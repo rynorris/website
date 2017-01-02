@@ -4,7 +4,6 @@ import {Card, CardTitle, CardText} from "material-ui/Card";
 interface IBioCardProps {
   name: string;
   image: string;
-  text: string;
 }
 
 export default class BioCard extends React.Component<IBioCardProps, {}> {
@@ -18,7 +17,7 @@ export default class BioCard extends React.Component<IBioCardProps, {}> {
           <div className="app-bio-content">
             <CardTitle title={this.props.name} />
             <CardText>
-              <div className="app-bio-text">{this.props.text}</div>
+            {this.props.children}
             </CardText>
           </div>
         </Card>

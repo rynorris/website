@@ -19,7 +19,7 @@ export default class DynamicCard extends React.Component<IDynamicCardProps, {}> 
       case "post":
         return <Post title={card.title} image={card.image}><Markdown source={card.text} /></Post>;
       case "bio":
-        return <BioCard name={card.title} text={card.text} image={card.image} />;
+        return <BioCard name={card.title} image={card.image}><Markdown source={card.text} /></BioCard>;
     }
   }
 }
