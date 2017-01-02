@@ -31,8 +31,8 @@ for img in $INPUT_DIR/*
 do
   name=$(basename ${img%%.*})
   ext=${img##*.}
-  process_image 400 $img $OUTPUT_DIR/$name.small.$ext
-  process_image 600 $img $OUTPUT_DIR/$name.medium.$ext
-  process_image 1200 $img $OUTPUT_DIR/$name.large.$ext
+  # process_image 400 $img $OUTPUT_DIR/$name.small.$ext
+  # process_image 600 $img $OUTPUT_DIR/$name.medium.$ext
+  # process_image 1200 $img $OUTPUT_DIR/$name.large.$ext
   process_image 800x300^ $img $OUTPUT_DIR/$name.responsive.$ext
 done
