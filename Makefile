@@ -34,6 +34,5 @@ dist: app-clean-prod dist-clean app-prod server-prod
 	mkdir -p ./dist/var
 	cp -r app/build/min/assets ./dist/service/
 	mv server/server-linux ./dist/service/server
-	cp -r server/server-prod.yml ./dist/var/
-	cp -r server/test ./dist/var/data
+	cp -r server/server-prod.yml ./dist/var/server-example.yml
 	tar -czf website.tgz ./dist
