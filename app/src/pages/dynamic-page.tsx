@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as map from "lodash/map";
 import {Unsubscribe} from "redux";
+import ContentAdd from "material-ui/svg-icons/content/add";
 import ContentCreate from "material-ui/svg-icons/content/create";
 import ContentSave from "material-ui/svg-icons/content/save";
 import FloatingActionButton from "material-ui/FloatingActionButton";
@@ -78,7 +79,9 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
           editable={this.state.editable}
           onEditButtonClick={(() => this.editCard(ix)).bind(this)}
           onUpButtonClick={(() => this.moveCard(ix, ix - 1)).bind(this)}
-          onDownButtonClick={(() => this.moveCard(ix, ix + 1)).bind(this)}>
+          onDownButtonClick={(() => this.moveCard(ix, ix + 1)).bind(this)}
+          onDeleteButtonClick={(() => this.removeCard(ix)).bind(this)}
+          >
           {card}
         </EditContainer>
       );
@@ -102,10 +105,22 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
       </FloatingActionButton>
     );
 
+    let addButton: JSX.Element = (
+      <FloatingActionButton
+        className="floating-button"
+        mini={true}
+        onTouchTap={(() => {this.addCard(this.state.page.cards.length);}).bind(this)}
+        >
+        <ContentAdd />
+      </FloatingActionButton>
+    );
+
+
     let editorControls: JSX.Element = (
       <div>
         <div className="floating-buttons">
           {this.state.editable ? null : editButton}
+          {!this.state.editable ? null : addButton}
           {!this.state.editable ? null : cancelButton}
           {!this.state.editable ? null : saveButton}
         </div>
@@ -164,7 +179,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     this.setState(newState);
   }
 
-  private addCard(ix: number, card: Card | undefined) {
+  private addCard(ix: number, card?: Card) {
     let newCard: Card = card || {
       type: "post",
       title: "New Card",

@@ -1,5 +1,6 @@
 import * as React from "react";
 import FlatButton from "material-ui/FlatButton";
+import ActionDelete from "material-ui/svg-icons/action/delete";
 import ContentCreate from "material-ui/svg-icons/content/create";
 import KeyboardArrowUp from "material-ui/svg-icons/hardware/keyboard-arrow-up";
 import KeyboardArrowDown from "material-ui/svg-icons/hardware/keyboard-arrow-down";
@@ -11,6 +12,7 @@ interface IEditContainerProps {
   onEditButtonClick: any;
   onUpButtonClick: any;
   onDownButtonClick: any;
+  onDeleteButtonClick: any;
 }
 
 export default class EditContainer extends React.Component<IEditContainerProps, {}> {
@@ -29,6 +31,9 @@ export default class EditContainer extends React.Component<IEditContainerProps, 
         </FlatButton>
         <FlatButton onClick={this.props.onDownButtonClick}>
           <KeyboardArrowDown />
+        </FlatButton>
+        <FlatButton onClick={this.props.onDeleteButtonClick}>
+          <ActionDelete />
         </FlatButton>
       </div>
     );
