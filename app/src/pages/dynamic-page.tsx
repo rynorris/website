@@ -76,7 +76,9 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
         <EditContainer
           key={"card_" + ix}
           editable={this.state.editable}
-          onEditButtonClick={(() => this.editCard(ix)).bind(this)}>
+          onEditButtonClick={(() => this.editCard(ix)).bind(this)}
+          onUpButtonClick={(() => this.moveCard(ix, ix - 1)).bind(this)}
+          onDownButtonClick={(() => this.moveCard(ix, ix + 1)).bind(this)}>
           {card}
         </EditContainer>
       );
@@ -160,6 +162,43 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     newState.cardToEdit = ix;
     newState.editorOpen = true;
     this.setState(newState);
+  }
+
+  private addCard(ix: number, card: Card | undefined) {
+    let newCard: Card = card || {
+      type: "post",
+      title: "New Card",
+      text: "",
+      image: "",
+    };
+
+    // Clone page.
+    let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    newPage.cards.splice(ix, 0, newCard);
+    let newState = this.state;
+    newState.page = newPage;
+    this.setState(newState);
+  }
+
+  private removeCard(ix: number): Card {
+    // Clone page.
+    let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    let removedCard = newPage.cards.splice(ix, 1);
+
+    let newState = this.state;
+    newState.page = newPage;
+    this.setState(newState);
+
+    return removedCard[0];
+  }
+
+  private moveCard(fromIx: number, toIx: number) {
+    if (toIx < 0 || toIx >= this.state.page.cards.length) {
+      return;
+    }
+
+    let card = this.removeCard(fromIx);
+    this.addCard(toIx, card);
   }
 
   private saveCard(ix: number, card: Card) {
