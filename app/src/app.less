@@ -10,6 +10,7 @@
 @app-width: 75%;
 @app-width-mobile: 95%;
 @app-max-width: 800px;
+@app-header-max-width: 1000px;
 @header-height: 200px;
 @grid-width: 20px;
 
@@ -49,14 +50,14 @@ body {
   background-color: @background-color;
 }
 
-.app-header-image-container {
-  .--responsive-image-container;
-  height: @header-height;
-  background-color: @primary-color;
+.app-header {
+  max-width: @app-header-max-width;
+  margin: auto;
 }
 
-.app-header-image {
-  .--responsive-image;
+.app-header-image-container {
+  height: @header-height;
+  background-color: @primary-color;
 }
 
 .login-widget {
@@ -246,4 +247,29 @@ body {
 
 .image-selector-preview>img{
   .--responsive-image;
+}
+
+// Image Gallery
+.image-gallery {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.image-gallery-image {
+  .--responsive-image-container;
+
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: 0.0;
+  transition: opacity 1s ease-in-out;
+
+  img {
+    .--responsive-image;
+  }
+}
+
+.image-gallery-image.active {
+  opacity: 1.0;
 }
