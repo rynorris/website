@@ -13,6 +13,7 @@
 @app-header-max-width: 1000px;
 @header-height: 200px;
 @grid-width: 20px;
+@floating-logo-size: 150px;
 
 // Media queries.
 @mobile: ~"screen and (max-width: 630px)";
@@ -53,6 +54,7 @@ body {
 .app-header {
   max-width: @app-header-max-width;
   margin: auto;
+  position: relative;
 }
 
 .app-header-image-container {
@@ -62,7 +64,7 @@ body {
 
 .login-widget {
   position: absolute;
-  margin-left: @grid-width;
+  right: 0;
   z-index: 1000;
 }
 
@@ -272,4 +274,30 @@ body {
 
 .image-gallery-image.active {
   opacity: 1.0;
+}
+
+// Floating Logo.
+.floating-logo {
+  // Position.
+  margin-left: @grid-width;
+  margin-top: (@header-height - @floating-logo-size) / 2;
+  position: absolute;
+  z-index: 10;
+
+  // Size.
+  height: @floating-logo-size;
+  width: @floating-logo-size;
+
+  // Appearance.
+  border-radius: 100% !important;
+  overflow: hidden;
+
+  // Flex center content.
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-logo-img {
+  width: 90%;
 }

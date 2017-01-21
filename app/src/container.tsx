@@ -1,6 +1,7 @@
 import * as React from "react";
 import Paper from "material-ui/Paper";
 import * as Colors from "material-ui/styles/colors";
+import FloatingLogo from "./components/floating-logo";
 import ImageGallery from "./components/image-gallery";
 import LoginWidget from "./components/login-widget";
 import Navbar from "./components/navbar";
@@ -27,6 +28,8 @@ const headerImages: string[] = [
   "/api/images/Ipad apps tilted.banner.jpeg",
 ];
 
+const logoImage: string = "/api/images/dtc-logo-small.jpg";
+
 export let Container = React.createClass({
   render() {
     return (
@@ -34,6 +37,7 @@ export let Container = React.createClass({
         <div className="app-header">
           <Paper zDepth={1} rounded={false}>
             <LoginWidget />
+            <FloatingLogo src={logoImage} />
             <div className="app-header-image-container">
               <ImageGallery images={headerImages} interval={10000} />
             </div>
