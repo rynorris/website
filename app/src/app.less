@@ -1,18 +1,20 @@
 
 // Colors.
 @background-color: #DDDDDD;
-@primary-color: #64FFDA;
-@primary-color-dark: #1DE9B6;
+@primary-color: #C2DC5D;
+@secondary-color: #59BBE0;
 @error-color: #FF7777;
-@navbar-color: @primary-color-dark;
+@navbar-color: @primary-color;
 
 // Sizes.
+@grid-width: 20px;
+
 @app-width: 75%;
 @app-width-mobile: 95%;
 @app-max-width: 800px;
 @app-header-max-width: 1000px;
-@header-height: 200px;
-@grid-width: 20px;
+@header-height: 250;
+@navbar-height: @grid-width * 2;
 @floating-logo-size: 150px;
 
 // Media queries.
@@ -58,7 +60,7 @@ body {
 }
 
 .app-header-image-container {
-  height: @header-height;
+  height: @header-height - @navbar-height;
   background-color: @primary-color;
 }
 
@@ -96,6 +98,9 @@ body {
 
 .app-navbar, .app-navdrawer {
   background-color: @navbar-color !important;
+  height: @navbar-height !important;
+  position: relative;
+
   a {
     text-decoration: none !important;
   }
@@ -192,7 +197,7 @@ body {
     line-height: inherit !important;
 
     svg {
-      color: @primary-color-dark !important;
+      color: @primary-color !important;
     }
   }
 }
@@ -209,6 +214,10 @@ body {
   opacity: 0.5;
   &:hover {
     opacity: 1.0;
+  }
+
+  button {
+    background-color: @secondary-color !important;
   }
 }
 
@@ -280,7 +289,7 @@ body {
 .floating-logo {
   // Position.
   margin-left: @grid-width;
-  margin-top: (@header-height - @floating-logo-size) / 2;
+  margin-top: (@header-height - @navbar-height - @floating-logo-size) / 2;
   position: absolute;
   z-index: 10;
 
