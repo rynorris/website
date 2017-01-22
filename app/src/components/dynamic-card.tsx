@@ -17,7 +17,7 @@ export default class DynamicCard extends React.Component<IDynamicCardProps, {}> 
     let card: Card = this.props.card;
     switch (card.type) {
       case "post":
-        return <Post title={card.title} image={card.image}><Markdown source={card.text} /></Post>;
+        return <Post title={card.title} image={card.image}><Markdown className="card-body" source={card.text} /></Post>;
       case "bio":
         return <BioCard name={card.title} image={card.image}><Markdown source={card.text} /></BioCard>;
     }
