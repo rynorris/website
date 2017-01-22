@@ -1,4 +1,6 @@
 import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as throttle from "lodash/throttle";
 import * as map from "lodash/map";
 import * as zip from "lodash/zip";
 import {Link} from "react-router";
@@ -9,19 +11,33 @@ import MenuItem from "material-ui/MenuItem";
 import NavigationMenu from "material-ui/svg-icons/navigation/menu";
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from "material-ui/Toolbar";
 
+const SCROLL_LISTEN_INTERVAL: number = 50;
+
 interface INavbarProps {
   links: string[];
   titles: string[];
 }
 
 interface INavbarState {
-  drawerOpen: boolean;
+  drawerOpen?: boolean;
+  navbarFixed?: boolean;
 }
 
 export default class Navbar extends React.Component<INavbarProps, INavbarState> {
+  private navbar: any;
+
   constructor(props: INavbarProps) {
     super(props);
-    this.state = { drawerOpen: false };
+    this.state = { drawerOpen: false, navbarFixed: false };
+    this.handleScroll = throttle(this.handleScroll.bind(this), SCROLL_LISTEN_INTERVAL);
+  }
+
+  componentWillMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   render() {
@@ -47,7 +63,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
 
     return (
       <div>
-        <Toolbar className="app-navbar">
+        <Toolbar className={this.state.navbarFixed ? "app-navbar fixed" : "app-navbar"}>
           <ToolbarGroup className="desktop-hide" firstChild={true}>
             <IconButton onTouchTap={this.toggleDrawer.bind(this)}>
              <NavigationMenu />
@@ -84,5 +100,11 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
 
   private setDrawer(open: boolean) {
     this.setState({ drawerOpen: open });
+  }
+
+  private handleScroll() {
+    const thisTop = ReactDOM.findDOMNode(this).getClientRects()[0].top;
+    const navbarFixed = thisTop <= 0 ? true : false;
+    this.setState({ navbarFixed });
   }
 }

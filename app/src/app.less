@@ -13,7 +13,7 @@
 @app-width-mobile: 95%;
 @app-max-width: 800px;
 @app-header-max-width: 1000px;
-@header-height: 250;
+@header-height: 250px;
 @navbar-height: @grid-width * 2;
 @floating-logo-size: 150px;
 
@@ -54,6 +54,7 @@ body {
 }
 
 .app-header {
+  height: @header-height;
   max-width: @app-header-max-width;
   margin: auto;
   position: relative;
@@ -98,6 +99,14 @@ body {
 
 .app-navbar {
   height: @navbar-height !important;
+}
+
+.app-navbar.fixed {
+  max-width: @app-header-max-width;
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .app-navbar, .app-navdrawer {
