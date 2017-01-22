@@ -22,8 +22,8 @@ let navbarTitles: string[] = [
 ];
 
 const headerImages: string[] = [
-  "/api/images/DTC mindmap.banner.jpeg",
-  "/api/images/Snow writing.banner.jpeg",
+  "/api/images/dtc-mindmap.banner.jpg",
+  "/api/images/snow-writing.banner.jpg",
   "/api/images/Girl writing.banner.jpeg",
   "/api/images/Ipad apps tilted.banner.jpeg",
 ];
