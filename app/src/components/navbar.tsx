@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import * as map from "lodash/map";
 import * as zip from "lodash/zip";
 import {Link} from "react-router";
@@ -7,19 +6,18 @@ import Drawer from "material-ui/Drawer";
 import FlatButton from "material-ui/FlatButton";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
+import Paper from "material-ui/Paper";
 import NavigationMenu from "material-ui/svg-icons/navigation/menu";
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from "material-ui/Toolbar";
-
-import ScrollListener from "./scroll-listener";
 
 interface INavbarProps {
   links: string[];
   titles: string[];
+  fixed?: boolean;
 }
 
 interface INavbarState {
   drawerOpen?: boolean;
-  navbarFixed?: boolean;
 }
 
 export default class Navbar extends React.Component<INavbarProps, INavbarState> {
@@ -27,7 +25,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
 
   constructor(props: INavbarProps) {
     super(props);
-    this.state = { drawerOpen: false, navbarFixed: false };
+    this.state = { drawerOpen: false };
   }
 
   render() {
@@ -52,8 +50,8 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
     }.bind(this));
 
     return (
-      <div>
-        <Toolbar className={this.state.navbarFixed ? "app-navbar fixed" : "app-navbar"}>
+      <Paper className={this.props.fixed ? "app-navbar-container fixed" : "app-navbar-container"} zDepth={1} rounded={false}>
+        <Toolbar className="app-navbar">
           <ToolbarGroup className="desktop-hide" firstChild={true}>
             <IconButton onTouchTap={this.toggleDrawer.bind(this)}>
              <NavigationMenu />
@@ -76,9 +74,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
           onRequestChange={this.setDrawer.bind(this)}>
           {drawerItems}
         </Drawer>
-
-        <ScrollListener onScroll={this.handleScroll.bind(this)} />
-      </div>
+      </Paper>
     );
   }
 
@@ -92,11 +88,5 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
 
   private setDrawer(open: boolean) {
     this.setState({ drawerOpen: open });
-  }
-
-  private handleScroll() {
-    const thisTop = ReactDOM.findDOMNode(this).getClientRects()[0].top;
-    const navbarFixed = thisTop <= 0 ? true : false;
-    this.setState({ navbarFixed });
   }
 }
