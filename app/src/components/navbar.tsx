@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as throttle from "lodash/throttle";
 import * as map from "lodash/map";
 import * as zip from "lodash/zip";
 import {Link} from "react-router";
@@ -11,7 +10,7 @@ import MenuItem from "material-ui/MenuItem";
 import NavigationMenu from "material-ui/svg-icons/navigation/menu";
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from "material-ui/Toolbar";
 
-const SCROLL_LISTEN_INTERVAL: number = 50;
+import ScrollListener from "./scroll-listener";
 
 interface INavbarProps {
   links: string[];
@@ -29,15 +28,6 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
   constructor(props: INavbarProps) {
     super(props);
     this.state = { drawerOpen: false, navbarFixed: false };
-    this.handleScroll = throttle(this.handleScroll.bind(this), SCROLL_LISTEN_INTERVAL);
-  }
-
-  componentWillMount() {
-    window.addEventListener("scroll", this.handleScroll);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
   }
 
   render() {
@@ -86,6 +76,8 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
           onRequestChange={this.setDrawer.bind(this)}>
           {drawerItems}
         </Drawer>
+
+        <ScrollListener onScroll={this.handleScroll.bind(this)} />
       </div>
     );
   }
