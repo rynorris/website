@@ -100,6 +100,7 @@ func AuthenticateFunc(service Service, f http.HandlerFunc) http.HandlerFunc {
 		_, err := validateRequest(r, service)
 		if err != nil {
 			respondError(w, err.Error(), 403)
+			return
 		}
 
 		f(w, r)
