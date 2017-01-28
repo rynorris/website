@@ -69,7 +69,8 @@ type ContactConfig struct {
 }
 
 type EmailContactConfig struct {
-	To string `yaml:"to"`
+	To   string `yaml:"to"`
+	From string `yaml:"from"`
 }
 
 func LoadConfig(filename string) (Config, error) {

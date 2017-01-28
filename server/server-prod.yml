@@ -1,5 +1,6 @@
 contact:
   email:
+    from: test@test.test
     to: test@test.test
 
 auth:

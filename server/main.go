@@ -30,6 +30,8 @@ func main() {
 		log.Fatalf("failed to load config: %v", err)
 	}
 
+	log.Printf("Loaded Config: %#v", conf)
+
 	// Redirect log output.
 	logger := &lumberjack.Logger{
 		Filename:   conf.Server.Log.Filename,
@@ -56,7 +58,7 @@ func main() {
 	)
 	imageService := images.NewService(imageStorage)
 	pagesService := pages.NewService(pageStorage)
-	messageService := email.NewService(conf.Contact.Email.To)
+	messageService := email.NewService(conf.Contact.Email.From, conf.Contact.Email.To)
 
 	router := createRouter(
 		conf.Server.Serve.Index,
