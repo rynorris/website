@@ -54,6 +54,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 		newEtag := etagCache.Put(cache.Key(key), image.Blob)
 		log.Printf("Returning ETag: %s", newEtag)
 		w.Header().Set("ETag", fmt.Sprintf("\"%s\"", newEtag))
+		w.Header().Set("Cache-Control", "max-age=600")
 
 		w.Header().Set("Content-Type", typeToContentType(image.Type))
 		w.Write(image.Blob)
