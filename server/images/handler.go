@@ -6,12 +6,16 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/discoviking/website/server/auth"
+	"github.com/discoviking/website/server/cache"
 	"github.com/gorilla/mux"
 )
 
 func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
+	etagCache := cache.NewMD5EtagCache()
+
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		keys, err := service.List()
 		if err != nil {
@@ -28,11 +32,28 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 
 		log.Printf("Received request to GET image %v", key)
 
+		ifNoneMatch := r.Header.Get("If-None-Match")
+		firstQuote := strings.Index(ifNoneMatch, "\"")
+		lastQuote := strings.LastIndex(ifNoneMatch, "\"")
+		if len(ifNoneMatch) > 0 && firstQuote != -1 && lastQuote > firstQuote {
+			etag := ifNoneMatch[firstQuote+1 : lastQuote]
+			if etagCache.Matches(cache.Key(key), cache.ETag(etag)) {
+				log.Printf("ETag matches,  returning 304 Not Modified")
+				w.WriteHeader(304)
+				w.Header().Set("ETag", string(ifNoneMatch))
+				return
+			}
+		}
+
 		image, err := service.Get(key)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("failed to load image %v", err), 404)
 			return
 		}
+
+		newEtag := etagCache.Put(cache.Key(key), image.Blob)
+		log.Printf("Returning ETag: %s", newEtag)
+		w.Header().Set("ETag", fmt.Sprintf("\"%s\"", newEtag))
 
 		w.Header().Set("Content-Type", typeToContentType(image.Type))
 		w.Write(image.Blob)
@@ -70,6 +91,8 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 			return
 		}
 
+		etagCache.Invalidate(cache.Key(key))
+
 		w.WriteHeader(http.StatusNoContent)
 		return
 	})).Methods("PUT")
@@ -84,6 +107,8 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 		if err != nil {
 			http.Error(w, fmt.Sprintf("failed to delete image: %v", err), 503)
 		}
+
+		etagCache.Invalidate(cache.Key(key))
 
 		return
 	})).Methods("DELETE")
