@@ -34,7 +34,7 @@ export default class ImageGallery extends React.Component<ImageGalleryProps, Ima
       <div className="image-gallery">
         {this.props.images.map((img, ix) => {
           return (
-            <div className={ix === this.state.imageIndex ? "image-gallery-image active" : "image-gallery-image"}>
+            <div key={"img_" + ix} className={ix === this.state.imageIndex ? "image-gallery-image active" : "image-gallery-image"}>
               <img src={img}/>
             </div>
           );
