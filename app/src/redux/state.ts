@@ -1,9 +1,11 @@
 import {createStore, Action, ActionCreator, Reducer, Store} from "redux";
 
+import {UserInfo} from "../services/auth-service";
+
 // State model.
 export interface AppState {
   auth: {
-    loggedIn: boolean;
+    user: UserInfo | null;
   };
   toaster: {
     open: boolean;
@@ -14,7 +16,7 @@ export interface AppState {
 // Initial State.
 let initialState: AppState = {
   auth: {
-    loggedIn: false
+    user: null,
   },
   toaster: {
     open: false,
@@ -25,8 +27,9 @@ let initialState: AppState = {
 // Actions.
 interface LoginAction extends Action {
   type: "LOGIN";
+  user: UserInfo;
 }
-export let Login: ActionCreator<LoginAction> = () => { return {type: "LOGIN"}; };
+export let Login: ActionCreator<LoginAction> = (user: UserInfo) => { return {type: "LOGIN", user: user}; };
 
 interface LogoutAction extends Action {
   type: "LOGOUT";
@@ -52,14 +55,14 @@ let appReducer: Reducer<AppState> = (state = initialState, action: Action) => {
     case "LOGIN":
       return Object.assign({}, state, {
         auth: {
-          loggedIn: true
+          user: (action as LoginAction).user,
         }
       });
 
     case "LOGOUT":
       return Object.assign({}, state, {
         auth: {
-          loggedIn: false
+          user: null,
         }
       });
 

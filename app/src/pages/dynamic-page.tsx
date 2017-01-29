@@ -37,7 +37,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     this.state = {
       initialPage: {title: "", cards: []},
       page: {title: "", cards: []},
-      allowedToEdit: store.getState().auth.loggedIn,
+      allowedToEdit: store.getState().auth.user ? true : false,
       editable: false,
       editorOpen: false,
       cardToEdit: 0,
@@ -56,7 +56,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     });
 
     this.unsubscribe = store.subscribe(() => {
-      let loggedIn = store.getState().auth.loggedIn;
+      let loggedIn = store.getState().auth.user ? true : false;
       if (loggedIn !== this.state.allowedToEdit) {
         this.setState(Object.assign({}, this.state, { allowedToEdit: loggedIn }));
       }

@@ -92,13 +92,13 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
       password: this.state.password
     }).then(() => {
       this.props.onSuccess();
+      store.dispatch(Login({username: this.state.username}));
       this.setState(Object.assign({}, this.state, {
         loginInProgress: false,
         errorMessage: "",
         username: "",
         password: ""
       }));
-      store.dispatch(Login());
     }).catch((e) => {
       this.props.onFailure();
       this.setState(Object.assign({}, this.state, {

@@ -5,11 +5,12 @@ import FlatButton from "material-ui/FlatButton";
 
 import LoginWindow from "./login-window";
 import Toaster from "./toaster";
+import {UserInfo} from "../services/auth-service";
 import ServiceProvider from "../services/service-provider";
 import {Login, Logout, store} from "../redux/state";
 
 interface ILoginWidgetState {
-  loggedIn: boolean;
+  user: UserInfo | null;
   dialogOpen: boolean;
 }
 
@@ -19,16 +20,16 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
   constructor(props: {}) {
     super(props);
     this.state = {
-      loggedIn: false,
+      user: null,
       dialogOpen: false,
     };
   }
 
   componentDidMount() {
       this.unsubscribe = store.subscribe(() => {
-      let loggedIn = store.getState().auth.loggedIn;
-      if (loggedIn !== this.state.loggedIn) {
-        this.setState(Object.assign({}, this.state, { loggedIn: loggedIn }));
+      const user = store.getState().auth.user;
+      if (user !== this.state.user) {
+        this.setState(Object.assign({}, this.state, { user: user }));
       }
     });
 
@@ -36,12 +37,15 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
     auth.whoAmI().then((userInfo: any) => {
       // If not logged in,  we get empty.
       if (userInfo === null) {
+        console.log("Got null userInfo");
         return Promise.reject("Not Logged In");
       }
       return Promise.resolve(userInfo);
     }).then((userInfo) => {
-      store.dispatch(Login());
+        console.log("Got userInfo:", userInfo);
+      store.dispatch(Login(userInfo));
     }).catch(() => {
+      console.log("Logging out");
       store.dispatch(Logout());
     });
   }
@@ -52,7 +56,7 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
 
   render() {
     let loginButton: JSX.Element;
-    if (this.state.loggedIn) {
+    if (this.state.user) {
       loginButton = <FlatButton label="Logout" onTouchTap={this.doLogout.bind(this)} />;
     } else {
       loginButton = <FlatButton label="Login" onTouchTap={this.openDialog.bind(this)} />;
@@ -60,7 +64,7 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
 
     return (
       <div className="login-widget">
-        {this.state.loggedIn ? <span>Logged in</span> : null}
+        {this.state.user ? <span>Logged in as {this.state.user.username}</span> : null}
         {loginButton}
         <LoginWindow
           open={this.state.dialogOpen}
