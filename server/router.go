@@ -39,6 +39,7 @@ func createRouter(
 	// For all other paths just serve the app and defer to the front-end to handle it.
 	r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Print("Serving index")
+		w.Header().Set("Cache-Control", "no-cache")
 		http.ServeFile(w, r, indexPage)
 	})
 
