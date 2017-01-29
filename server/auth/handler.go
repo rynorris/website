@@ -61,7 +61,9 @@ func AddRoutes(r *mux.Router, service Service) {
 	r.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		claims, err := validateRequest(r, service)
 		if err != nil {
-			respondError(w, err.Error(), 403)
+			// For this endpoint we return NoContent if the user isn't logged in.
+			// This is so that you don't get failed requests when not logged in.
+			w.WriteHeader(http.StatusNoContent)
 			return
 		}
 

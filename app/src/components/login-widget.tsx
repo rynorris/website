@@ -33,7 +33,13 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
     });
 
     let auth = ServiceProvider.AuthService();
-    auth.whoAmI().then((userInfo) => {
+    auth.whoAmI().then((userInfo: any) => {
+      // If not logged in,  we get empty.
+      if (userInfo === null) {
+        return Promise.reject("Not Logged In");
+      }
+      return Promise.resolve(userInfo);
+    }).then((userInfo) => {
       store.dispatch(Login());
     }).catch(() => {
       store.dispatch(Logout());
