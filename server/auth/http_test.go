@@ -141,8 +141,8 @@ func TestUserInfoNoCookie(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if resp.StatusCode != 403 {
-		t.Errorf("Should return 403 when no token cookie provided.  Got %v.", resp.StatusCode)
+	if resp.StatusCode != 204 {
+		t.Errorf("Should return 204 when no token cookie provided.  Got %v.", resp.StatusCode)
 	}
 }
 
@@ -165,8 +165,8 @@ func TestUserInfoBadCookie(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if resp.StatusCode != 403 {
-		t.Errorf("Should return 403 for invalid token.  Got %v.", resp.StatusCode)
+	if resp.StatusCode != 204 {
+		t.Errorf("Should return 204 for invalid token.  Got %v.", resp.StatusCode)
 	}
 }
 

@@ -109,7 +109,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
       <FloatingActionButton
         className="floating-button"
         mini={true}
-        onTouchTap={(() => {this.addCard(this.state.page.cards.length);}).bind(this)}
+        onTouchTap={(() => { this.addCard(this.state.page.cards.length); }).bind(this)}
         >
         <ContentAdd />
       </FloatingActionButton>
@@ -128,7 +128,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
           open={this.state.editorOpen}
           onRequestClose={this.handleClose.bind(this)}
           card={this.state.page.cards[this.state.cardToEdit]}
-          onSave={((card: Card) => {this.saveCard(this.state.cardToEdit, card);}).bind(this)}
+          onSave={((card: Card) => { this.saveCard(this.state.cardToEdit, card); }).bind(this)}
           />
       </div>
     );
