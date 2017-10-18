@@ -36,4 +36,5 @@ do
   # process_image 600 $img $OUTPUT_DIR/$name.medium.$ext
   # process_image 1200 $img $OUTPUT_DIR/$name.large.$ext
   process_image 800x300^ "$img" "$OUTPUT_DIR/$name.responsive.$ext"
+  process_image 1500x200^ "$img" "$OUTPUT_DIR/$name.banner.$ext"
 done
