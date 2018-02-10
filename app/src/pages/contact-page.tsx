@@ -16,7 +16,7 @@ export default class ContactPage extends React.Component<{}, {}> {
             <p>Email: <a href="mailto:info@dyslexiatuitioncentre.co.uk">info@dyslexiatuitioncentre.co.uk</a></p>
             <Divider className="contact-page-divider"/>
 
-            <p>Phone: <a href="tel://07944-016-239">07944-016-239</a></p>
+            <p>Phone: <a href="tel://07776-211-030">07776-211-030</a></p>
             <Divider className="contact-page-divider"/>
 
             <p>Or via this webform:</p>
