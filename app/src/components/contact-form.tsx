@@ -73,7 +73,7 @@ export default class ContactForm extends React.Component<{}, IContactFormState> 
         <RaisedButton
           label="Send"
           labelPosition="before"
-          onTouchTap={this.handleSubmit.bind(this)}
+          onClick={this.handleSubmit.bind(this)}
           icon={<ContentSend />} />
       </div>
     );

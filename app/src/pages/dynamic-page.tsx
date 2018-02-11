@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as map from "lodash/map";
+import map = require("lodash/map");
 import {Unsubscribe} from "redux";
 import ContentAdd from "material-ui/svg-icons/content/add";
 import ContentCreate from "material-ui/svg-icons/content/create";
@@ -48,10 +48,10 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     let pageService: PagesService = ServiceProvider.PagesService();
     let response: Promise<Page> = pageService.loadPage(this.props.pageId);
     Promise.resolve(response).then((page) => {
-      let newState = this.state;
-      newState.initialPage = page;
-      newState.page = page;
-      this.setState(newState);
+      this.setState({
+        initialPage: page,
+        page: page,
+      });
     }, () => {
     });
 
@@ -88,19 +88,19 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     });
 
     let editButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onTouchTap={this.editModeOn.bind(this)}>
+      <FloatingActionButton className="floating-button" mini={true} onClick={this.editModeOn.bind(this)}>
         <ContentCreate />
       </FloatingActionButton>
     );
 
     let cancelButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onTouchTap={this.cancelEdit.bind(this)}>
+      <FloatingActionButton className="floating-button" mini={true} onClick={this.cancelEdit.bind(this)}>
         <NavigationCancel />
       </FloatingActionButton>
     );
 
     let saveButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onTouchTap={this.savePage.bind(this)}>
+      <FloatingActionButton className="floating-button" mini={true} onClick={this.savePage.bind(this)}>
         <ContentSave />
       </FloatingActionButton>
     );
@@ -109,7 +109,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
       <FloatingActionButton
         className="floating-button"
         mini={true}
-        onTouchTap={(() => { this.addCard(this.state.page.cards.length); }).bind(this)}
+        onClick={(() => { this.addCard(this.state.page.cards.length); }).bind(this)}
         >
         <ContentAdd />
       </FloatingActionButton>
@@ -142,9 +142,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
   }
 
   private handleClose() {
-    let newState = this.state;
-    newState.editorOpen = false;
-    this.setState(newState);
+    this.setState({editorOpen: false});
   }
 
   private cancelEdit() {
@@ -153,9 +151,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
   }
 
   private resetPage() {
-    let newState = this.state;
-    newState.page = newState.initialPage;
-    this.setState(newState);
+    this.setState({page: this.state.initialPage});
   }
 
   private editModeOn() {
@@ -167,16 +163,11 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
   }
 
   private setEditMode(on: boolean) {
-    let newState = this.state;
-    newState.editable = on;
-    this.setState(newState);
+    this.setState({editable: on});
   }
 
   private editCard(ix: number) {
-    let newState = this.state;
-    newState.cardToEdit = ix;
-    newState.editorOpen = true;
-    this.setState(newState);
+    this.setState({cardToEdit: ix, editorOpen: true});
   }
 
   private addCard(ix: number, card?: Card) {
@@ -190,9 +181,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     // Clone page.
     let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
     newPage.cards.splice(ix, 0, newCard);
-    let newState = this.state;
-    newState.page = newPage;
-    this.setState(newState);
+    this.setState({page: newPage});
   }
 
   private removeCard(ix: number): Card {
@@ -200,9 +189,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
     let removedCard = newPage.cards.splice(ix, 1);
 
-    let newState = this.state;
-    newState.page = newPage;
-    this.setState(newState);
+    this.setState({page: newPage});
 
     return removedCard[0];
   }
@@ -221,19 +208,14 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
     newPage.cards[ix] = card;
 
-    let newState = this.state;
-    newState.page = newPage;
-    newState.editorOpen = false;
-    this.setState(newState);
+    this.setState({page: newPage, editorOpen: false});
   }
 
   private savePage() {
     let pageService: PagesService = ServiceProvider.PagesService();
     let response: Promise<any> = pageService.savePage(this.props.pageId, this.state.page);
     Promise.resolve(response).then(() => {
-      let newState = this.state;
-      newState.initialPage = newState.page;
-      this.setState(newState);
+      this.setState({initialPage: this.state.page});
       this.editModeOff();
       Toaster.toast("Page saved!");
     }, (e) => {

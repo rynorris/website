@@ -37,8 +37,8 @@ interface AppHeaderState {
 }
 
 export default class AppHeader extends React.Component<{}, AppHeaderState> {
-  constructor() {
-    super();
+  constructor(props: {}) {
+    super(props);
     this.state = { navbarFixed: false };
   }
 

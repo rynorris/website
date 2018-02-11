@@ -1,20 +1,15 @@
 import "es6-shim";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as injectTapEventPlugin from "react-tap-event-plugin";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {createHistory} from "history";
 import {Redirect, Route, Router, useRouterHistory} from "react-router";
-import {Container} from "./container";
+import Container from "./container";
 import AboutPage from "./pages/about-page";
 import ContactPage from "./pages/contact-page";
 import FrontPage from "./pages/front-page";
 import ServicesPage from "./pages/services-page";
 import TeachersPage from "./pages/teachers-page";
-
-// Needed for onTouchTap.
-// http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
 
 const history = useRouterHistory(createHistory)({basename: "/"});
 

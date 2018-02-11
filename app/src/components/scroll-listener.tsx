@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as throttle from "lodash/throttle";
+import throttle = require("lodash/throttle");
 
 const SCROLL_LISTEN_INTERVAL_DEFAULT: number = 50;
 
