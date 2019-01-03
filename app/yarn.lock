@@ -60,10 +60,6 @@
     "@types/history" "*"
     "@types/react" "*"
 
-"@types/react-tap-event-plugin@^0.0.30":
-  version "0.0.30"
-  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/@types/react-tap-event-plugin/-/react-tap-event-plugin-0.0.30.tgz#123f35080412f489b6770c5a65c159ff96654cb5"
-
 "@types/react@*", "@types/react@^16.7.18":
   version "16.7.18"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/@types/react/-/react-16.7.18.tgz#f4ce0d539a893dd61e36cd11ae3a5e54f5a48337"
@@ -1027,7 +1023,7 @@ fastparse@^1.1.1:
   version "1.1.2"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/fastparse/-/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
 
-fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.6, fbjs@^0.8.9:
+fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.9:
   version "0.8.17"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   dependencies:
@@ -2541,12 +2537,6 @@ react-router@^3.0.0:
     loose-envify "^1.2.0"
     prop-types "^15.5.6"
     warning "^3.0.0"
-
-react-tap-event-plugin@^2.0.1:
-  version "2.0.1"
-  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/react-tap-event-plugin/-/react-tap-event-plugin-2.0.1.tgz#316beb3bc6556e29ec869a7293e89c826a9074d2"
-  dependencies:
-    fbjs "^0.8.6"
 
 react-transition-group@^1.2.0:
   version "1.2.1"
