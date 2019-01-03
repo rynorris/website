@@ -17,6 +17,15 @@
   },
   "homepage": "https://github.com/DiscoViking/website#readme",
   "devDependencies": {
+    "@types/es6-shim": "^0.31.39",
+    "@types/jquery": "^3.3.29",
+    "@types/lodash": "^4.14.119",
+    "@types/material-ui": "^0.21.5",
+    "@types/numeral": "^0.0.25",
+    "@types/react": "^16.7.18",
+    "@types/react-dom": "^16.0.11",
+    "@types/react-router": "^4.4.3",
+    "@types/react-tap-event-plugin": "^0.0.30",
     "awesome-typescript-loader": "3.0.0-beta.10",
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -29,7 +38,6 @@
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
     "typescript": "^2.1.4",
-    "typings": "^2.0.0",
     "webpack": "^1.14.0"
   },
   "dependencies": {
