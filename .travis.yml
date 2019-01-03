@@ -1,11 +1,11 @@
 language: go
 
 env:
-  NODE_VERSION="5.0.0"
+  NODE_VERSION="8.11.2"
 
 go:
-  - 1.6
-  - 1.7
+  - 1.11
+  - 1.12
   - master
 
 before_install:
