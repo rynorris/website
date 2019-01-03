@@ -45,7 +45,7 @@
     "history": "^3.2.1",
     "jquery": "^2.2.4",
     "lodash": "^4.17.2",
-    "material-ui": "^0.16.5",
+    "material-ui": "0.20.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-markdown": "^2.4.2",

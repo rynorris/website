@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@babel/runtime@7.0.0-beta.42":
+  version "7.0.0-beta.42"
+  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/@babel/runtime/-/runtime-7.0.0-beta.42.tgz#352e40c92e0460d3e82f49bd7e79f6cda76f919f"
+  dependencies:
+    core-js "^2.5.3"
+    regenerator-runtime "^0.11.1"
+
 "@babel/runtime@^7.1.2":
   version "7.2.0"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/@babel/runtime/-/runtime-7.2.0.tgz#b03e42eeddf5898e00646e4c840fa07ba8dcad7f"
@@ -268,7 +275,7 @@ babel-code-frame@^6.11.0:
     esutils "^2.0.2"
     js-tokens "^3.0.2"
 
-babel-runtime@^6.11.6, babel-runtime@^6.20.0:
+babel-runtime@^6.23.0:
   version "6.26.0"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -331,7 +338,7 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bowser@^1.0.0:
+bowser@^1.7.3:
   version "1.9.4"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/bowser/-/bowser-1.9.4.tgz#890c58a2813a9d3243704334fa81b96a5c150c9a"
 
@@ -645,7 +652,7 @@ core-js@^1.0.0:
   version "1.2.7"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
-core-js@^2.4.0:
+core-js@^2.4.0, core-js@^2.5.3:
   version "2.6.1"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/core-js/-/core-js-2.6.1.tgz#87416ae817de957a3f249b3b5ca475d4aaed6042"
 
@@ -671,6 +678,13 @@ crypto-browserify@3.3.0:
 css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
+
+css-in-js-utils@^2.0.0:
+  version "2.0.1"
+  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/css-in-js-utils/-/css-in-js-utils-2.0.1.tgz#3b472b398787291b47cfe3e44fecfdd9e914ba99"
+  dependencies:
+    hyphenate-style-name "^1.0.2"
+    isobject "^3.0.1"
 
 css-loader@^0.26.1:
   version "0.26.4"
@@ -1023,7 +1037,7 @@ fastparse@^1.1.1:
   version "1.1.2"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/fastparse/-/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
 
-fbjs@^0.8.1, fbjs@^0.8.4:
+fbjs@^0.8.1, fbjs@^0.8.16:
   version "0.8.17"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   dependencies:
@@ -1266,11 +1280,7 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
-hoist-non-react-statics@^1.0.0:
-  version "1.2.0"
-  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
-
-hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
@@ -1322,7 +1332,7 @@ https-browserify@0.0.1:
   version "0.0.1"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
 
-hyphenate-style-name@^1.0.1:
+hyphenate-style-name@^1.0.2:
   version "1.0.2"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"
 
@@ -1377,12 +1387,12 @@ ini@~1.3.0:
   version "1.3.5"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
 
-inline-style-prefixer@^2.0.1:
-  version "2.0.5"
-  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/inline-style-prefixer/-/inline-style-prefixer-2.0.5.tgz#c153c7e88fd84fef5c602e95a8168b2770671fe7"
+inline-style-prefixer@^3.0.8:
+  version "3.0.8"
+  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/inline-style-prefixer/-/inline-style-prefixer-3.0.8.tgz#8551b8e5b4d573244e66a34b04f7d32076a2b534"
   dependencies:
-    bowser "^1.0.0"
-    hyphenate-style-name "^1.0.1"
+    bowser "^1.7.3"
+    css-in-js-utils "^2.0.0"
 
 interpret@^0.6.4:
   version "0.6.6"
@@ -1641,7 +1651,7 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-keycode@^2.1.1:
+keycode@^2.1.8:
   version "2.2.0"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/keycode/-/keycode-2.2.0.tgz#3d0af56dc7b8b8e5cba8d0a97f107204eec22b04"
 
@@ -1765,19 +1775,19 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-material-ui@^0.16.5:
-  version "0.16.7"
-  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/material-ui/-/material-ui-0.16.7.tgz#5ec5080d5f227817092c449105df9cbc8807941c"
+material-ui@0.20.1:
+  version "0.20.1"
+  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/material-ui/-/material-ui-0.20.1.tgz#a0f0f9f801be76a13cf3da9b319a1b97b28925c7"
   dependencies:
-    babel-runtime "^6.11.6"
-    inline-style-prefixer "^2.0.1"
-    keycode "^2.1.1"
+    babel-runtime "^6.23.0"
+    inline-style-prefixer "^3.0.8"
+    keycode "^2.1.8"
     lodash.merge "^4.6.0"
     lodash.throttle "^4.1.1"
-    react-addons-create-fragment "^15.0.0"
-    react-addons-transition-group "^15.0.0"
-    react-event-listener "^0.4.0"
-    recompose "^0.21.0"
+    prop-types "^15.5.7"
+    react-event-listener "^0.5.1"
+    react-transition-group "^1.2.1"
+    recompose "^0.26.0"
     simple-assign "^0.1.0"
     warning "^3.0.0"
 
@@ -2443,7 +2453,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.1, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.6.1, prop-types@^15.6.2:
+prop-types@^15.5.1, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.6.2"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -2502,20 +2512,6 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-addons-create-fragment@^15.0.0:
-  version "15.6.2"
-  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/react-addons-create-fragment/-/react-addons-create-fragment-15.6.2.tgz#a394de7c2c7becd6b5475ba1b97ac472ce7c74f8"
-  dependencies:
-    fbjs "^0.8.4"
-    loose-envify "^1.3.1"
-    object-assign "^4.1.0"
-
-react-addons-transition-group@^15.0.0:
-  version "15.6.2"
-  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/react-addons-transition-group/-/react-addons-transition-group-15.6.2.tgz#8baebc2ae91ccdbf245fe29c9fd3d36f8b471923"
-  dependencies:
-    react-transition-group "^1.2.0"
-
 react-dom@^16.0.0:
   version "16.7.0"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/react-dom/-/react-dom-16.7.0.tgz#a17b2a7ca89ee7390bc1ed5eb81783c7461748b8"
@@ -2525,13 +2521,13 @@ react-dom@^16.0.0:
     prop-types "^15.6.2"
     scheduler "^0.12.0"
 
-react-event-listener@^0.4.0:
-  version "0.4.5"
-  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/react-event-listener/-/react-event-listener-0.4.5.tgz#e3e895a0970cf14ee8f890113af68197abf3d0b1"
+react-event-listener@^0.5.1:
+  version "0.5.10"
+  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/react-event-listener/-/react-event-listener-0.5.10.tgz#378403c555fe616f312891507a742ecbbe2c90de"
   dependencies:
-    babel-runtime "^6.20.0"
-    fbjs "^0.8.4"
-    prop-types "^15.5.4"
+    "@babel/runtime" "7.0.0-beta.42"
+    fbjs "^0.8.16"
+    prop-types "^15.6.0"
     warning "^3.0.0"
 
 react-markdown@^2.4.2:
@@ -2565,7 +2561,7 @@ react-router@^4.0.0, react-router@^4.3.1:
     prop-types "^15.6.1"
     warning "^4.0.1"
 
-react-transition-group@^1.2.0:
+react-transition-group@^1.2.1:
   version "1.2.1"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/react-transition-group/-/react-transition-group-1.2.1.tgz#e11f72b257f921b213229a774df46612346c7ca6"
   dependencies:
@@ -2613,13 +2609,13 @@ readdirp@^2.0.0:
     micromatch "^3.1.10"
     readable-stream "^2.0.2"
 
-recompose@^0.21.0:
-  version "0.21.2"
-  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/recompose/-/recompose-0.21.2.tgz#ff3fbdb2397b1c77c47d451be2a63b9295d44681"
+recompose@^0.26.0:
+  version "0.26.0"
+  resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/recompose/-/recompose-0.26.0.tgz#9babff039cb72ba5bd17366d55d7232fbdfb2d30"
   dependencies:
     change-emitter "^0.1.2"
     fbjs "^0.8.1"
-    hoist-non-react-statics "^1.0.0"
+    hoist-non-react-statics "^2.3.1"
     symbol-observable "^1.0.4"
 
 reduce-css-calc@^1.2.6:
@@ -2649,7 +2645,7 @@ regenerate@^1.2.1:
   version "1.4.0"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/regenerate/-/regenerate-1.4.0.tgz#4a856ec4b56e4077c557589cae85e7a4c8869a11"
 
-regenerator-runtime@^0.11.0:
+regenerator-runtime@^0.11.0, regenerator-runtime@^0.11.1:
   version "0.11.1"
   resolved "https://publish.artifactory.palantir.build/artifactory/api/npm/all-npm/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
 
