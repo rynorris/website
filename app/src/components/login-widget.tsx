@@ -7,7 +7,9 @@ import LoginWindow from "./login-window";
 import Toaster from "./toaster";
 import {UserInfo} from "../services/auth-service";
 import ServiceProvider from "../services/service-provider";
-import {Login, Logout, store} from "../redux/state";
+
+import { Login, Logout } from "../state/actions";
+import {store} from "../state/store";
 
 interface ILoginWidgetState {
   user: UserInfo | null;

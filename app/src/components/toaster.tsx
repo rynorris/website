@@ -2,7 +2,8 @@ import * as React from "react";
 import {Unsubscribe} from "redux";
 import Snackbar from "material-ui/Snackbar";
 
-import {store, Toast} from "../redux/state";
+import { Toast } from "../state/actions";
+import {store} from "../state/store";
 
 interface IToasterProps {
   duration?: number;

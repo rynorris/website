@@ -5,7 +5,9 @@ import FlatButton from "material-ui/FlatButton";
 import TextField from "material-ui/TextField";
 
 import ServiceProvider from "../services/service-provider";
-import {Login, store} from "../redux/state";
+
+import { Login } from "../state/actions";
+import {store} from "../state/store";
 
 interface ILoginWindowProps {
   open: boolean;

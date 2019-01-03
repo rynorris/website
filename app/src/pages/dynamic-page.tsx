@@ -14,7 +14,7 @@ import DynamicCard from "../components/dynamic-card";
 import EditContainer from "../components/edit-container";
 import Toaster from "../components/toaster";
 
-import {store} from "../redux/state";
+import {store} from "../state/store";
 
 interface IDynamicPageProps {
   pageId: string;
