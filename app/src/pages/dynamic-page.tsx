@@ -194,8 +194,10 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
       return;
     }
 
-    let card = this.removeCard(fromIx);
-    this.addCard(toIx, card);
+    let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    let card = newPage.cards.splice(fromIx, 1);
+    newPage.cards.splice(toIx, 0, card[0]);
+    this.setState({ page: newPage });
   }
 
   private saveCard(ix: number, card: Card) {
