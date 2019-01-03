@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/discoviking/website/server/storage"
+	"github.com/rynorris/website/server/storage"
 )
 
 type serviceImpl struct {

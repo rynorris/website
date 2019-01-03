@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/discoviking/website/server/auth"
-	"github.com/discoviking/website/server/cache"
 	"github.com/gorilla/mux"
+	"github.com/rynorris/website/server/auth"
+	"github.com/rynorris/website/server/cache"
 )
 
 func AddRoutes(r *mux.Router, service Service, authService auth.Service) {

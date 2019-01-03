@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/smtp"
 
-	"github.com/discoviking/website/server/message"
+	"github.com/rynorris/website/server/message"
 )
 
 type Service struct {

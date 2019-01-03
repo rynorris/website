@@ -3,8 +3,8 @@ package storage
 import (
 	"encoding/json"
 
-	"github.com/discoviking/website/server/pages"
-	"github.com/discoviking/website/server/storage"
+	"github.com/rynorris/website/server/pages"
+	"github.com/rynorris/website/server/storage"
 )
 
 type Service struct {
@@ -15,6 +15,10 @@ func NewService(storage storage.Service) *Service {
 	return &Service{
 		storage: storage,
 	}
+}
+
+func (s *Service) List() ([]string, error) {
+	return s.storage.List()
 }
 
 func (s *Service) Get(key string) (pages.Page, error) {
