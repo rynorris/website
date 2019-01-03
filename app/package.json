@@ -40,6 +40,7 @@
     "webpack": "^1.14.0"
   },
   "dependencies": {
+    "@types/react-router-dom": "^4.3.1",
     "es6-shim": "^0.35.2",
     "history": "^3.2.1",
     "jquery": "^2.2.4",
@@ -49,6 +50,7 @@
     "react-dom": "^15.4.1",
     "react-markdown": "^2.4.2",
     "react-router": "^4.0.0",
+    "react-router-dom": "^4.3.1",
     "redux": "^3.6.0",
     "whatwg-fetch": "^2.0.1"
   }
