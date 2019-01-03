@@ -1,7 +1,6 @@
 import * as React from "react";
-import * as map from "lodash/map";
-import * as zip from "lodash/zip";
-import {Link} from "react-router";
+import { map, zip } from "lodash";
+import { Link } from "react-router-dom";
 import Drawer from "material-ui/Drawer";
 import FlatButton from "material-ui/FlatButton";
 import IconButton from "material-ui/IconButton";

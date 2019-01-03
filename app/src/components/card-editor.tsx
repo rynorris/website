@@ -21,14 +21,16 @@ interface ICardEditorState {
 export default class CardEditor extends React.Component<ICardEditorProps, ICardEditorState> {
   constructor(props: ICardEditorProps) {
     super(props);
-    this.state = {
+    let initialState: ICardEditorState = {
       imageSelectorOpen: false,
     };
 
     if (props.card) {
       let clonedCard: Card = JSON.parse(JSON.stringify(props.card));
-      this.state.card = clonedCard;
+      initialState.card = clonedCard;
     }
+
+    this.state = initialState;
   }
 
   componentWillReceiveProps(props: ICardEditorProps) {

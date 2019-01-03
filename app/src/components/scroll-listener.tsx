@@ -1,10 +1,10 @@
 import * as React from "react";
-import * as throttle from "lodash/throttle";
+import { throttle } from "lodash";
 
 const SCROLL_LISTEN_INTERVAL_DEFAULT: number = 50;
 
 interface ScrollListenerProps {
-  onScroll: () => void;
+  onScroll: (top: number) => void;
   interval?: number;
 }
 
@@ -13,10 +13,15 @@ interface ScrollListenerState {
 }
 
 export default class ScrollListener extends React.Component<ScrollListenerProps, ScrollListenerState> {
+  private scroller: React.RefObject<HTMLDivElement>;
+
   constructor(props: ScrollListenerProps) {
     super(props);
     const interval = this.props.interval || SCROLL_LISTEN_INTERVAL_DEFAULT;
-    this.state = { onScroll: throttle(props.onScroll, interval) };
+    this.state = { 
+      onScroll: throttle(() => this.scroller.current && props.onScroll(this.scroller.current.getClientRects()[0].top), interval),
+    };
+    this.scroller = React.createRef();
   }
 
   componentWillMount() {
@@ -28,6 +33,6 @@ export default class ScrollListener extends React.Component<ScrollListenerProps,
   }
 
   render() {
-    return <div/>;
+    return <div ref={this.scroller}/>;
   }
 }
