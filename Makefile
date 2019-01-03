@@ -2,7 +2,7 @@
 .PHONY: app app-deps app-prod app-clean app-clean-prod server server-deps server-prod dist-clean dist
 
 app-deps:
-	cd app && npm install && typings install
+	cd app && yarn
 
 app: app-deps
 	cd app && webpack
