@@ -88,19 +88,19 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     });
 
     let editButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onTouchTap={this.editModeOn.bind(this)}>
+      <FloatingActionButton className="floating-button" mini={true} onClick={this.editModeOn.bind(this)}>
         <ContentCreate />
       </FloatingActionButton>
     );
 
     let cancelButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onTouchTap={this.cancelEdit.bind(this)}>
+      <FloatingActionButton className="floating-button" mini={true} onClick={this.cancelEdit.bind(this)}>
         <NavigationCancel />
       </FloatingActionButton>
     );
 
     let saveButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onTouchTap={this.savePage.bind(this)}>
+      <FloatingActionButton className="floating-button" mini={true} onClick={this.savePage.bind(this)}>
         <ContentSave />
       </FloatingActionButton>
     );
@@ -109,7 +109,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
       <FloatingActionButton
         className="floating-button"
         mini={true}
-        onTouchTap={(() => { this.addCard(this.state.page.cards.length); }).bind(this)}
+        onClick={(() => { this.addCard(this.state.page.cards.length); }).bind(this)}
         >
         <ContentAdd />
       </FloatingActionButton>

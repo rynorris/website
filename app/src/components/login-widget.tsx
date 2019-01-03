@@ -54,9 +54,9 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
   render() {
     let loginButton: JSX.Element;
     if (this.state.user) {
-      loginButton = <FlatButton label="Logout" onTouchTap={this.doLogout.bind(this)} />;
+      loginButton = <FlatButton label="Logout" onClick={this.doLogout.bind(this)} />;
     } else {
-      loginButton = <FlatButton label="Login" onTouchTap={this.openDialog.bind(this)} />;
+      loginButton = <FlatButton label="Login" onClick={this.openDialog.bind(this)} />;
     }
 
     return (

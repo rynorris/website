@@ -41,10 +41,10 @@ export default class ImageSelector extends React.Component<IImageSelectorProps, 
     let actions: any[] = [
       <FlatButton
         label="Cancel"
-        onTouchTap={this.props.onRequestClose.bind(this)} />,
+        onClick={this.props.onRequestClose.bind(this)} />,
       <FlatButton
         label="Choose"
-        onTouchTap={this.handleChoose.bind(this)} />
+        onClick={this.handleChoose.bind(this)} />
     ];
 
     let items = this.state.imageKeys.map((key) => {

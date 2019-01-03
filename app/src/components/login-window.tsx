@@ -38,11 +38,11 @@ export default class LoginWindow extends React.Component<ILoginWindowProps, ILog
     let actions: any[] = [
       <FlatButton
         label="Cancel"
-        onTouchTap={this.cancelLogin.bind(this)} />,
+        onClick={this.cancelLogin.bind(this)} />,
       <FlatButton
         label="Login"
         disabled={this.state.loginInProgress}
-        onTouchTap={this.handleLogin.bind(this)} />
+        onClick={this.handleLogin.bind(this)} />
     ];
 
     let inputFields: JSX.Element = (
