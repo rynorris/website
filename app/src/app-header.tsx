@@ -14,8 +14,6 @@ import { SetSite } from "./state/actions";
 import { connect } from "react-redux";
 import { SiteService, Site } from "./services/site-service";
 
-const logoImage: string = "/api/images/dtc-logo-small.jpg";
-
 interface IStateProps {
   site: Site;
 }
@@ -43,15 +41,15 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
   render() {
     const { site } = this.props;
 
-    const bannerImages = site.banner.images.map(id => "/api/images/" + id)
-    const navbarLinks = site.pages.map(p => "/" + p.id);
+    const bannerImages = site.banner.images.map(id => `/api/images/${id}`)
+    const navbarLinks = site.pages.map(p => `/${p.id}`);
     const navbarTitles = site.pages.map(p => p.title);
 
     return (
       <div className="app-header">
         <Paper zDepth={1} rounded={false}>
           <LoginWidget />
-          <FloatingLogo src={logoImage} />
+          <FloatingLogo src={`/api/images/${site.logo}`} />
           <div className="app-header-image-container">
             <ImageGallery images={bannerImages} interval={10000} />
           </div>

@@ -7,6 +7,7 @@
             "Ipad apps tilted.banner.jpeg"
         ]
     },
+    "logo": "dtc-logo-small.jpg",
     "pages": [
         { "id": "home", "title": "Home" },
         { "id": "about", "title": "About" },

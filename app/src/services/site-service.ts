@@ -2,6 +2,7 @@ import HttpJsonService from "./http-json-service";
 
 export interface Site {
     banner: BannerConfig;
+    logo: string;
     pages: PageListing[];
 }
 

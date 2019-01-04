@@ -2,6 +2,7 @@ package site
 
 type Site struct {
 	Banner BannerConfig  `json:"banner"`
+	Logo   string        `json:"logo"`
 	Pages  []PageListing `json:"pages"`
 }
 

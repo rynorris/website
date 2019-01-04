@@ -12,6 +12,7 @@ const initialState: AppState = {
       banner: {
           images: [],
       },
+      logo: "",
       pages: [],
   },
   toaster: {
