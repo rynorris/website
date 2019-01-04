@@ -13,6 +13,7 @@ import (
 	"github.com/rynorris/website/server/images"
 	"github.com/rynorris/website/server/message/email"
 	pages "github.com/rynorris/website/server/pages/storage"
+	site "github.com/rynorris/website/server/site/storage"
 	"github.com/rynorris/website/server/storage/dir"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -41,6 +42,11 @@ func main() {
 	}
 	log.SetOutput(logger)
 
+	siteStorage, err := dir.NewService(conf.Site.Directory)
+	if err != nil {
+		log.Fatalf("failed to create site storage service: %v", err)
+	}
+
 	pageStorage, err := dir.NewService(conf.Pages.Directory)
 	if err != nil {
 		log.Fatalf("failed to create page storage service: %v", err)
@@ -57,6 +63,7 @@ func main() {
 		conf.Auth.Users,
 	)
 	imageService := images.NewService(imageStorage)
+	siteService := site.NewService(siteStorage)
 	pagesService := pages.NewService(pageStorage)
 	messageService := email.NewService(conf.Contact.Email.From, conf.Contact.Email.To)
 
@@ -66,6 +73,7 @@ func main() {
 		conf.Server.Serve.Assets,
 		authService,
 		imageService,
+		siteService,
 		pagesService,
 		messageService,
 	)

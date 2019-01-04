@@ -1,12 +1,23 @@
 import { Action, Reducer } from "redux";
 
-import { LoginAction, ToastAction } from "./actions";
+import { LoginAction, ToastAction, SetSiteAction } from "./actions";
 import { AppState } from "./model";
 
 // Initial State.
 const initialState: AppState = {
   auth: {
     user: null,
+  },
+  site: {
+      banner: {
+          images: [],
+      },
+      contact: {
+          email: "",
+          phone: "",
+      },
+      logo: "",
+      pages: [],
   },
   toaster: {
     open: false,
@@ -16,6 +27,9 @@ const initialState: AppState = {
 
 export const appReducer: Reducer<AppState> = (state = initialState, action: Action) => {
   switch (action.type) {
+    case "SITE/SET":
+      return { ...state, site: (action as SetSiteAction).site };
+
     case "LOGIN":
       return { ...state, auth: { user: (action as LoginAction).user } };
 

@@ -1,0 +1,21 @@
+{
+    "banner": {
+        "images": [
+            "dtc-mindmap.banner.jpg",
+            "snow-writing.banner.jpg",
+            "Girl writing.banner.jpeg",
+            "Ipad apps tilted.banner.jpeg"
+        ]
+    },
+    "contact": {
+        "email": "info@dyslexiatuitioncentre.co.uk",
+        "phone": "070111222333"
+    },
+    "logo": "dtc-logo-small.jpg",
+    "pages": [
+        { "id": "home", "title": "Home" },
+        { "id": "about", "title": "About" },
+        { "id": "teachers", "title": "Our Teachers" },
+        { "id": "services", "title": "Our Services" }
+    ]
+}

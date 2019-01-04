@@ -5,30 +5,28 @@ import { Redirect, Route, Switch } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {Container} from "./container";
-import AboutPage from "./pages/about-page";
-import ContactPage from "./pages/contact-page";
-import FrontPage from "./pages/front-page";
-import ServicesPage from "./pages/services-page";
-import TeachersPage from "./pages/teachers-page";
+import { ConnectedContactPage } from "./pages/contact-page";
+import DynamicPage from "./pages/dynamic-page";
+import { Provider } from "react-redux";
+import { store } from "./state/store";
 
 const appElement = document.getElementById("app");
 
 if (appElement != null) {
   ReactDOM.render((
-    <MuiThemeProvider>
-      <BrowserRouter>
-        <Container>
-          <Switch>
-            <Route path="/front" component={FrontPage} />
-            <Route path="/about" component={AboutPage} />
-            <Route path="/teachers" component={TeachersPage} />
-            <Route path="/services" component={ServicesPage} />
-            <Route path="/contact" component={ContactPage} />
-            <Redirect from="*" to="/front" />
-          </Switch>
-        </Container>
-      </BrowserRouter>
-    </MuiThemeProvider>
+    <Provider store={store}>
+      <MuiThemeProvider>
+        <BrowserRouter>
+          <Container>
+            <Switch>
+              <Route path="/contact" component={ConnectedContactPage} />
+              <Route path="/:pageId" component={DynamicPage} />
+              <Redirect from="*" to="/home" />
+            </Switch>
+          </Container>
+        </BrowserRouter>
+      </MuiThemeProvider>
+    </Provider>
   ), appElement);
 } else {
   console.error("Did not find element with id 'app'");
