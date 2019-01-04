@@ -15,7 +15,7 @@ cache:
 
 before_install:
   - nvm install $NODE_VERSION
-  - npm install -g yarn webpack webpack-cli
+  - npm install -g yarn
 
 script:
   - make deps
