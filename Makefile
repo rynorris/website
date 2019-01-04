@@ -5,10 +5,10 @@ app-deps:
 	cd app && yarn
 
 app: app-deps
-	cd app && webpack
+	cd app && yarn build
 
 app-prod: app-deps
-	cd app && webpack --config ./webpack.config.prod.js
+	cd app && yarn dist
 
 app-clean:
 	rm -rf ./app/build
