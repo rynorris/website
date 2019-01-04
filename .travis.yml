@@ -18,6 +18,7 @@ before_install:
   - npm install -g yarn
 
 script:
+  - make deps
   - make dist
   - cd server && go test -v ./...
   - cd server && go vet ./...
