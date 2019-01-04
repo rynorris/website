@@ -14,13 +14,6 @@ import { SetSite } from "./state/actions";
 import { connect } from "react-redux";
 import { SiteService, Site } from "./services/site-service";
 
-const headerImages: string[] = [
-  "/api/images/dtc-mindmap.banner.jpg",
-  "/api/images/snow-writing.banner.jpg",
-  "/api/images/Girl writing.banner.jpeg",
-  "/api/images/Ipad apps tilted.banner.jpeg",
-];
-
 const logoImage: string = "/api/images/dtc-logo-small.jpg";
 
 interface IStateProps {
@@ -50,6 +43,7 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
   render() {
     const { site } = this.props;
 
+    const bannerImages = site.banner.images.map(id => "/api/images/" + id)
     const navbarLinks = site.pages.map(p => "/" + p.id);
     const navbarTitles = site.pages.map(p => p.title);
 
@@ -59,7 +53,7 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
           <LoginWidget />
           <FloatingLogo src={logoImage} />
           <div className="app-header-image-container">
-            <ImageGallery images={headerImages} interval={10000} />
+            <ImageGallery images={bannerImages} interval={10000} />
           </div>
           <ScrollListener onScroll={this.handleScroll.bind(this)} />
         </Paper>

@@ -1,7 +1,12 @@
 package site
 
 type Site struct {
-	Pages []PageListing `json:"pages"`
+	Banner BannerConfig  `json:"banner"`
+	Pages  []PageListing `json:"pages"`
+}
+
+type BannerConfig struct {
+	Images []string `json:"images"`
 }
 
 type PageListing struct {

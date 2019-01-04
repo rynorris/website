@@ -9,6 +9,9 @@ const initialState: AppState = {
     user: null,
   },
   site: {
+      banner: {
+          images: [],
+      },
       pages: [],
   },
   toaster: {

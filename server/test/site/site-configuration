@@ -1,4 +1,12 @@
 {
+    "banner": {
+        "images": [
+            "dtc-mindmap.banner.jpg",
+            "snow-writing.banner.jpg",
+            "Girl writing.banner.jpeg",
+            "Ipad apps tilted.banner.jpeg"
+        ]
+    },
     "pages": [
         { "id": "home", "title": "Home" },
         { "id": "about", "title": "About" },

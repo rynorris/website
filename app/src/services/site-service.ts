@@ -1,7 +1,12 @@
 import HttpJsonService from "./http-json-service";
 
 export interface Site {
+    banner: BannerConfig;
     pages: PageListing[];
+}
+
+export interface BannerConfig {
+    images: string[];
 }
 
 export interface PageListing {
