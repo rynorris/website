@@ -63,9 +63,9 @@ export default class Toaster extends React.Component<IToasterProps, IToasterStat
 
   private handleRequestClose() {
     this.setState({ open: false, text: this.state.text });
-  };
+  }
 
   private handleTouchTap() {
     this.setState({ open: false, text: this.state.text });
-  };
+  }
 }

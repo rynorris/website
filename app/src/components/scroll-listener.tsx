@@ -18,7 +18,7 @@ export default class ScrollListener extends React.Component<ScrollListenerProps,
   constructor(props: ScrollListenerProps) {
     super(props);
     const interval = this.props.interval || SCROLL_LISTEN_INTERVAL_DEFAULT;
-    this.state = { 
+    this.state = {
       onScroll: throttle(() => this.scroller.current && props.onScroll(this.scroller.current.getClientRects()[0].top), interval),
     };
     this.scroller = React.createRef();

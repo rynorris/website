@@ -3,12 +3,12 @@ import * as React from "react";
 interface ImageGalleryProps {
   images: string[];
   interval: number;
-};
+}
 
 interface ImageGalleryState {
   imageIndex: number;
   timerID?: number;
-};
+}
 
 export default class ImageGallery extends React.Component<ImageGalleryProps, ImageGalleryState> {
   constructor(props: ImageGalleryProps) {

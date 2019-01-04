@@ -41,7 +41,7 @@ export default class AppHeader extends React.Component<{}, AppHeaderState> {
 
   state: Readonly<AppHeaderState> = {
     navbarFixed: false,
-  }
+  };
 
   constructor(props: {}) {
     super(props);
