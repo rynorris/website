@@ -2,13 +2,13 @@
 .PHONY: app app-deps app-prod app-clean app-clean-prod server server-deps server-prod deps dist-clean dist
 
 app-deps:
-	cd app && yarn
+	pushd app && yarn && popd
 
 app: app-deps
-	cd app && yarn build
+	pushd app && yarn build && popd
 
 app-prod: app-deps
-	cd app && yarn dist
+	pushd app && yarn dist && popd
 
 app-clean:
 	rm -rf ./app/build
