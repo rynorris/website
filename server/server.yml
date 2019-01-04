@@ -15,6 +15,9 @@ images:
 pages:
   directory: ./test/pages
 
+site:
+  directory: ./test/site
+
 server:
   port: 8080
   read-timeout: 5

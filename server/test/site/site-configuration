@@ -1,0 +1,8 @@
+{
+    "pages": [
+        { "id": "home", "title": "Home" },
+        { "id": "about", "title": "About" },
+        { "id": "teachers", "title": "Our Teachers" },
+        { "id": "services", "title": "Our Services" }
+    ]
+}

@@ -11,6 +11,7 @@ type Config struct {
 	Contact ContactConfig `yaml:"contact"`
 	Images  PagesConfig   `yaml:"images"`
 	Pages   PagesConfig   `yaml:"pages"`
+	Site    SiteConfig    `yaml:"site"`
 	Server  ServerConfig  `yaml:"server"`
 }
 
@@ -25,6 +26,10 @@ type ImagesConfig struct {
 }
 
 type PagesConfig struct {
+	Directory string `yaml:"directory"`
+}
+
+type SiteConfig struct {
 	Directory string `yaml:"directory"`
 }
 

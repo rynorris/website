@@ -11,12 +11,14 @@ import (
 	"github.com/rynorris/website/server/images"
 	"github.com/rynorris/website/server/message"
 	"github.com/rynorris/website/server/pages"
+	"github.com/rynorris/website/server/site"
 )
 
 func createRouter(
 	indexPage, themeFile, assetsDir string,
 	authService auth.Service,
 	imageService images.Service,
+	siteService site.Service,
 	pagesService pages.Service,
 	messageService message.Service) *mux.Router {
 
@@ -30,6 +32,7 @@ func createRouter(
 	images.AddRoutes(api.PathPrefix("/images/").Subrouter(), imageService, authService)
 	message.AddRoutes(api.PathPrefix("/message/").Subrouter(), messageService)
 	pages.AddRoutes(api.PathPrefix("/pages/").Subrouter(), pagesService, authService)
+	site.AddRoutes(api.PathPrefix("/site/").Subrouter(), siteService, authService)
 
 	// Serve static assets.
 	fs := http.FileServer(http.Dir(assetsDir))
