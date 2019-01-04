@@ -18,10 +18,12 @@ before_install:
   - npm install -g yarn
 
 install:
-  - make deps
+  - cd app && yarn
+  - cd server && go get
 
 script:
-  - make dist
+  - cd app && yarn dist
+  - cd server && go build
   - cd server && go test -v ./...
   - cd server && go vet ./...
   - cd app && yarn lint
