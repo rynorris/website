@@ -35,6 +35,7 @@ server:
   serve:
     assets: ../app/build/src/assets/
     index: ../app/build/src/assets/index.html
+    theme: ./test/theme.css
 
   ssl:
     on: true

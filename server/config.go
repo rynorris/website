@@ -48,6 +48,7 @@ type LoggingConfig struct {
 type ServeConfig struct {
 	Assets string `yaml:"assets"`
 	Index  string `yaml:"index"`
+	Theme  string `yaml:"theme"`
 }
 
 type SslConfig struct {

@@ -14,7 +14,7 @@ import (
 )
 
 func createRouter(
-	indexPage, assetsDir string,
+	indexPage, themeFile, assetsDir string,
 	authService auth.Service,
 	imageService images.Service,
 	pagesService pages.Service,
@@ -35,6 +35,13 @@ func createRouter(
 	fs := http.FileServer(http.Dir(assetsDir))
 	fs = cache.NewHandler("max-age=31536000", gziphandler.GzipHandler(fs))
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
+
+	// Serve theme stylesheet.
+	r.HandleFunc("/styles/theme.css", func(w http.ResponseWriter, r *http.Request) {
+		log.Print("Serving theme")
+		w.Header().Set("Cache-Control", "no-cache")
+		http.ServeFile(w, r, themeFile)
+	})
 
 	// For all other paths just serve the app and defer to the front-end to handle it.
 	r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
