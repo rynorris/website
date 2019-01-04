@@ -15,10 +15,14 @@ import EditContainer from "../components/edit-container";
 import Toaster from "../components/toaster";
 
 import {store} from "../state/store";
+import { string } from "prop-types";
+import { RouteComponentProps } from "react-router";
 
-interface IDynamicPageProps {
+interface MatchParams {
   pageId: string;
 }
+
+interface IDynamicPageProps extends RouteComponentProps<MatchParams> {}
 
 interface IDynamicPageState {
   initialPage: Page;
@@ -45,12 +49,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
   }
 
   componentDidMount() {
-    let pageService: PagesService = ServiceProvider.PagesService();
-    let response: Promise<Page> = pageService.loadPage(this.props.pageId);
-    Promise.resolve(response).then((page) => {
-      this.setState({ initialPage: page, page });
-    }, () => {
-    });
+    this.loadPage();
 
     this.unsubscribe = store.subscribe(() => {
       let loggedIn = store.getState().auth.user ? true : false;
@@ -58,6 +57,12 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
         this.setState(Object.assign({}, this.state, { allowedToEdit: loggedIn }));
       }
     });
+  }
+
+  componentDidUpdate(prevProps: IDynamicPageProps) {
+    if (prevProps.match.params.pageId !== this.props.match.params.pageId) {
+      this.loadPage();
+    }
   }
 
   componentWillUnmount() {
@@ -147,6 +152,15 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     this.resetPage();
   }
 
+  private loadPage() {
+    let pageService: PagesService = ServiceProvider.PagesService();
+    let response: Promise<Page> = pageService.loadPage(this.props.match.params.pageId);
+    Promise.resolve(response).then((page) => {
+      this.setState({ initialPage: page, page });
+    }, () => {
+    });
+  }
+
   private resetPage() {
     this.setState({ page: this.state.initialPage });
   }
@@ -209,7 +223,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
 
   private savePage() {
     let pageService: PagesService = ServiceProvider.PagesService();
-    let response: Promise<any> = pageService.savePage(this.props.pageId, this.state.page);
+    let response: Promise<any> = pageService.savePage(this.props.match.params.pageId, this.state.page);
     Promise.resolve(response).then(() => {
       this.setState({ initialPage: this.state.page });
       this.editModeOff();

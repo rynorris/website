@@ -10,7 +10,7 @@ import Navbar from "./components/navbar";
 import ScrollListener from "./components/scroll-listener";
 
 let navbarLinks: string[] = [
-  "/front",
+  "/home",
   "/about",
   "/teachers",
   "/services"

@@ -5,11 +5,8 @@ import { Redirect, Route, Switch } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {Container} from "./container";
-import AboutPage from "./pages/about-page";
 import ContactPage from "./pages/contact-page";
-import FrontPage from "./pages/front-page";
-import ServicesPage from "./pages/services-page";
-import TeachersPage from "./pages/teachers-page";
+import DynamicPage from "./pages/dynamic-page";
 
 const appElement = document.getElementById("app");
 
@@ -19,12 +16,9 @@ if (appElement != null) {
       <BrowserRouter>
         <Container>
           <Switch>
-            <Route path="/front" component={FrontPage} />
-            <Route path="/about" component={AboutPage} />
-            <Route path="/teachers" component={TeachersPage} />
-            <Route path="/services" component={ServicesPage} />
             <Route path="/contact" component={ContactPage} />
-            <Redirect from="*" to="/front" />
+            <Route path="/:pageId" component={DynamicPage} />
+            <Redirect from="*" to="/home" />
           </Switch>
         </Container>
       </BrowserRouter>
