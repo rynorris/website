@@ -62,6 +62,7 @@ func main() {
 
 	router := createRouter(
 		conf.Server.Serve.Index,
+		conf.Server.Serve.Theme,
 		conf.Server.Serve.Assets,
 		authService,
 		imageService,
