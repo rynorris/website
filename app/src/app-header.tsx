@@ -41,7 +41,7 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
   render() {
     const { site } = this.props;
 
-    const bannerImages = site.banner.images.map(id => `/api/images/${id}`)
+    const bannerImages = site.banner.images.map(id => `/api/images/${id}`);
     const navbarLinks = site.pages.map(p => `/${p.id}`);
     const navbarTitles = site.pages.map(p => p.title);
 
