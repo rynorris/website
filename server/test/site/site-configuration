@@ -7,6 +7,10 @@
             "Ipad apps tilted.banner.jpeg"
         ]
     },
+    "contact": {
+        "email": "info@dyslexiatuitioncentre.co.uk",
+        "phone": "070111222333"
+    },
     "logo": "dtc-logo-small.jpg",
     "pages": [
         { "id": "home", "title": "Home" },

@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {Container} from "./container";
-import ContactPage from "./pages/contact-page";
+import { ConnectedContactPage } from "./pages/contact-page";
 import DynamicPage from "./pages/dynamic-page";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
@@ -19,7 +19,7 @@ if (appElement != null) {
         <BrowserRouter>
           <Container>
             <Switch>
-              <Route path="/contact" component={ContactPage} />
+              <Route path="/contact" component={ConnectedContactPage} />
               <Route path="/:pageId" component={DynamicPage} />
               <Redirect from="*" to="/home" />
             </Switch>
