@@ -9,6 +9,8 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const baseConfig = require("./webpack.config");
 
 module.exports = Object.assign({}, baseConfig, {
+  mode: "production",
+
   devtool: null,
 
   output: {

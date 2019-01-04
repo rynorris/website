@@ -4,11 +4,13 @@ const path = require("path");
 
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const staticFileRegex = /\.(woff|svg|ttf|eot|gif|jpeg|jpg|png)([\?]?.*)$/;
 
 module.exports = {
+  mode: "development",
+
   context: __dirname,
   
   devtool: "source-map",
@@ -22,15 +24,23 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
+      { test: /\.js$/, loader: "source-map-loader", enforce: "pre" },
+
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
 
       // Handle less with less-loader.
-      { test: /\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader") },
-
-      // JSON Loader.  Needed for react-markdown.
-      { test: /\.json$/, loader: 'json' },
+      {
+          test: /\.less$/,
+          use: [
+              {
+                  loader: MiniCssExtractPlugin.loader,
+              },
+              "css-loader",
+              "less-loader",
+          ],
+      },
 
       // Load in static files.
       {
@@ -45,10 +55,6 @@ module.exports = {
       },
 
     ],
-
-    preLoaders: [
-      { test: /\.js$/, loader: "source-map-loader" }
-    ]
   },
 
   output: {
@@ -57,7 +63,7 @@ module.exports = {
   },
 
   plugins: [
-    new ExtractTextPlugin("[name].css"),
+    new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       inject: false,
       minify: {
@@ -70,6 +76,6 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+    extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
   }
 };
