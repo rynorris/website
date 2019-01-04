@@ -4,14 +4,14 @@ const path = require("path");
 
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const baseConfig = require("./webpack.config");
 
 module.exports = Object.assign({}, baseConfig, {
   mode: "production",
 
-  devtool: null,
+  devtool: false,
 
   output: {
     path: path.join(__dirname, "build", "min", "assets"),
@@ -19,19 +19,8 @@ module.exports = Object.assign({}, baseConfig, {
   },
 
   plugins: [
-    ...baseConfig.plugins.filter((plugin) => !(plugin instanceof ExtractTextPlugin)),
+    ...baseConfig.plugins.filter((plugin) => !(plugin instanceof MiniCssExtractPlugin)),
 
-    new ExtractTextPlugin("[name]-[hash].css"),
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production")
-      }
-    }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    }),
+    new MiniCssExtractPlugin({ filename: "[name].[hash].css" }),
   ]
 });

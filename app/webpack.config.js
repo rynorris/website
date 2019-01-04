@@ -63,7 +63,7 @@ module.exports = {
   },
 
   plugins: [
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({ filename: "[name].css" }),
     new HtmlWebpackPlugin({
       inject: false,
       minify: {
