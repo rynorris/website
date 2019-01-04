@@ -5,6 +5,9 @@ export interface AppState {
   auth: {
     user: UserInfo | null;
   };
+  site: {
+      pages: string[];
+  };
   toaster: {
     open: boolean;
     text: string;

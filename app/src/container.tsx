@@ -1,11 +1,11 @@
 import * as React from "react";
-import AppHeader from "./app-header";
+import { ConnectedAppHeader } from "./app-header";
 import Toaster from "./components/toaster";
 
 export const Container: React.SFC<{}> = (props) =>
   (
     <div className="app-container">
-      <AppHeader />
+      <ConnectedAppHeader />
       <div className="app-body">
         {props.children}
       </div>

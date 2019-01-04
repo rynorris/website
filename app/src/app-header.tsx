@@ -8,20 +8,12 @@ import LoginWidget from "./components/login-widget";
 import Navbar from "./components/navbar";
 
 import ScrollListener from "./components/scroll-listener";
-
-let navbarLinks: string[] = [
-  "/home",
-  "/about",
-  "/teachers",
-  "/services"
-];
-
-let navbarTitles: string[] = [
-  "Home",
-  "About",
-  "Our Teachers",
-  "Our Services",
-];
+import { PagesService } from "./services/pages-service";
+import ServiceProvider from "./services/service-provider";
+import { Dispatch } from "redux";
+import { AppState } from "./state/model";
+import { SetPages } from "./state/actions";
+import { connect } from "react-redux";
 
 const headerImages: string[] = [
   "/api/images/dtc-mindmap.banner.jpg",
@@ -32,20 +24,36 @@ const headerImages: string[] = [
 
 const logoImage: string = "/api/images/dtc-logo-small.jpg";
 
-interface AppHeaderState {
+interface IStateProps {
+  pages: string[];
+}
+
+interface IDispatchProps {
+  setPages: (pages: string[]) => void;
+}
+
+type IAppHeaderProps = IStateProps & IDispatchProps;
+
+interface IAppHeaderState {
   navbarFixed: boolean;
 }
 
-export default class AppHeader extends React.Component<{}, AppHeaderState> {
-  state: Readonly<AppHeaderState> = {
+class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
+  state: Readonly<IAppHeaderState> = {
     navbarFixed: false,
   };
 
-  constructor(props: {}) {
-    super(props);
+  componentDidMount() {
+    const pageService: PagesService = ServiceProvider.PagesService();
+    pageService.listPages().then(this.props.setPages);
   }
 
   render() {
+    const { pages } = this.props;
+
+    const navbarLinks = pages.map(p => "/" + p);
+    const navbarTitles = pages.map(p => p);
+
     return (
       <div className="app-header">
         <Paper zDepth={1} rounded={false}>
@@ -66,3 +74,17 @@ export default class AppHeader extends React.Component<{}, AppHeaderState> {
     this.setState({ navbarFixed });
   }
 }
+
+function mapStateToProps(state: AppState): IStateProps {
+  return {
+    pages: state.site.pages,
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch<AppState>): IDispatchProps {
+  return {
+    setPages: (pages: string[]) => dispatch(SetPages(pages)),
+  };
+}
+
+export const ConnectedAppHeader = connect(mapStateToProps, mapDispatchToProps)(AppHeader);

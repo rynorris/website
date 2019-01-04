@@ -13,6 +13,10 @@ export interface Page {
 }
 
 export class PagesService extends HttpJsonService {
+  public listPages(): Promise<string[]> {
+    return this.get(`/`);
+  }
+
   public loadPage(key: string): Promise<Page> {
     return this.get(`/${key}`);
   }
