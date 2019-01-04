@@ -18,7 +18,7 @@ before_install:
   - npm install -g yarn
 
 install:
-  - cd app && yarn
+  - cd app && yarn --verbose
   - cd ../server && go get
 
 script:
