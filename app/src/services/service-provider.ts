@@ -2,12 +2,14 @@ import {AuthService} from "./auth-service";
 import {ImageService} from "./image-service";
 import {MessageService} from "./message-service";
 import {PagesService} from "./pages-service";
+import { SiteService } from "./site-service";
 
 export default class ServiceProvider {
   private static authService: AuthService;
   private static imageService: ImageService;
   private static messageService: MessageService;
   private static pagesService: PagesService;
+  private static siteService: SiteService;
 
   public static AuthService() {
     if (!this.authService) {
@@ -39,5 +41,13 @@ export default class ServiceProvider {
     }
 
     return this.pagesService;
+  }
+
+  public static SiteService() {
+    if (!this.siteService) {
+      this.siteService = new SiteService("/api/site");
+    }
+
+    return this.siteService;
   }
 }

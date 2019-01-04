@@ -1,13 +1,14 @@
 import { Action, ActionCreator } from "redux";
 
 import { UserInfo } from "../services/auth-service";
+import { Site } from "../services/site-service";
 
-// --- Page state.
-export interface SetPagesAction extends Action {
-    type: "PAGES/SET";
-    pages: string[];
+// --- Site state.
+export interface SetSiteAction extends Action {
+    type: "SITE/SET";
+    site: Site;
 }
-export const SetPages: ActionCreator<SetPagesAction> = (pages: string[]) => ({ type: "PAGES/SET", pages });
+export const SetSite: ActionCreator<SetSiteAction> = (site: Site) => ({ type: "SITE/SET", site });
 
 // --- Login/logout.
 export interface LoginAction extends Action {

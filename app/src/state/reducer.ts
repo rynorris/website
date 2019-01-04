@@ -1,6 +1,6 @@
 import { Action, Reducer } from "redux";
 
-import { LoginAction, ToastAction, SetPagesAction } from "./actions";
+import { LoginAction, ToastAction, SetSiteAction } from "./actions";
 import { AppState } from "./model";
 
 // Initial State.
@@ -19,8 +19,8 @@ const initialState: AppState = {
 
 export const appReducer: Reducer<AppState> = (state = initialState, action: Action) => {
   switch (action.type) {
-    case "PAGES/SET":
-      return { ...state, site: { ...state.site, pages: (action as SetPagesAction).pages } };
+    case "SITE/SET":
+      return { ...state, site: (action as SetSiteAction).site };
 
     case "LOGIN":
       return { ...state, auth: { user: (action as LoginAction).user } };

@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import Paper from "material-ui/Paper";
 
 import FloatingLogo from "./components/floating-logo";
@@ -8,12 +7,12 @@ import LoginWidget from "./components/login-widget";
 import Navbar from "./components/navbar";
 
 import ScrollListener from "./components/scroll-listener";
-import { PagesService } from "./services/pages-service";
 import ServiceProvider from "./services/service-provider";
 import { Dispatch } from "redux";
 import { AppState } from "./state/model";
-import { SetPages } from "./state/actions";
+import { SetSite } from "./state/actions";
 import { connect } from "react-redux";
+import { SiteService, Site } from "./services/site-service";
 
 const headerImages: string[] = [
   "/api/images/dtc-mindmap.banner.jpg",
@@ -25,11 +24,11 @@ const headerImages: string[] = [
 const logoImage: string = "/api/images/dtc-logo-small.jpg";
 
 interface IStateProps {
-  pages: string[];
+  site: Site;
 }
 
 interface IDispatchProps {
-  setPages: (pages: string[]) => void;
+  setSite: (site: Site) => void;
 }
 
 type IAppHeaderProps = IStateProps & IDispatchProps;
@@ -44,15 +43,15 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
   };
 
   componentDidMount() {
-    const pageService: PagesService = ServiceProvider.PagesService();
-    pageService.listPages().then(this.props.setPages);
+    const siteService: SiteService = ServiceProvider.SiteService();
+    siteService.loadSite().then(this.props.setSite);
   }
 
   render() {
-    const { pages } = this.props;
+    const { site } = this.props;
 
-    const navbarLinks = pages.map(p => "/" + p);
-    const navbarTitles = pages.map(p => p);
+    const navbarLinks = site.pages.map(p => "/" + p.id);
+    const navbarTitles = site.pages.map(p => p.title);
 
     return (
       <div className="app-header">
@@ -77,13 +76,13 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
 
 function mapStateToProps(state: AppState): IStateProps {
   return {
-    pages: state.site.pages,
+    site: state.site,
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<AppState>): IDispatchProps {
   return {
-    setPages: (pages: string[]) => dispatch(SetPages(pages)),
+    setSite: (site: Site) => dispatch(SetSite(site)),
   };
 }
 
