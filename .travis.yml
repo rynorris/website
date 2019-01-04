@@ -19,11 +19,11 @@ before_install:
 
 install:
   - cd app && yarn
-  - cd server && go get
+  - cd ../server && go get
 
 script:
-  - cd app && yarn dist
-  - cd server && go build
-  - cd server && go test -v ./...
-  - cd server && go vet ./...
-  - cd app && yarn lint
+  - cd ../app && yarn dist
+  - cd ../server && go build
+  - cd ../server && go test -v ./...
+  - cd ../server && go vet ./...
+  - cd ../app && yarn lint
