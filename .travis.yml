@@ -17,8 +17,10 @@ before_install:
   - nvm install $NODE_VERSION
   - npm install -g yarn
 
-script:
+install:
   - make deps
+
+script:
   - make dist
   - cd server && go test -v ./...
   - cd server && go vet ./...
