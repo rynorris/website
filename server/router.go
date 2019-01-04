@@ -5,12 +5,12 @@ import (
 	"net/http"
 
 	"github.com/NYTimes/gziphandler"
-	"github.com/discoviking/website/server/auth"
-	"github.com/discoviking/website/server/cache"
-	"github.com/discoviking/website/server/images"
-	"github.com/discoviking/website/server/message"
-	"github.com/discoviking/website/server/pages"
 	"github.com/gorilla/mux"
+	"github.com/rynorris/website/server/auth"
+	"github.com/rynorris/website/server/cache"
+	"github.com/rynorris/website/server/images"
+	"github.com/rynorris/website/server/message"
+	"github.com/rynorris/website/server/pages"
 )
 
 func createRouter(

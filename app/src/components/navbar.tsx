@@ -1,7 +1,6 @@
 import * as React from "react";
-import * as map from "lodash/map";
-import * as zip from "lodash/zip";
-import {Link} from "react-router";
+import { map, zip } from "lodash";
+import { Link } from "react-router-dom";
 import Drawer from "material-ui/Drawer";
 import FlatButton from "material-ui/FlatButton";
 import IconButton from "material-ui/IconButton";
@@ -42,7 +41,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
                          function(item: string[], ix: number) {
       return (
         <Link key={"drawer-item-" + ix} to={item[0]}>
-          <MenuItem onTouchTap={this.closeDrawer.bind(this)}>
+          <MenuItem onClick={this.closeDrawer.bind(this)}>
             {item[1]}
           </MenuItem>
         </Link>
@@ -53,7 +52,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
       <Paper className={this.props.fixed ? "app-navbar-container fixed" : "app-navbar-container"} zDepth={1} rounded={false}>
         <Toolbar className="app-navbar">
           <ToolbarGroup className="desktop-hide" firstChild={true}>
-            <IconButton onTouchTap={this.toggleDrawer.bind(this)}>
+            <IconButton onClick={this.toggleDrawer.bind(this)}>
              <NavigationMenu />
             </IconButton>
           </ToolbarGroup>

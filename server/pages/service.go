@@ -15,6 +15,7 @@ type Page struct {
 }
 
 type Service interface {
+	List() ([]string, error)
 	Get(key string) (Page, error)
 	Put(key string, page Page) error
 	Delete(key string) error

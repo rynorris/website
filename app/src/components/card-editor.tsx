@@ -21,14 +21,16 @@ interface ICardEditorState {
 export default class CardEditor extends React.Component<ICardEditorProps, ICardEditorState> {
   constructor(props: ICardEditorProps) {
     super(props);
-    this.state = {
+    let initialState: ICardEditorState = {
       imageSelectorOpen: false,
     };
 
     if (props.card) {
       let clonedCard: Card = JSON.parse(JSON.stringify(props.card));
-      this.state.card = clonedCard;
+      initialState.card = clonedCard;
     }
+
+    this.state = initialState;
   }
 
   componentWillReceiveProps(props: ICardEditorProps) {
@@ -46,10 +48,10 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
     let actions: any[] = [
       <FlatButton
         label="Cancel"
-        onTouchTap={this.props.onRequestClose} />,
+        onClick={this.props.onRequestClose} />,
       <FlatButton
         label="Ok"
-        onTouchTap={(() => this.state.card ? this.props.onSave(this.state.card) : null).bind(this)} />
+        onClick={(() => this.state.card ? this.props.onSave(this.state.card) : null).bind(this)} />
     ];
 
     return (
@@ -79,8 +81,8 @@ export default class CardEditor extends React.Component<ICardEditorProps, ICardE
             multiLine={true}
             rows={4} />
         </div>
-        <FlatButton label="Choose Image" onTouchTap={this.openImageSelector.bind(this)} />
-        <FlatButton label="Remove Image" onTouchTap={(() => { this.setImage(""); }).bind(this)} />
+        <FlatButton label="Choose Image" onClick={this.openImageSelector.bind(this)} />
+        <FlatButton label="Remove Image" onClick={(() => { this.setImage(""); }).bind(this)} />
         <h3>Preview</h3>
         <DynamicCard card={this.state.card} />
         <ImageSelector

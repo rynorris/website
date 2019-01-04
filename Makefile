@@ -1,14 +1,14 @@
 
-.PHONY: app app-deps app-prod app-clean app-clean-prod server server-deps server-prod dist-clean dist
+.PHONY: app app-deps app-prod app-clean app-clean-prod server server-deps server-prod deps dist-clean dist
 
 app-deps:
-	cd app && npm install && typings install
+	cd app && yarn
 
 app: app-deps
-	cd app && webpack
+	cd app && yarn build
 
 app-prod: app-deps
-	cd app && webpack --config ./webpack.config.prod.js
+	cd app && yarn dist
 
 app-clean:
 	rm -rf ./app/build
@@ -24,6 +24,8 @@ server: server-deps
 
 server-prod: server-deps
 	cd server && GOARCH=amd64 && GOOS=linux go build -o ./server-linux
+
+deps: app-deps server-deps
 
 dist-clean:
 	rm -rf ./dist

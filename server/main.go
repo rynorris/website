@@ -7,13 +7,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/discoviking/website/server/auth"
-	"github.com/discoviking/website/server/images"
-	"github.com/discoviking/website/server/message/email"
-	pages "github.com/discoviking/website/server/pages/storage"
-	"github.com/discoviking/website/server/storage/dir"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/rynorris/website/server/auth"
+	"github.com/rynorris/website/server/images"
+	"github.com/rynorris/website/server/message/email"
+	pages "github.com/rynorris/website/server/pages/storage"
+	"github.com/rynorris/website/server/storage/dir"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 

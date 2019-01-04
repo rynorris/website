@@ -37,9 +37,15 @@ interface AppHeaderState {
 }
 
 export default class AppHeader extends React.Component<{}, AppHeaderState> {
-  constructor() {
-    super();
-    this.state = { navbarFixed: false };
+  private scroller: React.RefObject<ScrollListener>;
+
+  state: Readonly<AppHeaderState> = {
+    navbarFixed: false,
+  };
+
+  constructor(props: {}) {
+    super(props);
+    this.scroller = React.createRef();
   }
 
   render() {
@@ -51,16 +57,15 @@ export default class AppHeader extends React.Component<{}, AppHeaderState> {
           <div className="app-header-image-container">
             <ImageGallery images={headerImages} interval={10000} />
           </div>
-          <ScrollListener onScroll={this.handleScroll.bind(this)} ref="scroller" />
+          <ScrollListener onScroll={this.handleScroll.bind(this)} ref={this.scroller} />
         </Paper>
         <Navbar links={navbarLinks} titles={navbarTitles} fixed={this.state.navbarFixed} />
       </div>
     );
   }
 
-  private handleScroll() {
-    const thisTop = ReactDOM.findDOMNode(this.refs["scroller"]).getClientRects()[0].top;
-    const navbarFixed = thisTop <= 0 ? true : false;
+  private handleScroll(top: number) {
+    const navbarFixed = top <= 0 ? true : false;
     this.setState({ navbarFixed });
   }
 }
