@@ -1,5 +1,4 @@
 import * as React from "react";
-import { map } from "lodash";
 import {Unsubscribe} from "redux";
 import ContentAdd from "material-ui/svg-icons/content/add";
 import ContentCreate from "material-ui/svg-icons/content/create";
@@ -70,11 +69,11 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
   }
 
   render() {
-    let cards: JSX.Element[] = map(this.state.page.cards, (card: Card, ix: number) => {
+    let cards: JSX.Element[] = this.state.page.cards.map((card: Card, ix: number) => {
       return <DynamicCard card={card} />;
     });
 
-    let wrapped: any = map(cards, (card: Card, ix: number) => {
+    let wrapped: any = cards.map((card, ix) => {
       return (
         <EditContainer
           key={"card_" + ix}

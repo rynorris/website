@@ -5,6 +5,8 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 const staticFileRegex = /\.(woff|svg|ttf|eot|gif|jpeg|jpg|png)([\?]?.*)$/;
 
@@ -72,6 +74,7 @@ module.exports = {
       template: path.resolve(__dirname, "src/index.html"),
       title: "Application",
     }),
+    new BundleAnalyzerPlugin({ analyzerMode: "disabled" }),
   ],
 
   resolve: {
