@@ -8,32 +8,19 @@ interface IScrollListenerProps {
   interval?: number;
 }
 
-interface IScrollListenerState {
-  onScroll: () => void;
-}
+export const ScrollListener: React.SFC<IScrollListenerProps> = (props) => {
+  const scroller = React.useRef<HTMLDivElement>(null);
 
-export default class ScrollListener extends React.Component<IScrollListenerProps, IScrollListenerState> {
-  private scroller: React.RefObject<HTMLDivElement>;
+  React.useEffect(() => {
+    const onScroll = throttle(() =>
+      scroller.current && props.onScroll(scroller.current.getClientRects()[0].top),
+      props.interval || SCROLL_LISTEN_INTERVAL_DEFAULT,
+    );
 
-  constructor(props: IScrollListenerProps) {
-    super(props);
-    const interval = this.props.interval || SCROLL_LISTEN_INTERVAL_DEFAULT;
-    this.state = {
-      onScroll: throttle(() =>
-        this.scroller.current && props.onScroll(this.scroller.current.getClientRects()[0].top), interval),
-    };
-    this.scroller = React.createRef();
-  }
+    window.addEventListener("scroll", onScroll);
 
-  public componentWillMount() {
-    window.addEventListener("scroll", this.state.onScroll);
-  }
+    return () => window.removeEventListener("scroll", onScroll);
+  });
 
-  public componentWillUnmount() {
-    window.removeEventListener("scroll", this.state.onScroll);
-  }
-
-  public render() {
-    return <div ref={this.scroller}/>;
-  }
-}
+  return <div ref={scroller} />;
+};

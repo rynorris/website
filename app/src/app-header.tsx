@@ -8,7 +8,7 @@ import { Navbar } from "./components/navbar";
 
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import ScrollListener from "./components/scroll-listener";
+import { ScrollListener } from "./components/scroll-listener";
 import ServiceProvider from "./services/service-provider";
 import { ISite, SiteService } from "./services/site-service";
 import { ISetSiteAction, SetSite } from "./state/actions";
