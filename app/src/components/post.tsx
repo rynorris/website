@@ -7,6 +7,10 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    postCard: {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+    },
     imagePostHeader: {
       position: "relative",
       height: 300,
@@ -42,14 +46,12 @@ export const Post: React.SFC<IPostProps> = props => {
   const titleClass = props.image !== "" ? classes.imagePostTitle : classes.postTitle;
 
   return (
-    <div className="app-post">
-      <Card>
-        <div className={headerClass}>
-          {props.image !== "" && image}
-          <CardHeader title={props.title} className={titleClass} />
-        </div>
-        <CardContent><Typography>{props.children}</Typography></CardContent>
-      </Card>
-    </div>
+    <Card className={classes.postCard}>
+      <div className={headerClass}>
+        {props.image !== "" && image}
+        <CardHeader title={props.title} className={titleClass} />
+      </div>
+      <CardContent><Typography>{props.children}</Typography></CardContent>
+    </Card>
   );
 };
