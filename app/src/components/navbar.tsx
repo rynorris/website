@@ -1,7 +1,6 @@
 import * as React from "react";
 import { map, zip } from "lodash";
 import { Link } from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -70,7 +69,7 @@ export const Navbar: React.SFC<INavbarProps> = props => {
           <div className={classes.grow} />
 
           <div>
-            <Link to="/contact"><Button>Contact Us</Button></Link>
+            <Link to="/contact" className={classes.linkButton}><Button>Contact Us</Button></Link>
           </div>
         </Toolbar>
 
