@@ -1,5 +1,5 @@
 import * as React from "react";
-import Paper from "material-ui/Paper";
+import Paper from "@material-ui/core/Paper";
 
 import { FloatingLogo } from "./components/floating-logo";
 import { ImageGallery } from "./components/image-gallery";
@@ -47,7 +47,7 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
 
     return (
       <div className="app-header">
-        <Paper zDepth={1} rounded={false}>
+        <Paper elevation={1} square={true}>
           <LoginWidget />
           <FloatingLogo src={`/api/images/${site.logo}`} />
           <div className="app-header-image-container">

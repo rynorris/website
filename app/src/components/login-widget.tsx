@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Dispatch} from "redux";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 import { LoginWindow } from "./login-window";
@@ -87,7 +88,7 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = props => {
 
   return (
     <div className={classes.loginWidget}>
-      {user ? <span>Logged in as {user.username}</span> : null}
+      {user ? <Typography display="inline">Logged in as {user.username}</Typography> : null}
       {loginButton}
       <LoginWindow
         open={dialogOpen}
