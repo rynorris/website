@@ -3,7 +3,7 @@ import {Dispatch} from "redux";
 import Button from "@material-ui/core/Button";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
-import LoginWindow from "./login-window";
+import { LoginWindow } from "./login-window";
 import Toaster from "./toaster";
 import {UserInfo} from "../services/auth-service";
 import ServiceProvider from "../services/service-provider";
@@ -39,20 +39,21 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = props => {
   const { user, onLogin, onLogout } = props;
 
   React.useEffect(() => {
-    const auth = ServiceProvider.AuthService();
-
-    (async () => {
-      try {
-        const user = await auth.whoAmI();
-        if (user !== null) {
-          onLogin(user);
-        } else {
+    if (user === null) {
+      const auth = ServiceProvider.AuthService();
+      (async () => {
+        try {
+          const user = await auth.whoAmI();
+          if (user !== null) {
+            onLogin(user);
+          } else {
+            onLogout();
+          }
+        } catch (error) {
           onLogout();
         }
-      } catch (error) {
-        onLogout();
-      }
-    })();
+      })();
+    }
   });
 
   const doLogout = () => {

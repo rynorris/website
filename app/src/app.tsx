@@ -15,7 +15,15 @@ import { createMuiTheme } from "@material-ui/core";
 
 const appElement = document.getElementById("app");
 
-const theme = createMuiTheme();
+// TODO: Get theme from API.
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#C2DC5D" },
+    secondary: { main: "#59BBE0" },
+    background: { default: "#DDDDDD" },
+    error: { main: "#FF7777" },
+  },
+});
 
 if (appElement != null) {
   ReactDOM.render((

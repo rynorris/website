@@ -6,14 +6,14 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
-createStyles({
-  bioCard: {
-    display: "flex",
-    maxHeight: 150,
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  }
-}),
+  createStyles({
+    bioCard: {
+      display: "flex",
+      maxHeight: 150,
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+    }
+  }),
 );
 
 interface IBioCardProps {
