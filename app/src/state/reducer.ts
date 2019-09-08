@@ -18,6 +18,7 @@ const initialState: AppState = {
       },
       logo: "",
       pages: [],
+      title: "Website",
   },
   toaster: {
     open: false,

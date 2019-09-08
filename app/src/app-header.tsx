@@ -10,7 +10,7 @@ import ScrollListener from "./components/scroll-listener";
 import ServiceProvider from "./services/service-provider";
 import { Dispatch } from "redux";
 import { AppState } from "./state/model";
-import { SetSite } from "./state/actions";
+import { SetSite, SetSiteAction } from "./state/actions";
 import { connect } from "react-redux";
 import { SiteService, Site } from "./services/site-service";
 
@@ -72,7 +72,7 @@ function mapStateToProps(state: AppState): IStateProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<AppState>): IDispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<SetSiteAction>): IDispatchProps {
   return {
     setSite: (site: Site) => dispatch(SetSite(site)),
   };
