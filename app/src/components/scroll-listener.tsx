@@ -1,38 +1,26 @@
-import * as React from "react";
 import { throttle } from "lodash";
+import * as React from "react";
 
 const SCROLL_LISTEN_INTERVAL_DEFAULT: number = 50;
 
-interface ScrollListenerProps {
+interface IScrollListenerProps {
   onScroll: (top: number) => void;
   interval?: number;
 }
 
-interface ScrollListenerState {
-  onScroll: () => void;
-}
+export const ScrollListener: React.SFC<IScrollListenerProps> = (props) => {
+  const scroller = React.useRef<HTMLDivElement>(null);
 
-export default class ScrollListener extends React.Component<ScrollListenerProps, ScrollListenerState> {
-  private scroller: React.RefObject<HTMLDivElement>;
+  React.useEffect(() => {
+    const onScroll = throttle(() =>
+      scroller.current && props.onScroll(scroller.current.getClientRects()[0].top),
+      props.interval || SCROLL_LISTEN_INTERVAL_DEFAULT,
+    );
 
-  constructor(props: ScrollListenerProps) {
-    super(props);
-    const interval = this.props.interval || SCROLL_LISTEN_INTERVAL_DEFAULT;
-    this.state = {
-      onScroll: throttle(() => this.scroller.current && props.onScroll(this.scroller.current.getClientRects()[0].top), interval),
-    };
-    this.scroller = React.createRef();
-  }
+    window.addEventListener("scroll", onScroll);
 
-  componentWillMount() {
-    window.addEventListener("scroll", this.state.onScroll);
-  }
+    return () => window.removeEventListener("scroll", onScroll);
+  });
 
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.state.onScroll);
-  }
-
-  render() {
-    return <div ref={this.scroller}/>;
-  }
-}
+  return <div ref={scroller} />;
+};

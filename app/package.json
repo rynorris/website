@@ -7,7 +7,7 @@
     "build": "webpack",
     "dev": "webpack --watch",
     "dist": "webpack --config ./webpack.config.prod.js",
-    "lint": "tslint --project ./tslint.json",
+    "lint": "tslint --project ./tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -42,6 +42,7 @@
     "source-map-loader": "^0.2.4",
     "style-loader": "^1.0.0",
     "tslint": "^5.19.0",
+    "tslint-react": "^4.0.0",
     "typescript": "^3.6.2",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8"

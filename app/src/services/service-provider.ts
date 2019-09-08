@@ -5,11 +5,6 @@ import {PagesService} from "./pages-service";
 import { SiteService } from "./site-service";
 
 export default class ServiceProvider {
-  private static authService: AuthService;
-  private static imageService: ImageService;
-  private static messageService: MessageService;
-  private static pagesService: PagesService;
-  private static siteService: SiteService;
 
   public static AuthService() {
     if (!this.authService) {
@@ -50,4 +45,9 @@ export default class ServiceProvider {
 
     return this.siteService;
   }
+  private static authService: AuthService;
+  private static imageService: ImageService;
+  private static messageService: MessageService;
+  private static pagesService: PagesService;
+  private static siteService: SiteService;
 }

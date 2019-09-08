@@ -1,10 +1,10 @@
-import * as React from "react";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import DeleteIcon from "@material-ui/icons/Delete";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import * as React from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
       right: theme.spacing(1),
       top: theme.spacing(1),
       zIndex: 1000,
-    }
+    },
   }),
 );
 
@@ -28,14 +28,14 @@ interface IEditContainerProps {
   onDeleteButtonClick: any;
 }
 
-export const EditContainer: React.SFC<IEditContainerProps> = props => {
+export const EditContainer: React.SFC<IEditContainerProps> = (props) => {
   const classes = useStyles();
 
   if (!props.children) {
-    return <div></div>;
+    return  <div/>;
   }
 
-  let editButton: JSX.Element = (
+  const editButton: JSX.Element = (
     <div className={classes.editControls}>
       <IconButton onClick={props.onEditButtonClick} size="small">
         <CreateIcon color="primary" />

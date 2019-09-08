@@ -1,17 +1,17 @@
-import * as React from "react";
 import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import * as React from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     bioCard: {
       display: "flex",
-      marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
-    }
+      marginTop: theme.spacing(2),
+    },
   }),
 );
 
@@ -20,7 +20,7 @@ interface IBioCardProps {
   image: string;
 }
 
-export const BioCard: React.SFC<IBioCardProps> = props => {
+export const BioCard: React.SFC<IBioCardProps> = (props) => {
   const classes = useStyles();
 
   return (
@@ -30,7 +30,7 @@ export const BioCard: React.SFC<IBioCardProps> = props => {
       </div>
       <CardContent>
         <Typography variant="h4">{props.name}</Typography>
-      {props.children}
+        <Typography component="div">{props.children}</Typography>
       </CardContent>
     </Card>
   );

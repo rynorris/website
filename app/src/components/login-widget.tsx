@@ -1,16 +1,16 @@
+import Button from "@material-ui/core/Button";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 import {Dispatch} from "redux";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
-import { LoginWindow } from "./login-window";
-import {UserInfo} from "../services/auth-service";
+import {IUserInfo} from "../services/auth-service";
 import ServiceProvider from "../services/service-provider";
+import { LoginWindow } from "./login-window";
 
-import { Login, Logout, LogoutAction, LoginAction, ToastAction, Toast } from "../state/actions";
-import { AppState } from "../state/model";
 import { connect } from "react-redux";
+import { ILoginAction, ILogoutAction, IToastAction, Login, Logout, Toast } from "../state/actions";
+import { IAppState } from "../state/model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,35 +18,38 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "absolute",
       right: 0,
       zIndex: 1000,
-    }
+    },
   }),
 );
 
 interface IStateProps {
-  user: UserInfo | null;
+  user: IUserInfo | null;
 }
 
 interface IDispatchProps {
-  onLogin: (user: UserInfo) => void;
+  onLogin: (user: IUserInfo) => void;
   onLogout: () => void;
   toast: (text: string) => void;
 }
 
 type LoginWidgetProps = IStateProps & IDispatchProps;
 
-const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = props => {
+const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = (props) => {
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
   const { user, onLogin, onLogout, toast } = props;
+
+  const openDialog = React.useCallback(() => setDialogOpen(true), []);
+  const closeDialog = React.useCallback(() => setDialogOpen(false), []);
 
   React.useEffect(() => {
     if (user === null) {
       const auth = ServiceProvider.AuthService();
       (async () => {
         try {
-          const user = await auth.whoAmI();
-          if (user !== null) {
-            onLogin(user);
+          const userInfo = await auth.whoAmI();
+          if (userInfo !== null) {
+            onLogin(userInfo);
           } else {
             onLogout();
           }
@@ -58,14 +61,13 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = props => {
   });
 
   const doLogout = () => {
-    let auth = ServiceProvider.AuthService();
+    const auth = ServiceProvider.AuthService();
     (async () => {
       try {
         await auth.logout();
         onLogout();
         toast("Logged out");
       } catch (error) {
-        console.error("Failed to log out", error);
         toast("Failed to log out");
       }
     })();
@@ -83,7 +85,7 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = props => {
   const loginButton = user !== null ? (
     <Button onClick={doLogout}>Logout</Button>
   ) : (
-    <Button onClick={() => setDialogOpen(true)}>Login</Button>
+    <Button onClick={openDialog}>Login</Button>
   );
 
   return (
@@ -92,20 +94,20 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = props => {
       {loginButton}
       <LoginWindow
         open={dialogOpen}
-        onRequestClose={() => setDialogOpen(false)}
+        onRequestClose={closeDialog}
         onSuccess={onLoginSuccess}
         onFailure={onLoginFailure}
-        />
+      />
     </div>
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: IAppState) => ({
   user: state.auth.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<LoginAction | LogoutAction | ToastAction>) => ({
-  onLogin: (user: UserInfo) => dispatch(Login(user)),
+const mapDispatchToProps = (dispatch: Dispatch<ILoginAction | ILogoutAction | IToastAction>) => ({
+  onLogin: (user: IUserInfo) => dispatch(Login(user)),
   onLogout: () => dispatch(Logout()),
   toast: (text: string) => dispatch(Toast(text)),
 });

@@ -5,39 +5,39 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { useTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
 
-import {Card} from "../services/pages-service";
+import {ICard} from "../services/pages-service";
 import { DynamicCard } from "./dynamic-card";
 import { ImageSelector } from "./image-selector";
 
 interface ICardEditorProps {
-  onSave: (card: Card) => void;
-  card: Card;
+  onSave: (card: ICard) => void;
+  card: ICard;
   open: boolean;
   onRequestClose: () => void;
 }
 
-export const CardEditor: React.SFC<ICardEditorProps> = props => {
-  let clonedCard: Card = JSON.parse(JSON.stringify(props.card));
+export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
+  const clonedCard: ICard = JSON.parse(JSON.stringify(props.card));
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [card, setCard] = React.useState<Card>(clonedCard);
+  const [card, setCard] = React.useState<ICard>(clonedCard);
   const [imageSelectorOpen, setImageSelectorOpen] = React.useState<boolean>(false);
 
   const doSave = () => props.onSave(card);
 
-  const setTitle = (ev: any) => setCard((prevCard: Card) => ({ ...prevCard, title: ev.currentTarget.value }));
+  const setTitle = (ev: any) => setCard((prevCard: ICard) => ({ ...prevCard, title: ev.currentTarget.value }));
 
-  const setText = (ev: any) => setCard((prevCard: Card) => ({ ...prevCard, text: ev.currentTarget.value }));
+  const setText = (ev: any) => setCard((prevCard: ICard) => ({ ...prevCard, text: ev.currentTarget.value }));
 
   const setImage = (image: string) => {
-    setCard((prevCard: Card) => ({ ...prevCard, image }));
+    setCard((prevCard: ICard) => ({ ...prevCard, image }));
     setImageSelectorOpen(false);
   };
 
@@ -53,7 +53,7 @@ export const CardEditor: React.SFC<ICardEditorProps> = props => {
       onClose={props.onRequestClose}
       fullScreen={fullScreen}
       aria-labelledby="card-editor-dialog-title"
-      >
+    >
       <DialogTitle id="card-editor-dialog-title">Edit</DialogTitle>
       <DialogContent>
         <TextField
@@ -61,7 +61,8 @@ export const CardEditor: React.SFC<ICardEditorProps> = props => {
           label="Title"
           value={card.title}
           onChange={setTitle}
-          fullWidth={true} />
+          fullWidth={true}
+        />
         <br/>
         <TextField
           id="text-field-text"
@@ -70,7 +71,8 @@ export const CardEditor: React.SFC<ICardEditorProps> = props => {
           onChange={setText}
           fullWidth={true}
           multiline={true}
-          rows={4} />
+          rows={4}
+        />
       <Button onClick={openImageSelector}>Choose Image</Button>
       <Button onClick={removeImage}>Remove Image</Button>
       <Typography variant="h4">Preview</Typography>
@@ -79,7 +81,7 @@ export const CardEditor: React.SFC<ICardEditorProps> = props => {
         open={imageSelectorOpen}
         onRequestClose={closeImageSelector}
         onDone={setImage}
-        />
+      />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onRequestClose}>Cancel</Button>

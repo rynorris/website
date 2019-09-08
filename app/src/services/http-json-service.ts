@@ -20,12 +20,12 @@ export default class HttpJsonService {
   public fetch(method: string, url: string, body: any): Promise<any> {
     url = this.basePath + url;
 
-    let requestInit: any = {
-      method: method,
+    const requestInit: any = {
+      credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      method,
     };
 
     if ((method !== "HEAD") && (method !== "GET")) {

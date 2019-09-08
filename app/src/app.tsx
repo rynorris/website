@@ -1,26 +1,27 @@
 import "es6-shim";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import { Redirect, Route, Switch } from "react-router";
 import { BrowserRouter } from "react-router-dom";
+
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+
+import { Header } from "./components/helmet";
 import {Container} from "./container";
 import { ConnectedContactPage } from "./pages/contact-page";
 import { DynamicPage } from "./pages/dynamic-page";
-import { Provider } from "react-redux";
 import { store } from "./state/store";
-import { Header } from "./components/helmet";
-import { ThemeProvider } from "@material-ui/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
 
 const appElement = document.getElementById("app");
 
 // TODO: Get theme from API.
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#C2DC5D" },
-    secondary: { main: "#59BBE0" },
     background: { default: "#DDDDDD" },
     error: { main: "#FF7777" },
+    primary: { main: "#C2DC5D" },
+    secondary: { main: "#59BBE0" },
   },
 });
 
@@ -28,7 +29,7 @@ if (appElement != null) {
   ReactDOM.render((
     <Provider store={store}>
       <Header />
-      <ThemeProvider theme={theme}>
+      <MuiThemeProvider theme={theme}>
         <BrowserRouter>
           <Container>
             <Switch>
@@ -38,9 +39,9 @@ if (appElement != null) {
             </Switch>
           </Container>
         </BrowserRouter>
-      </ThemeProvider>
+      </MuiThemeProvider>
     </Provider>
   ), appElement);
 } else {
-  console.error("Did not find element with id 'app'");
+  throw new Error("Did not find element with id 'app'");
 }
