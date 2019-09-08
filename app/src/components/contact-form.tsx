@@ -4,8 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import SendIcon from "@material-ui/icons/Send";
 import {Message, MessageService} from "../services/message-service";
 import ServiceProvider from "../services/service-provider";
-import { makeStyles } from "@material-ui/core/styles";
-import { Theme, createStyles } from "@material-ui/core";
+import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import { Dispatch } from "redux";
 import { Toast, ToastAction } from "../state/actions";
 import { connect } from "react-redux";
@@ -14,7 +13,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     buttonIcon: {
       marginLeft: theme.spacing(1),
-    }
+    },
+    submitButton: {
+      margin: theme.spacing(1),
+    },
   }),
 );
 
@@ -73,7 +75,7 @@ const UnconnectedContactForm: React.SFC<IContactFormProps> = props => {
         multiline={true}
         rows={4} />
       <br/>
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
+      <Button className={classes.submitButton} variant="contained" color="primary" onClick={handleSubmit}>
         Send
         <SendIcon className={classes.buttonIcon} />
       </Button>
