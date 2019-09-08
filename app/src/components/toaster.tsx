@@ -1,10 +1,10 @@
+import Snackbar from "@material-ui/core/Snackbar";
 import * as React from "react";
 import {Dispatch} from "redux";
-import Snackbar from "@material-ui/core/Snackbar";
 
-import { CloseToastAction, CloseToast } from "../state/actions";
-import { AppState } from "../state/model";
 import { connect } from "react-redux";
+import { CloseToast, CloseToastAction } from "../state/actions";
+import { AppState } from "../state/model";
 
 interface IStateProps {
   isOpen: boolean;
@@ -21,7 +21,7 @@ interface IOwnProps {
 
 type IToasterProps = IStateProps & IDispatchProps & IOwnProps;
 
-const UnconnectedToaster: React.SFC<IToasterProps> = props => {
+const UnconnectedToaster: React.SFC<IToasterProps> = (props) => {
     return (
       <Snackbar
         open={props.isOpen}

@@ -2,16 +2,16 @@ import * as React from "react";
 
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { makeStyles, Theme, createStyles, useTheme } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme, useTheme } from "@material-ui/core/styles";
 
-import ServiceProvider from "../services/service-provider";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ServiceProvider from "../services/service-provider";
 
 interface StyleProps {
   fullScreen: boolean;
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: 100,
       minHeight: 100,
       margin: theme.spacing(2),
-    }
+    },
   }),
 );
 
@@ -46,7 +46,7 @@ interface IImageSelectorState {
   selectedValue: string;
 }
 
-export const ImageSelector: React.SFC<IImageSelectorProps> = props => {
+export const ImageSelector: React.SFC<IImageSelectorProps> = (props) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -56,7 +56,7 @@ export const ImageSelector: React.SFC<IImageSelectorProps> = props => {
   const [selectedValue, setSelectedValue] = React.useState<string>("");
 
   React.useEffect(() => {
-    let image = ServiceProvider.ImageService();
+    const image = ServiceProvider.ImageService();
 
     (async () => {
       try {
@@ -69,15 +69,15 @@ export const ImageSelector: React.SFC<IImageSelectorProps> = props => {
   });
 
   const handleChoose = () => {
-    let image = ServiceProvider.ImageService();
+    const image = ServiceProvider.ImageService();
     props.onDone(image.getUrl(selectedValue));
     props.onRequestClose();
   };
 
-  let items = imageKeys.map((key) => {
+  const items = imageKeys.map((key) => {
     return (
       <ListItem
-        button
+        button={true}
         key={key}
         onClick={() => setSelectedValue(key)}
         selected={selectedValue === key}

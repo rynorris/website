@@ -22,7 +22,6 @@ export interface LogoutAction extends Action {
 }
 export const Logout: ActionCreator<LogoutAction> = () => ({ type: "LOGOUT" });
 
-
 // --- Toasts.
 export interface ToastAction extends Action {
   type: "TOAST";

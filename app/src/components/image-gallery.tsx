@@ -8,7 +8,7 @@ interface ImageGalleryProps {
 export const ImageGallery: React.SFC<ImageGalleryProps> = ({ images, interval }) => {
   const [imageIndex, setImageIndex] = React.useState<number>(0);
   React.useEffect(() => {
-    const timerId = setInterval(() => setImageIndex(prev => (prev + 1) % images.length), interval);
+    const timerId = setInterval(() => setImageIndex((prev) => (prev + 1) % images.length), interval);
     return () => clearInterval(timerId);
   });
 

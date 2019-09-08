@@ -1,13 +1,13 @@
-import * as React from "react";
 import Button from "@material-ui/core/Button";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import SendIcon from "@material-ui/icons/Send";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import {Message, MessageService} from "../services/message-service";
 import ServiceProvider from "../services/service-provider";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import { Dispatch } from "redux";
 import { Toast, ToastAction } from "../state/actions";
-import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,7 +26,7 @@ interface IDispatchProps {
 
 type IContactFormProps = IDispatchProps;
 
-const UnconnectedContactForm: React.SFC<IContactFormProps> = props => {
+const UnconnectedContactForm: React.SFC<IContactFormProps> = (props) => {
   const classes = useStyles();
 
   const [sender, setSender] = React.useState<string>("");
@@ -36,11 +36,11 @@ const UnconnectedContactForm: React.SFC<IContactFormProps> = props => {
   const { toast } = props;
 
   const handleSubmit = async () => {
-    let service: MessageService = ServiceProvider.MessageService();
-    let message: Message = { sender, email, message: body };
+    const service: MessageService = ServiceProvider.MessageService();
+    const message: Message = { sender, email, message: body };
 
     try {
-      let response = await service.send(message);
+      const response = await service.send(message);
       toast("Message Sent!");
       setSender("");
       setEmail("");
@@ -56,21 +56,21 @@ const UnconnectedContactForm: React.SFC<IContactFormProps> = props => {
         id="text-field-name"
         label="Name"
         value={sender}
-        onChange={ev => setSender(ev.currentTarget.value)}
+        onChange={(ev) => setSender(ev.currentTarget.value)}
         fullWidth={true} />
       <br/>
       <TextField
         id="text-field-email"
         label="Email Address"
         value={email}
-        onChange={ev => setEmail(ev.currentTarget.value)}
+        onChange={(ev) => setEmail(ev.currentTarget.value)}
         fullWidth={true} />
       <br/>
       <TextField
         id="text-field-message"
         label="Message"
         value={body}
-        onChange={ev => setBody(ev.currentTarget.value)}
+        onChange={(ev) => setBody(ev.currentTarget.value)}
         fullWidth={true}
         multiline={true}
         rows={4} />

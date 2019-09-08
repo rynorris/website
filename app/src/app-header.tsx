@@ -1,18 +1,18 @@
-import * as React from "react";
 import Paper from "@material-ui/core/Paper";
+import * as React from "react";
 
 import { FloatingLogo } from "./components/floating-logo";
 import { ImageGallery } from "./components/image-gallery";
 import { LoginWidget } from "./components/login-widget";
 import { Navbar } from "./components/navbar";
 
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import ScrollListener from "./components/scroll-listener";
 import ServiceProvider from "./services/service-provider";
-import { Dispatch } from "redux";
-import { AppState } from "./state/model";
+import { Site, SiteService } from "./services/site-service";
 import { SetSite, SetSiteAction } from "./state/actions";
-import { connect } from "react-redux";
-import { SiteService, Site } from "./services/site-service";
+import { AppState } from "./state/model";
 
 interface IStateProps {
   site: Site;
@@ -29,21 +29,21 @@ interface IAppHeaderState {
 }
 
 class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
-  state: Readonly<IAppHeaderState> = {
+  public state: Readonly<IAppHeaderState> = {
     navbarFixed: false,
   };
 
-  componentDidMount() {
+  public componentDidMount() {
     const siteService: SiteService = ServiceProvider.SiteService();
     siteService.loadSite().then(this.props.setSite);
   }
 
-  render() {
+  public render() {
     const { site } = this.props;
 
-    const bannerImages = site.banner.images.map(id => `/api/images/${id}`);
-    const navbarLinks = site.pages.map(p => `/${p.id}`);
-    const navbarTitles = site.pages.map(p => p.title);
+    const bannerImages = site.banner.images.map((id) => `/api/images/${id}`);
+    const navbarLinks = site.pages.map((p) => `/${p.id}`);
+    const navbarTitles = site.pages.map((p) => p.title);
 
     return (
       <div className="app-header">

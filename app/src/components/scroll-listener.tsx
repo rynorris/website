@@ -1,5 +1,5 @@
-import * as React from "react";
 import { throttle } from "lodash";
+import * as React from "react";
 
 const SCROLL_LISTEN_INTERVAL_DEFAULT: number = 50;
 
@@ -24,15 +24,15 @@ export default class ScrollListener extends React.Component<ScrollListenerProps,
     this.scroller = React.createRef();
   }
 
-  componentWillMount() {
+  public componentWillMount() {
     window.addEventListener("scroll", this.state.onScroll);
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     window.removeEventListener("scroll", this.state.onScroll);
   }
 
-  render() {
+  public render() {
     return <div ref={this.scroller}/>;
   }
 }

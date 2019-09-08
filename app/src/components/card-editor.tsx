@@ -5,10 +5,10 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { useTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
 
 import {Card} from "../services/pages-service";
 import { DynamicCard } from "./dynamic-card";
@@ -21,8 +21,8 @@ interface ICardEditorProps {
   onRequestClose: () => void;
 }
 
-export const CardEditor: React.SFC<ICardEditorProps> = props => {
-  let clonedCard: Card = JSON.parse(JSON.stringify(props.card));
+export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
+  const clonedCard: Card = JSON.parse(JSON.stringify(props.card));
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));

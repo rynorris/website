@@ -1,14 +1,14 @@
-import * as React from "react";
-import { map, zip } from "lodash";
-import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
-import MenuIcon from "@material-ui/icons/Menu";
 import Paper from "@material-ui/core/Paper";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import MenuIcon from "@material-ui/icons/Menu";
+import { map, zip } from "lodash";
+import * as React from "react";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,19 +33,19 @@ interface INavbarProps {
   fixed?: boolean;
 }
 
-export const Navbar: React.SFC<INavbarProps> = props => {
+export const Navbar: React.SFC<INavbarProps> = (props) => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const { links, titles, fixed } = props;
 
-  let navItems = map(zip(links, titles), (item: string[], ix: number) => (
+  const navItems = map(zip(links, titles), (item: string[], ix: number) => (
       <Link key={"nav-item-" + ix} to={item[0]} className={classes.linkButton}>
         <Button>{item[1]}</Button>
       </Link>
   ));
 
-  let drawerItems = map(zip(links, titles), (item: string[], ix: number) => (
+  const drawerItems = map(zip(links, titles), (item: string[], ix: number) => (
       <Link key={"drawer-item-" + ix} to={item[0]} className={classes.linkButton}>
         <MenuItem onClick={() => setDrawerOpen(false)}>
           {item[1]}
@@ -57,7 +57,7 @@ export const Navbar: React.SFC<INavbarProps> = props => {
     <Paper className={fixed ? "app-navbar-container fixed" : "app-navbar-container"} elevation={1} square={true}>
         <Toolbar className={classes.navBar}>
           <div className="desktop-hide">
-            <Button onClick={() => setDrawerOpen(open => !open)}>
+            <Button onClick={() => setDrawerOpen((open) => !open)}>
               <MenuIcon fontSize="large" />
             </Button>
           </div>

@@ -1,13 +1,13 @@
-import * as React from "react";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import * as React from "react";
 
 import ServiceProvider from "../services/service-provider";
 import { Login } from "../state/actions";
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     errorMessage: {
       marginTop: theme.spacing(1),
-    }
+    },
   }),
 );
 
@@ -28,7 +28,7 @@ interface ILoginWindowProps {
   onFailure: () => void;
 }
 
-export const LoginWindow: React.SFC<ILoginWindowProps> = props => {
+export const LoginWindow: React.SFC<ILoginWindowProps> = (props) => {
   const classes = useStyles();
   const [username, setUsername] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
@@ -36,7 +36,7 @@ export const LoginWindow: React.SFC<ILoginWindowProps> = props => {
   const [errorMessage, setErrorMessage] = React.useState<string>("");
 
   const handleLogin = () => {
-    let auth = ServiceProvider.AuthService();
+    const auth = ServiceProvider.AuthService();
     setLoginInProgress(true);
     (async () => {
       try {
@@ -64,13 +64,13 @@ export const LoginWindow: React.SFC<ILoginWindowProps> = props => {
     props.onRequestClose();
   };
 
-  let inputFields: JSX.Element = (
+  const inputFields: JSX.Element = (
     <div className="login-entry hidden">
       <TextField
         id="text-field-username"
         label="Username"
         value={username}
-        onChange={event => setUsername(event.currentTarget.value)}
+        onChange={(event) => setUsername(event.currentTarget.value)}
         fullWidth={true}
         />
       <TextField
@@ -78,7 +78,7 @@ export const LoginWindow: React.SFC<ILoginWindowProps> = props => {
         label="Password"
         type="password"
         value={password}
-        onChange={event => setPassword(event.currentTarget.value)}
+        onChange={(event) => setPassword(event.currentTarget.value)}
         fullWidth={true}
         />
         <Typography color="error" className={classes.errorMessage}>{errorMessage}</Typography>

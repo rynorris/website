@@ -1,9 +1,9 @@
-import * as React from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import * as React from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,7 +33,7 @@ interface IPostProps {
   image: string;
 }
 
-export const Post: React.SFC<IPostProps> = props => {
+export const Post: React.SFC<IPostProps> = (props) => {
   const classes = useStyles();
 
   const image = (

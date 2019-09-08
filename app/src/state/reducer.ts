@@ -1,6 +1,6 @@
 import { Action, Reducer } from "redux";
 
-import { LoginAction, ToastAction, SetSiteAction } from "./actions";
+import { LoginAction, SetSiteAction, ToastAction } from "./actions";
 import { AppState } from "./model";
 
 // Initial State.
@@ -23,7 +23,7 @@ const initialState: AppState = {
   toaster: {
     open: false,
     text: "",
-  }
+  },
 };
 
 export const appReducer: Reducer<AppState> = (state = initialState, action: Action) => {

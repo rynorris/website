@@ -8,7 +8,7 @@ import { Card } from "../services/pages-service";
 
 // Hack in the module since I can't figure out how to write typings.
 declare var require: any;
-let Markdown: any = require("react-markdown");
+const Markdown: any = require("react-markdown");
 
 interface IDynamicCardProps {
   card: Card;

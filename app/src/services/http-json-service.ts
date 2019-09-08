@@ -20,8 +20,8 @@ export default class HttpJsonService {
   public fetch(method: string, url: string, body: any): Promise<any> {
     url = this.basePath + url;
 
-    let requestInit: any = {
-      method: method,
+    const requestInit: any = {
+      method,
       headers: {
         "Content-Type": "application/json",
       },

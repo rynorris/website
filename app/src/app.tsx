@@ -1,16 +1,16 @@
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 import "es6-shim";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import { Redirect, Route, Switch } from "react-router";
 import { BrowserRouter } from "react-router-dom";
+import { Header } from "./components/helmet";
 import {Container} from "./container";
 import { ConnectedContactPage } from "./pages/contact-page";
 import { DynamicPage } from "./pages/dynamic-page";
-import { Provider } from "react-redux";
 import { store } from "./state/store";
-import { Header } from "./components/helmet";
-import { ThemeProvider } from "@material-ui/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
 
 const appElement = document.getElementById("app");
 

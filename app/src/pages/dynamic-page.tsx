@@ -1,22 +1,22 @@
-import * as React from "react";
-import { map } from "lodash";
-import {Unsubscribe, Dispatch} from "redux";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CreateIcon from "@material-ui/icons/Create";
 import SaveIcon from "@material-ui/icons/Save";
+import { map } from "lodash";
+import * as React from "react";
+import {Dispatch, Unsubscribe} from "redux";
 
-import {Card, Page, PagesService} from "../services/pages-service";
-import ServiceProvider from "../services/service-provider";
 import { CardEditor } from "../components/card-editor";
 import { DynamicCard } from "../components/dynamic-card";
 import { EditContainer } from "../components/edit-container";
+import {Card, Page, PagesService} from "../services/pages-service";
+import ServiceProvider from "../services/service-provider";
 
+import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Toast, ToastAction } from "../state/actions";
 import { AppState } from "../state/model";
-import { connect } from "react-redux";
 
 interface MatchParams {
   pageId: string;
@@ -56,26 +56,26 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     };
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     this.loadPage();
   }
 
-  componentDidUpdate(prevProps: IDynamicPageProps) {
+  public componentDidUpdate(prevProps: IDynamicPageProps) {
     if (prevProps.match.params.pageId !== this.props.match.params.pageId) {
       this.loadPage();
     }
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     this.unsubscribe();
   }
 
-  render() {
-    let cards: JSX.Element[] = map(this.state.page.cards, (card: Card, ix: number) => {
+  public render() {
+    const cards: JSX.Element[] = map(this.state.page.cards, (card: Card, ix: number) => {
       return <DynamicCard card={card} />;
     });
 
-    let wrapped: any = map(cards, (card: Card, ix: number) => {
+    const wrapped: any = map(cards, (card: Card, ix: number) => {
       return (
         <EditContainer
           key={"card_" + ix}
@@ -90,25 +90,25 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
       );
     });
 
-    let editButton: JSX.Element = (
+    const editButton: JSX.Element = (
       <Fab className="floating-button" size="medium" color="primary" onClick={this.editModeOn.bind(this)}>
         <CreateIcon />
       </Fab>
     );
 
-    let cancelButton: JSX.Element = (
+    const cancelButton: JSX.Element = (
       <Fab className="floating-button" size="medium" color="primary" onClick={this.cancelEdit.bind(this)}>
         <CancelIcon />
       </Fab>
     );
 
-    let saveButton: JSX.Element = (
+    const saveButton: JSX.Element = (
       <Fab className="floating-button" size="medium" color="primary" onClick={this.savePage.bind(this)}>
         <SaveIcon />
       </Fab>
     );
 
-    let addButton: JSX.Element = (
+    const addButton: JSX.Element = (
       <Fab
         className="floating-button"
         size="medium"
@@ -121,7 +121,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
 
     const cardToEdit = this.state.page.cards[this.state.cardToEdit];
 
-    let editorControls: JSX.Element = (
+    const editorControls: JSX.Element = (
       <div>
         {!this.state.editorOpen &&
           <div className="floating-buttons">
@@ -160,8 +160,8 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
   }
 
   private loadPage() {
-    let pageService: PagesService = ServiceProvider.PagesService();
-    let response: Promise<Page> = pageService.loadPage(this.props.match.params.pageId);
+    const pageService: PagesService = ServiceProvider.PagesService();
+    const response: Promise<Page> = pageService.loadPage(this.props.match.params.pageId);
     Promise.resolve(response).then((page) => {
       this.setState({ initialPage: page, page });
     }, () => {
@@ -189,7 +189,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
   }
 
   private addCard(ix: number, card?: Card) {
-    let newCard: Card = card || {
+    const newCard: Card = card || {
       type: "post",
       title: "New Card",
       text: "",
@@ -197,15 +197,15 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     };
 
     // Clone page.
-    let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    const newPage: Page = JSON.parse(JSON.stringify(this.state.page));
     newPage.cards.splice(ix, 0, newCard);
     this.setState({ page: newPage });
   }
 
   private removeCard(ix: number): Card {
     // Clone page.
-    let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
-    let removedCard = newPage.cards.splice(ix, 1);
+    const newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    const removedCard = newPage.cards.splice(ix, 1);
     this.setState({ page: newPage });
     return removedCard[0];
   }
@@ -215,22 +215,22 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
       return;
     }
 
-    let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
-    let card = newPage.cards.splice(fromIx, 1);
+    const newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    const card = newPage.cards.splice(fromIx, 1);
     newPage.cards.splice(toIx, 0, card[0]);
     this.setState({ page: newPage });
   }
 
   private saveCard(ix: number, card: Card) {
     // Clone page.
-    let newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    const newPage: Page = JSON.parse(JSON.stringify(this.state.page));
     newPage.cards[ix] = card;
     this.setState({ page: newPage, editorOpen: false });
   }
 
   private savePage() {
-    let pageService: PagesService = ServiceProvider.PagesService();
-    let response: Promise<any> = pageService.savePage(this.props.match.params.pageId, this.state.page);
+    const pageService: PagesService = ServiceProvider.PagesService();
+    const response: Promise<any> = pageService.savePage(this.props.match.params.pageId, this.state.page);
     Promise.resolve(response).then(() => {
       this.setState({ initialPage: this.state.page });
       this.editModeOff();
