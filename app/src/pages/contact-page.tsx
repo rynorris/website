@@ -2,7 +2,7 @@ import * as React from "react";
 import {Card, CardTitle, CardText} from "material-ui/Card";
 import Divider from "material-ui/Divider";
 
-import ContactForm from "../components/contact-form";
+import { ContactForm } from "../components/contact-form";
 import { ContactDetails } from "../services/site-service";
 import { AppState } from "../state/model";
 import { connect } from "react-redux";
