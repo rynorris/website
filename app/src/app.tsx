@@ -10,24 +10,30 @@ import DynamicPage from "./pages/dynamic-page";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
 import { Header } from "./components/helmet";
+import { ThemeProvider } from "@material-ui/styles";
+import { createMuiTheme } from "@material-ui/core";
 
 const appElement = document.getElementById("app");
+
+const theme = createMuiTheme();
 
 if (appElement != null) {
   ReactDOM.render((
     <Provider store={store}>
       <Header />
-      <MuiThemeProvider>
-        <BrowserRouter>
-          <Container>
-            <Switch>
-              <Route path="/contact" component={ConnectedContactPage} />
-              <Route path="/:pageId" component={DynamicPage} />
-              <Redirect from="*" to="/home" />
-            </Switch>
-          </Container>
-        </BrowserRouter>
-      </MuiThemeProvider>
+      <ThemeProvider theme={theme}>
+        <MuiThemeProvider>
+          <BrowserRouter>
+            <Container>
+              <Switch>
+                <Route path="/contact" component={ConnectedContactPage} />
+                <Route path="/:pageId" component={DynamicPage} />
+                <Redirect from="*" to="/home" />
+              </Switch>
+            </Container>
+          </BrowserRouter>
+        </MuiThemeProvider>
+      </ThemeProvider>
     </Provider>
   ), appElement);
 } else {
