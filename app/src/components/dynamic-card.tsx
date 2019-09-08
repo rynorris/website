@@ -1,9 +1,10 @@
 import * as React from "react";
 
+import Typography from "@material-ui/core/Typography";
+
 import { BioCard } from "../components/bio-card";
 import { Post } from "../components/post";
 import { Card } from "../services/pages-service";
-import { Typography } from "@material-ui/core";
 
 // Hack in the module since I can't figure out how to write typings.
 declare var require: any;

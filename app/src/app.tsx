@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 import { store } from "./state/store";
 import { Header } from "./components/helmet";
 import { ThemeProvider } from "@material-ui/styles";
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const appElement = document.getElementById("app");
 
