@@ -1,28 +1,28 @@
+import { map } from "lodash";
+import * as React from "react";
+import { connect } from "react-redux";
+import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
+
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CreateIcon from "@material-ui/icons/Create";
 import SaveIcon from "@material-ui/icons/Save";
-import { map } from "lodash";
-import * as React from "react";
-import {Dispatch, Unsubscribe} from "redux";
 
 import { CardEditor } from "../components/card-editor";
 import { DynamicCard } from "../components/dynamic-card";
 import { EditContainer } from "../components/edit-container";
-import {ICard, IPage, PagesService} from "../services/pages-service";
+import { ICard, IPage, PagesService } from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
-
-import { connect } from "react-redux";
-import { RouteComponentProps } from "react-router";
-import { Toast, IToastAction } from "../state/actions";
+import { IToastAction, Toast } from "../state/actions";
 import { IAppState } from "../state/model";
 
-interface MatchParams {
+interface IMatchParams {
   pageId: string;
 }
 
-interface IRouteProps extends RouteComponentProps<MatchParams> {}
+interface IRouteProps extends RouteComponentProps<IMatchParams> {}
 
 interface IStateProps {
   allowedToEdit: boolean;
@@ -43,16 +43,14 @@ interface IDynamicPageState {
 }
 
 class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamicPageState> {
-  private unsubscribe: Unsubscribe;
-
   constructor(props: IDynamicPageProps) {
     super(props);
     this.state = {
-      initialPage: {title: "", cards: []},
-      page: {title: "", cards: []},
+      cardToEdit: 0,
       editable: false,
       editorOpen: false,
-      cardToEdit: 0,
+      initialPage: {title: "", cards: []},
+      page: {title: "", cards: []},
     };
   }
 
@@ -66,12 +64,8 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     }
   }
 
-  public componentWillUnmount() {
-    this.unsubscribe();
-  }
-
   public render() {
-    const cards: JSX.Element[] = map(this.state.page.cards, (card: ICard, ix: number) => {
+    const cards: JSX.Element[] = map(this.state.page.cards, (card: ICard) => {
       return <DynamicCard card={card} />;
     });
 
@@ -80,30 +74,30 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
         <EditContainer
           key={"card_" + ix}
           editable={this.state.editable}
-          onEditButtonClick={(() => this.editCard(ix)).bind(this)}
-          onUpButtonClick={(() => this.moveCard(ix, ix - 1)).bind(this)}
-          onDownButtonClick={(() => this.moveCard(ix, ix + 1)).bind(this)}
-          onDeleteButtonClick={(() => this.removeCard(ix)).bind(this)}
-          >
+          onEditButtonClick={this.editCard(ix)}
+          onUpButtonClick={this.moveCard(ix, ix - 1)}
+          onDownButtonClick={this.moveCard(ix, ix + 1)}
+          onDeleteButtonClick={this.removeCard(ix)}
+        >
           {card}
         </EditContainer>
       );
     });
 
     const editButton: JSX.Element = (
-      <Fab className="floating-button" size="medium" color="primary" onClick={this.editModeOn.bind(this)}>
+      <Fab className="floating-button" size="medium" color="primary" onClick={this.editModeOn}>
         <CreateIcon />
       </Fab>
     );
 
     const cancelButton: JSX.Element = (
-      <Fab className="floating-button" size="medium" color="primary" onClick={this.cancelEdit.bind(this)}>
+      <Fab className="floating-button" size="medium" color="primary" onClick={this.cancelEdit}>
         <CancelIcon />
       </Fab>
     );
 
     const saveButton: JSX.Element = (
-      <Fab className="floating-button" size="medium" color="primary" onClick={this.savePage.bind(this)}>
+      <Fab className="floating-button" size="medium" color="primary" onClick={this.savePage}>
         <SaveIcon />
       </Fab>
     );
@@ -113,32 +107,28 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
         className="floating-button"
         size="medium"
         color="primary"
-        onClick={(() => { this.addCard(this.state.page.cards.length); }).bind(this)}
-        >
+        onClick={this.addCard}
+      >
         <AddIcon />
       </Fab>
     );
 
     const cardToEdit = this.state.page.cards[this.state.cardToEdit];
+    const buttonsToShow = this.state.editable ? [addButton, cancelButton, saveButton] : [editButton];
+
+    const cardEditor = (
+          <CardEditor
+            open={this.state.editorOpen}
+            onRequestClose={this.handleClose}
+            card={cardToEdit}
+            onSave={this.saveCard(this.state.cardToEdit)}
+          />
+    );
 
     const editorControls: JSX.Element = (
       <div>
-        {!this.state.editorOpen &&
-          <div className="floating-buttons">
-            {this.state.editable ? null : editButton}
-            {!this.state.editable ? null : addButton}
-            {!this.state.editable ? null : cancelButton}
-            {!this.state.editable ? null : saveButton}
-          </div>
-        }
-        {(cardToEdit !== undefined && this.state.editorOpen) &&
-          <CardEditor
-            open={this.state.editorOpen}
-            onRequestClose={this.handleClose.bind(this)}
-            card={cardToEdit}
-            onSave={((card: ICard) => { this.saveCard(this.state.cardToEdit, card); }).bind(this)}
-            />
-        }
+        {!this.state.editorOpen && <div className="floating-buttons">{buttonsToShow}</div>}
+        {(cardToEdit !== undefined && this.state.editorOpen) && cardEditor}
       </div>
     );
 
@@ -150,67 +140,48 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     );
   }
 
-  private handleClose() {
-    this.setState({ editorOpen: false});
-  }
+  private handleClose = () => this.setState({ editorOpen: false});
 
-  private cancelEdit() {
+  private cancelEdit = () => {
     this.editModeOff();
     this.resetPage();
   }
 
-  private loadPage() {
+  private loadPage = () => {
     const pageService: PagesService = ServiceProvider.PagesService();
-    const response: Promise<IPage> = pageService.loadPage(this.props.match.params.pageId);
-    Promise.resolve(response).then((page) => {
-      this.setState({ initialPage: page, page });
-    }, () => {
-    });
+    pageService.loadPage(this.props.match.params.pageId).then((page) =>
+      this.setState({ initialPage: page, page }));
   }
 
-  private resetPage() {
-    this.setState({ page: this.state.initialPage });
-  }
+  private resetPage = () => this.setState({ page: this.state.initialPage });
 
-  private editModeOn() {
-    this.setEditMode(true);
-  }
+  private editModeOn = () => this.setState({ editable: true });
 
-  private editModeOff() {
-    this.setEditMode(false);
-  }
+  private editModeOff = () => this.setState({ editable: false });
 
-  private setEditMode(on: boolean) {
-    this.setState({ editable: on });
-  }
+  private editCard = (ix: number) => () => this.setState({ cardToEdit: ix, editorOpen: true });
 
-  private editCard(ix: number) {
-    this.setState({ cardToEdit: ix, editorOpen: true });
-  }
-
-  private addCard(ix: number, card?: ICard) {
-    const newCard: ICard = card || {
-      type: "post",
-      title: "New Card",
-      text: "",
+  private addCard = () => {
+    const newCard: ICard = {
       image: "",
+      text: "",
+      title: "New Card",
+      type: "post",
     };
 
     // Clone page.
     const newPage: IPage = JSON.parse(JSON.stringify(this.state.page));
-    newPage.cards.splice(ix, 0, newCard);
+    newPage.cards.splice(this.state.page.cards.length, 0, newCard);
     this.setState({ page: newPage });
   }
 
-  private removeCard(ix: number): ICard {
+  private removeCard = (ix: number) => () => {
     // Clone page.
     const newPage: IPage = JSON.parse(JSON.stringify(this.state.page));
-    const removedCard = newPage.cards.splice(ix, 1);
     this.setState({ page: newPage });
-    return removedCard[0];
   }
 
-  private moveCard(fromIx: number, toIx: number) {
+  private moveCard = (fromIx: number, toIx: number) => () => {
     if (toIx < 0 || toIx >= this.state.page.cards.length) {
       return;
     }
@@ -221,7 +192,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     this.setState({ page: newPage });
   }
 
-  private saveCard(ix: number, card: ICard) {
+  private saveCard = (ix: number) => (card: ICard) => {
     // Clone page.
     const newPage: IPage = JSON.parse(JSON.stringify(this.state.page));
     newPage.cards[ix] = card;
@@ -235,8 +206,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
       this.setState({ initialPage: this.state.page });
       this.editModeOff();
       this.props.toast("Page saved!");
-    }, (e) => {
-      console.log("Something went wrong: ", e);
+    }, () => {
       this.props.toast("Failed to save!");
     });
   }

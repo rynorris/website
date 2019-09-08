@@ -3,9 +3,10 @@ import Drawer from "@material-ui/core/Drawer";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import Paper from "@material-ui/core/Paper";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Theme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import MenuIcon from "@material-ui/icons/Menu";
+import { createStyles, makeStyles } from "@material-ui/styles";
 import { map, zip } from "lodash";
 import * as React from "react";
 import { Link } from "react-router-dom";
@@ -15,14 +16,12 @@ const useStyles = makeStyles((theme: Theme) =>
     grow: {
       flexGrow: 1,
     },
-    navBar: {
-      minHeight: 40,
-      maxHeight: 40,
-      background: theme.palette.primary.main,
-    },
     linkButton: {
       color: theme.palette.text.primary,
       textDecorationLine: "none",
+    },
+    navBar: {
+      background: theme.palette.primary.main,
     },
   }),
 );

@@ -50,6 +50,7 @@
   "dependencies": {
     "@material-ui/core": "^4.4.0",
     "@material-ui/icons": "^4.2.1",
+    "@material-ui/styles": "^4.4.1",
     "es6-shim": "^0.35.5",
     "history": "^4.9.0",
     "lodash": "^4.17.15",
