@@ -53,7 +53,7 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
       onClose={props.onRequestClose}
       fullScreen={fullScreen}
       aria-labelledby="card-editor-dialog-title"
-      >
+    >
       <DialogTitle id="card-editor-dialog-title">Edit</DialogTitle>
       <DialogContent>
         <TextField
@@ -61,7 +61,8 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
           label="Title"
           value={card.title}
           onChange={setTitle}
-          fullWidth={true} />
+          fullWidth={true}
+        />
         <br/>
         <TextField
           id="text-field-text"
@@ -70,7 +71,8 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
           onChange={setText}
           fullWidth={true}
           multiline={true}
-          rows={4} />
+          rows={4}
+        />
       <Button onClick={openImageSelector}>Choose Image</Button>
       <Button onClick={removeImage}>Remove Image</Button>
       <Typography variant="h4">Preview</Typography>
@@ -79,7 +81,7 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
         open={imageSelectorOpen}
         onRequestClose={closeImageSelector}
         onDone={setImage}
-        />
+      />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onRequestClose}>Cancel</Button>

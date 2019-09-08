@@ -1,5 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import "es6-shim";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -17,10 +16,10 @@ const appElement = document.getElementById("app");
 // TODO: Get theme from API.
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#C2DC5D" },
-    secondary: { main: "#59BBE0" },
     background: { default: "#DDDDDD" },
     error: { main: "#FF7777" },
+    primary: { main: "#C2DC5D" },
+    secondary: { main: "#59BBE0" },
   },
 });
 
@@ -42,5 +41,5 @@ if (appElement != null) {
     </Provider>
   ), appElement);
 } else {
-  console.error("Did not find element with id 'app'");
+  throw new Error("Did not find element with id 'app'");
 }
