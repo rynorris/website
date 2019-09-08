@@ -1,4 +1,3 @@
-import { map } from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -65,11 +64,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
   }
 
   public render() {
-    const cards: JSX.Element[] = map(this.state.page.cards, (card: ICard) => {
-      return <DynamicCard card={card} />;
-    });
-
-    const wrapped: any = map(cards, (card: ICard, ix: number) => {
+    const wrapped: any = this.state.page.cards.map((card: ICard, ix: number) => {
       return (
         <EditContainer
           key={"card_" + ix}
@@ -79,31 +74,32 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
           onDownButtonClick={this.moveCard(ix, ix + 1)}
           onDeleteButtonClick={this.removeCard(ix)}
         >
-          {card}
+          <DynamicCard card={card} />
         </EditContainer>
       );
     });
 
     const editButton: JSX.Element = (
-      <Fab className="floating-button" size="medium" color="primary" onClick={this.editModeOn}>
+      <Fab key="edit-fab" className="floating-button" size="medium" color="primary" onClick={this.editModeOn}>
         <CreateIcon />
       </Fab>
     );
 
     const cancelButton: JSX.Element = (
-      <Fab className="floating-button" size="medium" color="primary" onClick={this.cancelEdit}>
+      <Fab key="cancel-fab" className="floating-button" size="medium" color="primary" onClick={this.cancelEdit}>
         <CancelIcon />
       </Fab>
     );
 
     const saveButton: JSX.Element = (
-      <Fab className="floating-button" size="medium" color="primary" onClick={this.savePage}>
+      <Fab key="save-fab" className="floating-button" size="medium" color="primary" onClick={this.savePage}>
         <SaveIcon />
       </Fab>
     );
 
     const addButton: JSX.Element = (
       <Fab
+        key="add-fab"
         className="floating-button"
         size="medium"
         color="primary"
