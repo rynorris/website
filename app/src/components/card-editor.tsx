@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import {Card} from "../services/pages-service";
 import DynamicCard from "./dynamic-card";
 import ImageSelector from "./image-selector";
-import { Typography, DialogContent, DialogActions } from "@material-ui/core";
+import { Typography, DialogContent, DialogActions, useTheme, useMediaQuery } from "@material-ui/core";
 
 interface ICardEditorProps {
   onSave: (card: Card) => void;
@@ -17,6 +17,9 @@ interface ICardEditorProps {
 
 export const CardEditor: React.SFC<ICardEditorProps> = props => {
   let clonedCard: Card = JSON.parse(JSON.stringify(props.card));
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [card, setCard] = React.useState<Card>(clonedCard);
   const [imageSelectorOpen, setImageSelectorOpen] = React.useState<boolean>(false);
@@ -42,6 +45,7 @@ export const CardEditor: React.SFC<ICardEditorProps> = props => {
     <Dialog
       open={props.open}
       onClose={props.onRequestClose}
+      fullScreen={fullScreen}
       aria-labelledby="card-editor-dialog-title"
       >
       <DialogTitle id="card-editor-dialog-title">Edit</DialogTitle>

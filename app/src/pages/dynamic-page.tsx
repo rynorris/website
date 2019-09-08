@@ -121,12 +121,14 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
 
     let editorControls: JSX.Element = (
       <div>
-        <div className="floating-buttons">
-          {this.state.editable ? null : editButton}
-          {!this.state.editable ? null : addButton}
-          {!this.state.editable ? null : cancelButton}
-          {!this.state.editable ? null : saveButton}
-        </div>
+        {!this.state.editorOpen &&
+          <div className="floating-buttons">
+            {this.state.editable ? null : editButton}
+            {!this.state.editable ? null : addButton}
+            {!this.state.editable ? null : cancelButton}
+            {!this.state.editable ? null : saveButton}
+          </div>
+        }
         {(cardToEdit !== undefined && this.state.editorOpen) &&
           <CardEditor
             open={this.state.editorOpen}
