@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     bioCard: {
       display: "flex",
-      maxHeight: 150,
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
     }
@@ -27,7 +26,7 @@ export const BioCard: React.SFC<IBioCardProps> = props => {
   return (
     <Card className={classes.bioCard}>
       <div className="app-bio-image-container">
-      {props.image ? <CardMedia className="app-bio-image" image={props.image} /> : null}
+      {props.image ? <img className="app-bio-image" src={props.image} /> : null}
       </div>
       <CardContent>
         <Typography variant="h4">{props.name}</Typography>
