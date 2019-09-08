@@ -1,14 +1,32 @@
 import * as React from "react";
 import { map, zip } from "lodash";
 import { Link } from "react-router-dom";
+import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import MenuIcon from "@material-ui/icons/Menu";
 import Paper from "@material-ui/core/Paper";
+import Toolbar from "@material-ui/core/Toolbar";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
-import {Toolbar, ToolbarGroup} from "material-ui/Toolbar";
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    grow: {
+      flexGrow: 1,
+    },
+    navBar: {
+      minHeight: 40,
+      maxHeight: 40,
+      background: theme.palette.primary.main,
+    },
+    linkButton: {
+      color: theme.palette.text.primary,
+      textDecorationLine: "none",
+    },
+  }),
+);
 
 interface INavbarProps {
   links: string[];
@@ -17,18 +35,19 @@ interface INavbarProps {
 }
 
 export const Navbar: React.SFC<INavbarProps> = props => {
+  const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const { links, titles, fixed } = props;
 
   let navItems = map(zip(links, titles), (item: string[], ix: number) => (
-      <Link key={"nav-item-" + ix} to={item[0]}>
+      <Link key={"nav-item-" + ix} to={item[0]} className={classes.linkButton}>
         <Button>{item[1]}</Button>
       </Link>
   ));
 
   let drawerItems = map(zip(links, titles), (item: string[], ix: number) => (
-      <Link key={"drawer-item-" + ix} to={item[0]}>
+      <Link key={"drawer-item-" + ix} to={item[0]} className={classes.linkButton}>
         <MenuItem onClick={() => setDrawerOpen(false)}>
           {item[1]}
         </MenuItem>
@@ -37,21 +56,23 @@ export const Navbar: React.SFC<INavbarProps> = props => {
 
   return (
     <Paper className={fixed ? "app-navbar-container fixed" : "app-navbar-container"} elevation={1} square={true}>
-      <Toolbar className="app-navbar">
-        <ToolbarGroup className="desktop-hide" firstChild={true}>
-          <Button onClick={() => setDrawerOpen(open => !open)}>
-            <MenuIcon fontSize="large" />
-          </Button>
-        </ToolbarGroup>
+        <Toolbar className={classes.navBar}>
+          <div className="desktop-hide">
+            <Button onClick={() => setDrawerOpen(open => !open)}>
+              <MenuIcon fontSize="large" />
+            </Button>
+          </div>
 
-        <ToolbarGroup className="mobile-hide">
-          {navItems}
-        </ToolbarGroup>
+          <div className="mobile-hide">
+            {navItems}
+          </div>
 
-        <ToolbarGroup lastChild={true}>
-          <Link to="/contact"><Button>Contact Us</Button></Link>
-        </ToolbarGroup>
-      </Toolbar>
+          <div className={classes.grow} />
+
+          <div>
+            <Link to="/contact"><Button>Contact Us</Button></Link>
+          </div>
+        </Toolbar>
 
       <Drawer
         open={drawerOpen}
