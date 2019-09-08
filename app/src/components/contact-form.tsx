@@ -1,101 +1,90 @@
 import * as React from "react";
-import ContentSend from "material-ui/svg-icons/content/send";
-import RaisedButton from "material-ui/RaisedButton";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import SendIcon from "@material-ui/icons/Send";
 import {Message, MessageService} from "../services/message-service";
 import ServiceProvider from "../services/service-provider";
-import TextField from "material-ui/TextField";
-import Toaster from "./toaster";
+import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { Dispatch } from "redux";
+import { Toast, ToastAction } from "../state/actions";
+import { connect } from "react-redux";
 
-interface IContactFormState {
-  name: string;
-  email: string;
-  message: string;
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    buttonIcon: {
+      marginLeft: theme.spacing(1),
+    },
+    submitButton: {
+      margin: theme.spacing(1),
+    },
+  }),
+);
+
+interface IDispatchProps {
+  toast: (text: string) => void;
 }
 
-export default class ContactForm extends React.Component<{}, IContactFormState> {
+type IContactFormProps = IDispatchProps;
 
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      name: "",
-      email: "",
-      message: "",
-    };
-  }
+const UnconnectedContactForm: React.SFC<IContactFormProps> = props => {
+  const classes = useStyles();
 
-  private handleSubmit() {
+  const [sender, setSender] = React.useState<string>("");
+  const [email, setEmail] = React.useState<string>("");
+  const [body, setBody] = React.useState<string>("");
+
+  const { toast } = props;
+
+  const handleSubmit = async () => {
     let service: MessageService = ServiceProvider.MessageService();
-    let message: Message = {
-      sender: this.state.name,
-      email: this.state.email,
-      message: this.state.message,
-    };
+    let message: Message = { sender, email, message: body };
 
-    let response: Promise<any> = service.send(message);
-    Promise.resolve(response).then(() => {
-      Toaster.toast("Message Sent!");
-      this.setState({
-        name: "",
-        email: "",
-        message: "",
-      });
-    }, () => {
-      Toaster.toast("Failed to send. Please email or call us directly.");
-    });
-  }
+    try {
+      let response = await service.send(message);
+      toast("Message Sent!");
+      setSender("");
+      setEmail("");
+      setBody("");
+    } catch (error) {
+      toast("Failed to send. Please email or call us directly.");
+    }
+  };
 
-  render() {
-    return (
-      <div className="contact-page-form">
-        <TextField
-          id="text-field-name"
-          floatingLabelText="Name"
-          value={this.state.name}
-          onChange={this.setName.bind(this)}
-          fullWidth={true} />
-        <br/>
-        <TextField
-          id="text-field-email"
-          floatingLabelText="Email Address"
-          value={this.state.email}
-          onChange={this.setEmail.bind(this)}
-          fullWidth={true} />
-        <br/>
-        <TextField
-          id="text-field-message"
-          floatingLabelText="Message"
-          value={this.state.message}
-          onChange={this.setMessage.bind(this)}
-          fullWidth={true}
-          multiLine={true}
-          rows={4} />
-        <br/>
-        <RaisedButton
-          label="Send"
-          labelPosition="before"
-          onClick={this.handleSubmit.bind(this)}
-          icon={<ContentSend />} />
-      </div>
-    );
-  }
+  return (
+    <div className="contact-page-form">
+      <TextField
+        id="text-field-name"
+        label="Name"
+        value={sender}
+        onChange={ev => setSender(ev.currentTarget.value)}
+        fullWidth={true} />
+      <br/>
+      <TextField
+        id="text-field-email"
+        label="Email Address"
+        value={email}
+        onChange={ev => setEmail(ev.currentTarget.value)}
+        fullWidth={true} />
+      <br/>
+      <TextField
+        id="text-field-message"
+        label="Message"
+        value={body}
+        onChange={ev => setBody(ev.currentTarget.value)}
+        fullWidth={true}
+        multiline={true}
+        rows={4} />
+      <br/>
+      <Button className={classes.submitButton} variant="contained" color="primary" onClick={handleSubmit}>
+        Send
+        <SendIcon className={classes.buttonIcon} />
+      </Button>
+    </div>
+  );
+};
 
-  private setName(ev: any) {
-    let newState: IContactFormState = this.state;
-    newState.name = ev.currentTarget.value;
-    this.setState(newState);
-  }
+const mapDispatchToProps = (dispatch: Dispatch<ToastAction>) => ({
+  toast: (text: string) => dispatch(Toast(text)),
+});
 
-
-  private setEmail(ev: any) {
-    let newState: IContactFormState = this.state;
-    newState.email = ev.currentTarget.value;
-    this.setState(newState);
-  }
-
-
-  private setMessage(ev: any) {
-    let newState: IContactFormState = this.state;
-    newState.message = ev.currentTarget.value;
-    this.setState(newState);
-  }
-}
+export const ContactForm = connect(null, mapDispatchToProps)(UnconnectedContactForm);

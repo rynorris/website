@@ -3,21 +3,32 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Redirect, Route, Switch } from "react-router";
 import { BrowserRouter } from "react-router-dom";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {Container} from "./container";
 import { ConnectedContactPage } from "./pages/contact-page";
-import DynamicPage from "./pages/dynamic-page";
+import { DynamicPage } from "./pages/dynamic-page";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
 import { Header } from "./components/helmet";
+import { ThemeProvider } from "@material-ui/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const appElement = document.getElementById("app");
+
+// TODO: Get theme from API.
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#C2DC5D" },
+    secondary: { main: "#59BBE0" },
+    background: { default: "#DDDDDD" },
+    error: { main: "#FF7777" },
+  },
+});
 
 if (appElement != null) {
   ReactDOM.render((
     <Provider store={store}>
       <Header />
-      <MuiThemeProvider>
+      <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Container>
             <Switch>
@@ -27,7 +38,7 @@ if (appElement != null) {
             </Switch>
           </Container>
         </BrowserRouter>
-      </MuiThemeProvider>
+      </ThemeProvider>
     </Provider>
   ), appElement);
 } else {

@@ -65,12 +65,6 @@ body {
   background-color: @primary-color;
 }
 
-.login-widget {
-  position: absolute;
-  right: 0;
-  z-index: 1000;
-}
-
 .login-window {
   max-width: 500px !important;
 
@@ -189,11 +183,6 @@ body {
 }
 
 // Post styling.
-.app-post {
-  margin-top: @grid-width;
-  margin-bottom: @grid-width;
-}
-
 .post-header-image-container {
   .--responsive-image-container;
   height: 300px;
@@ -206,14 +195,10 @@ body {
 // BioCard styling.
 @bio-height: 150px;
 
-.app-bio {
-  margin-top: @grid-width;
-  margin-bottom: @grid-width;
-}
-
 .app-bio-image-container {
   .--responsive-image-container;
-  width: @bio-height;
+  min-width: @bio-height;
+  max-width: @bio-height;
   height: @bio-height;
   background-color: @primary-color;
   display: inline-block;
@@ -225,35 +210,7 @@ body {
   .--responsive-image;
 }
 
-.app-bio-content {
-  width: calc(~"100% -" @bio-height);
-  display: inline-block;
-  vertical-align: top;
-}
-
 // Element edit Button
-.edit-container {
-  position: relative;
-}
-
-.edit-button {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  z-index: 1000;
-
-  button {
-    // Override some material-ui styles.
-    min-width: 0px !important;
-    height: auto !important;
-    line-height: inherit !important;
-
-    svg {
-      color: @primary-color !important;
-    }
-  }
-}
-
 .floating-buttons {
   position: fixed;
   right: @grid-width;
@@ -262,7 +219,7 @@ body {
 }
 
 .floating-button {
-  margin-left: @grid-width;
+  margin-left: @grid-width !important;
   opacity: 0.5;
   &:hover {
     opacity: 1.0;
@@ -270,15 +227,6 @@ body {
 
   button {
     background-color: @secondary-color !important;
-  }
-}
-
-// Card Editor.
-.card-editor-dialog {
-  width: @app-width !important;
-
-  @media @mobile {
-    width: @app-width-mobile !important;
   }
 }
 

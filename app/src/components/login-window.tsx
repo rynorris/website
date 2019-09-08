@@ -1,13 +1,25 @@
 import * as React from "react";
-import CircularProgress from "material-ui/CircularProgress";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import TextField from "material-ui/TextField";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 import ServiceProvider from "../services/service-provider";
-
 import { Login } from "../state/actions";
 import {store} from "../state/store";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    errorMessage: {
+      marginTop: theme.spacing(1),
+    }
+  }),
+);
 
 interface ILoginWindowProps {
   open: boolean;
@@ -16,111 +28,75 @@ interface ILoginWindowProps {
   onFailure: () => void;
 }
 
-interface ILoginWindowState {
-  username: string;
-  password: string;
-  loginInProgress: boolean;
-  errorMessage: string;
-}
+export const LoginWindow: React.SFC<ILoginWindowProps> = props => {
+  const classes = useStyles();
+  const [username, setUsername] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [loginInProgress, setLoginInProgress] = React.useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = React.useState<string>("");
 
-export default class LoginWindow extends React.Component<ILoginWindowProps, ILoginWindowState> {
-  constructor(props: ILoginWindowProps) {
-    super(props);
-    this.state = {
-      username: "",
-      password: "",
-      loginInProgress: false,
-      errorMessage: "",
-    };
-  }
-
-  render() {
-    let loginButton: JSX.Element;
-
-    let actions: any[] = [
-      <FlatButton
-        label="Cancel"
-        onClick={this.cancelLogin.bind(this)} />,
-      <FlatButton
-        label="Login"
-        disabled={this.state.loginInProgress}
-        onClick={this.handleLogin.bind(this)} />
-    ];
-
-    let inputFields: JSX.Element = (
-      <div className="login-entry hidden">
-        <TextField
-          id="text-field-username"
-          floatingLabelText="Username"
-          value={this.state.username}
-          onChange={this.setUsername.bind(this)}
-          fullWidth={true}
-          />
-        <br/>
-        <TextField
-          id="text-field-password"
-          floatingLabelText="Password"
-          type="password"
-          value={this.state.password}
-          onChange={this.setPassword.bind(this)}
-          fullWidth={true}
-          />
-        <div className="login-error-message">{this.state.errorMessage}</div>
-      </div>
-    );
-
-    return (
-      <div>
-        <Dialog
-          title="Login"
-          open={this.props.open}
-          actions={actions}
-          onRequestClose={this.props.onRequestClose}
-          autoScrollBodyContent={true}
-          contentClassName="login-window"
-          bodyClassName="login-window-body"
-          >
-          {this.state.loginInProgress ? <div className="login-spinner"><CircularProgress size={100}/></div> : inputFields}
-        </Dialog>
-      </div>
-    );
-  }
-
-  private handleLogin() {
+  const handleLogin = () => {
     let auth = ServiceProvider.AuthService();
-    this.setState(Object.assign({}, this.state, { loginInProgress: true }));
-    auth.login({
-      username: this.state.username,
-      password: this.state.password
-    }).then(() => {
-      this.props.onSuccess();
-      store.dispatch(Login({username: this.state.username}));
-      this.setState(Object.assign({}, this.state, {
-        loginInProgress: false,
-        errorMessage: "",
-        username: "",
-        password: ""
-      }));
-    }).catch((e) => {
-      this.props.onFailure();
-      this.setState(Object.assign({}, this.state, {
-        loginInProgress: false,
-        errorMessage: e.message,
-        password: "",
-      }));
-    });
-  }
+    setLoginInProgress(true);
+    (async () => {
+      try {
+        await auth.login({ username, password });
+        props.onSuccess();
+        store.dispatch(Login({ username }));
+        setLoginInProgress(false);
+        setErrorMessage("");
+        setUsername("");
+        setPassword("");
+      } catch (error) {
+        props.onFailure();
+        setErrorMessage(error.message);
+        setPassword("");
+        setLoginInProgress(false);
+      }
+    })();
+  };
 
-  private cancelLogin() {
-    this.setState(Object.assign({}, this.state, { username: "", password: "" }));
-    this.props.onRequestClose();
-  }
+  const cancelLogin = () => {
+    setUsername("");
+    setPassword("");
+    setLoginInProgress(false);
+    setErrorMessage("");
+    props.onRequestClose();
+  };
 
-  private setUsername(ev: any) {
-    this.setState(Object.assign({}, this.state, { username: ev.currentTarget.value }));
-  }
+  let inputFields: JSX.Element = (
+    <div className="login-entry hidden">
+      <TextField
+        id="text-field-username"
+        label="Username"
+        value={username}
+        onChange={event => setUsername(event.currentTarget.value)}
+        fullWidth={true}
+        />
+      <TextField
+        id="text-field-password"
+        label="Password"
+        type="password"
+        value={password}
+        onChange={event => setPassword(event.currentTarget.value)}
+        fullWidth={true}
+        />
+        <Typography color="error" className={classes.errorMessage}>{errorMessage}</Typography>
+    </div>
+  );
 
-  private setPassword(ev: any) {
-    this.setState(Object.assign({}, this.state, { password: ev.currentTarget.value }));
-  }
-}
+  return (
+    <div>
+      <Dialog open={props.open} onClose={props.onRequestClose}>
+          <DialogTitle>Login</DialogTitle>
+          <DialogContent>
+            {loginInProgress ? <div className="login-spinner"><CircularProgress size={100}/></div> : inputFields}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={cancelLogin}>Cancel</Button>
+            <Button disabled={loginInProgress} onClick={handleLogin}>Login</Button>
+          </DialogActions>
+      </Dialog>
+    </div>
+  );
+};

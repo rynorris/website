@@ -1,39 +1,48 @@
 import * as React from "react";
 import { map } from "lodash";
-import {Unsubscribe} from "redux";
-import ContentAdd from "material-ui/svg-icons/content/add";
-import ContentCreate from "material-ui/svg-icons/content/create";
-import ContentSave from "material-ui/svg-icons/content/save";
-import FloatingActionButton from "material-ui/FloatingActionButton";
-import NavigationCancel from "material-ui/svg-icons/navigation/cancel";
+import {Unsubscribe, Dispatch} from "redux";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import CancelIcon from "@material-ui/icons/Cancel";
+import CreateIcon from "@material-ui/icons/Create";
+import SaveIcon from "@material-ui/icons/Save";
 
 import {Card, Page, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
-import CardEditor from "../components/card-editor";
-import DynamicCard from "../components/dynamic-card";
-import EditContainer from "../components/edit-container";
-import Toaster from "../components/toaster";
+import { CardEditor } from "../components/card-editor";
+import { DynamicCard } from "../components/dynamic-card";
+import { EditContainer } from "../components/edit-container";
 
-import {store} from "../state/store";
-import { string } from "prop-types";
 import { RouteComponentProps } from "react-router";
+import { Toast, ToastAction } from "../state/actions";
+import { AppState } from "../state/model";
+import { connect } from "react-redux";
 
 interface MatchParams {
   pageId: string;
 }
 
-interface IDynamicPageProps extends RouteComponentProps<MatchParams> {}
+interface IRouteProps extends RouteComponentProps<MatchParams> {}
+
+interface IStateProps {
+  allowedToEdit: boolean;
+}
+
+interface IDispatchProps {
+  toast: (text: string) => void;
+}
+
+type IDynamicPageProps = IRouteProps & IStateProps & IDispatchProps;
 
 interface IDynamicPageState {
   initialPage: Page;
   page: Page;
-  allowedToEdit: boolean;
   editable: boolean;
   editorOpen: boolean;
   cardToEdit: number;
 }
 
-export default class DynamicPage extends React.Component<IDynamicPageProps, IDynamicPageState> {
+class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamicPageState> {
   private unsubscribe: Unsubscribe;
 
   constructor(props: IDynamicPageProps) {
@@ -41,7 +50,6 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     this.state = {
       initialPage: {title: "", cards: []},
       page: {title: "", cards: []},
-      allowedToEdit: store.getState().auth.user ? true : false,
       editable: false,
       editorOpen: false,
       cardToEdit: 0,
@@ -50,13 +58,6 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
 
   componentDidMount() {
     this.loadPage();
-
-    this.unsubscribe = store.subscribe(() => {
-      let loggedIn = store.getState().auth.user ? true : false;
-      if (loggedIn !== this.state.allowedToEdit) {
-        this.setState(Object.assign({}, this.state, { allowedToEdit: loggedIn }));
-      }
-    });
   }
 
   componentDidUpdate(prevProps: IDynamicPageProps) {
@@ -90,55 +91,61 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     });
 
     let editButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onClick={this.editModeOn.bind(this)}>
-        <ContentCreate />
-      </FloatingActionButton>
+      <Fab className="floating-button" size="medium" color="primary" onClick={this.editModeOn.bind(this)}>
+        <CreateIcon />
+      </Fab>
     );
 
     let cancelButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onClick={this.cancelEdit.bind(this)}>
-        <NavigationCancel />
-      </FloatingActionButton>
+      <Fab className="floating-button" size="medium" color="primary" onClick={this.cancelEdit.bind(this)}>
+        <CancelIcon />
+      </Fab>
     );
 
     let saveButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onClick={this.savePage.bind(this)}>
-        <ContentSave />
-      </FloatingActionButton>
+      <Fab className="floating-button" size="medium" color="primary" onClick={this.savePage.bind(this)}>
+        <SaveIcon />
+      </Fab>
     );
 
     let addButton: JSX.Element = (
-      <FloatingActionButton
+      <Fab
         className="floating-button"
-        mini={true}
+        size="medium"
+        color="primary"
         onClick={(() => { this.addCard(this.state.page.cards.length); }).bind(this)}
         >
-        <ContentAdd />
-      </FloatingActionButton>
+        <AddIcon />
+      </Fab>
     );
 
+    const cardToEdit = this.state.page.cards[this.state.cardToEdit];
 
     let editorControls: JSX.Element = (
       <div>
-        <div className="floating-buttons">
-          {this.state.editable ? null : editButton}
-          {!this.state.editable ? null : addButton}
-          {!this.state.editable ? null : cancelButton}
-          {!this.state.editable ? null : saveButton}
-        </div>
-        <CardEditor
-          open={this.state.editorOpen}
-          onRequestClose={this.handleClose.bind(this)}
-          card={this.state.page.cards[this.state.cardToEdit]}
-          onSave={((card: Card) => { this.saveCard(this.state.cardToEdit, card); }).bind(this)}
-          />
+        {!this.state.editorOpen &&
+          <div className="floating-buttons">
+            {this.state.editable ? null : editButton}
+            {!this.state.editable ? null : addButton}
+            {!this.state.editable ? null : cancelButton}
+            {!this.state.editable ? null : saveButton}
+          </div>
+        }
+        {(cardToEdit !== undefined && this.state.editorOpen) &&
+          <CardEditor
+            open={this.state.editorOpen}
+            onRequestClose={this.handleClose.bind(this)}
+            card={cardToEdit}
+            onSave={((card: Card) => { this.saveCard(this.state.cardToEdit, card); }).bind(this)}
+            />
+        }
       </div>
     );
 
     return (
       <div>
         {wrapped}
-        {this.state.allowedToEdit ? editorControls : null}
+        {this.props.allowedToEdit ? editorControls : null}
       </div>
     );
   }
@@ -227,10 +234,20 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     Promise.resolve(response).then(() => {
       this.setState({ initialPage: this.state.page });
       this.editModeOff();
-      Toaster.toast("Page saved!");
+      this.props.toast("Page saved!");
     }, (e) => {
       console.log("Something went wrong: ", e);
-      Toaster.toast("Failed to save.");
+      this.props.toast("Failed to save!");
     });
   }
 }
+
+const mapStateToProps = (state: AppState) => ({
+  allowedToEdit: state.auth.user !== null,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<ToastAction>) => ({
+  toast: (text: string) => dispatch(Toast(text)),
+});
+
+export const DynamicPage = connect(mapStateToProps, mapDispatchToProps)(UnconnectedDynamicPage);
