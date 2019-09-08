@@ -18,6 +18,13 @@ const useStyles = makeStyles((theme: Theme) =>
     errorMessage: {
       marginTop: theme.spacing(1),
     },
+    loginForm: {
+      alignItems: "center",
+      display: "flex",
+      height: 150,
+      justifyContent: "center",
+      width: 300,
+    },
   }),
 );
 
@@ -92,8 +99,8 @@ export const LoginWindow: React.SFC<ILoginWindowProps> = (props) => {
     <div>
       <Dialog open={props.open} onClose={props.onRequestClose}>
           <DialogTitle>Login</DialogTitle>
-          <DialogContent>
-            {loginInProgress ? <div className="login-spinner"><CircularProgress size={100}/></div> : inputFields}
+          <DialogContent className={classes.loginForm}>
+            {loginInProgress ? <CircularProgress size={100}/> : inputFields}
           </DialogContent>
           <DialogActions>
             <Button onClick={cancelLogin}>Cancel</Button>
