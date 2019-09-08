@@ -1,11 +1,25 @@
 import * as React from "react";
-import FlatButton from "material-ui/FlatButton";
-import ActionDelete from "material-ui/svg-icons/action/delete";
-import ContentCreate from "material-ui/svg-icons/content/create";
-import KeyboardArrowUp from "material-ui/svg-icons/hardware/keyboard-arrow-up";
-import KeyboardArrowDown from "material-ui/svg-icons/hardware/keyboard-arrow-down";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CreateIcon from "@material-ui/icons/Create";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { makeStyles } from "@material-ui/core/styles";
+import { Theme, createStyles } from "@material-ui/core";
 
-import {Card} from "../services/pages-service";
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    editContainer: {
+      position: "relative",
+    },
+    editControls: {
+      position: "absolute",
+      right: theme.spacing(1),
+      top: theme.spacing(1),
+      zIndex: 1000,
+    }
+  }),
+);
 
 interface IEditContainerProps {
   editable: boolean;
@@ -15,34 +29,34 @@ interface IEditContainerProps {
   onDeleteButtonClick: any;
 }
 
-export default class EditContainer extends React.Component<IEditContainerProps, {}> {
-  render() {
-    if (!this.props.children) {
-      return <div></div>;
-    }
+export const EditContainer: React.SFC<IEditContainerProps> = props => {
+  const classes = useStyles();
 
-    let editButton: JSX.Element = (
-      <div className="edit-button">
-        <FlatButton onClick={this.props.onEditButtonClick}>
-          <ContentCreate />
-        </FlatButton>
-        <FlatButton onClick={this.props.onUpButtonClick}>
-          <KeyboardArrowUp />
-        </FlatButton>
-        <FlatButton onClick={this.props.onDownButtonClick}>
-          <KeyboardArrowDown />
-        </FlatButton>
-        <FlatButton onClick={this.props.onDeleteButtonClick}>
-          <ActionDelete />
-        </FlatButton>
-      </div>
-    );
-
-    return (
-      <div className={this.props.editable ? "edit-container editable" : "edit-container"}>
-        {this.props.editable ? editButton : null}
-        {this.props.children}
-      </div>
-    );
+  if (!props.children) {
+    return <div></div>;
   }
-}
+
+  let editButton: JSX.Element = (
+    <div className={classes.editControls}>
+      <IconButton onClick={props.onEditButtonClick} size="small">
+        <CreateIcon color="primary" />
+      </IconButton>
+      <IconButton onClick={props.onUpButtonClick} size="small">
+        <KeyboardArrowUpIcon color="primary" />
+      </IconButton>
+      <IconButton onClick={props.onDownButtonClick} size="small">
+        <KeyboardArrowDownIcon color="primary" />
+      </IconButton>
+      <IconButton onClick={props.onDeleteButtonClick} size="small">
+        <DeleteIcon color="primary" />
+      </IconButton>
+    </div>
+  );
+
+  return (
+    <div className={classes.editContainer}>
+      {props.editable ? editButton : null}
+      {props.children}
+    </div>
+  );
+};

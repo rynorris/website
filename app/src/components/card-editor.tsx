@@ -4,7 +4,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import {Card} from "../services/pages-service";
-import DynamicCard from "./dynamic-card";
+import { DynamicCard } from "./dynamic-card";
 import ImageSelector from "./image-selector";
 import { Typography, DialogContent, DialogActions, useTheme, useMediaQuery } from "@material-ui/core";
 

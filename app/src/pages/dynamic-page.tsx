@@ -11,7 +11,7 @@ import {Card, Page, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
 import { CardEditor } from "../components/card-editor";
 import { DynamicCard } from "../components/dynamic-card";
-import EditContainer from "../components/edit-container";
+import { EditContainer } from "../components/edit-container";
 import Toaster from "../components/toaster";
 
 import {store} from "../state/store";
