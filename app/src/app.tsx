@@ -5,8 +5,7 @@ import { Provider } from "react-redux";
 import { Redirect, Route, Switch } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
-import { createMuiTheme } from "@material-ui/core/styles";
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 import { Header } from "./components/helmet";
 import {Container} from "./container";
@@ -30,7 +29,7 @@ if (appElement != null) {
   ReactDOM.render((
     <Provider store={store}>
       <Header />
-      <ThemeProvider theme={theme}>
+      <MuiThemeProvider theme={theme}>
         <BrowserRouter>
           <Container>
             <Switch>
@@ -40,7 +39,7 @@ if (appElement != null) {
             </Switch>
           </Container>
         </BrowserRouter>
-      </ThemeProvider>
+      </MuiThemeProvider>
     </Provider>
   ), appElement);
 } else {
