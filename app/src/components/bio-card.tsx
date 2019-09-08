@@ -30,7 +30,7 @@ export const BioCard: React.SFC<IBioCardProps> = (props) => {
       </div>
       <CardContent>
         <Typography variant="h4">{props.name}</Typography>
-      {props.children}
+        <Typography component="div">{props.children}</Typography>
       </CardContent>
     </Card>
   );

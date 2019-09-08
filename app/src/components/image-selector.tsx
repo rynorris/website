@@ -13,24 +13,24 @@ import { createStyles, makeStyles, Theme, useTheme } from "@material-ui/core/sty
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ServiceProvider from "../services/service-provider";
 
-interface StyleProps {
+interface IStyleProps {
   fullScreen: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    imageSelectorContent: {
-      display: "flex",
-      flexDirection: ({ fullScreen }: StyleProps) => fullScreen ? "column" : "row",
-      padding: theme.spacing(2),
-    },
     imageList: {
-      width: ({ fullScreen }: StyleProps) => fullScreen ? "100%" : "auto",
+      width: ({ fullScreen }: IStyleProps) => fullScreen ? "100%" : "auto",
     },
     imagePreview: {
-      minWidth: 100,
-      minHeight: 100,
       margin: theme.spacing(2),
+      minHeight: 100,
+      minWidth: 100,
+    },
+    imageSelectorContent: {
+      display: "flex",
+      flexDirection: ({ fullScreen }: IStyleProps) => fullScreen ? "column" : "row",
+      padding: theme.spacing(2),
     },
   }),
 );
@@ -63,7 +63,8 @@ export const ImageSelector: React.SFC<IImageSelectorProps> = (props) => {
         const images = await image.listImages();
         setImageKeys(images);
       } catch (error) {
-        console.log("Failed to load image list", error);
+        // tslint:disable: no-console
+        console.error("Failed to load image list", error);
       }
     })();
   });
@@ -81,7 +82,7 @@ export const ImageSelector: React.SFC<IImageSelectorProps> = (props) => {
         key={key}
         onClick={() => setSelectedValue(key)}
         selected={selectedValue === key}
-        >
+      >
         <ListItemText>{key}</ListItemText>
       </ListItem>
     );
@@ -98,7 +99,7 @@ export const ImageSelector: React.SFC<IImageSelectorProps> = (props) => {
             </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.onRequestClose.bind(this)}>Cancel</Button>
+          <Button onClick={props.onRequestClose}>Cancel</Button>
           <Button onClick={handleChoose}>Choose</Button>
         </DialogActions>
       </Dialog>

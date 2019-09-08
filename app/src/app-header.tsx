@@ -11,7 +11,7 @@ import { Dispatch } from "redux";
 import ScrollListener from "./components/scroll-listener";
 import ServiceProvider from "./services/service-provider";
 import { ISite, SiteService } from "./services/site-service";
-import { SetSite, ISetSiteAction } from "./state/actions";
+import { ISetSiteAction, SetSite } from "./state/actions";
 import { IAppState } from "./state/model";
 
 interface IStateProps {
@@ -53,14 +53,14 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
           <div className="app-header-image-container">
             <ImageGallery images={bannerImages} interval={10000} />
           </div>
-          <ScrollListener onScroll={this.handleScroll.bind(this)} />
+          <ScrollListener onScroll={this.handleScroll} />
         </Paper>
         <Navbar links={navbarLinks} titles={navbarTitles} fixed={this.state.navbarFixed} />
       </div>
     );
   }
 
-  private handleScroll(top: number) {
+  private handleScroll = (top: number) => {
     const navbarFixed = top <= 0 ? true : false;
     this.setState({ navbarFixed });
   }

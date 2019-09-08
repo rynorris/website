@@ -51,7 +51,7 @@ export const Post: React.SFC<IPostProps> = (props) => {
         {props.image !== "" && image}
         <CardHeader title={props.title} className={titleClass} />
       </div>
-      <CardContent><Typography>{props.children}</Typography></CardContent>
+      <CardContent><Typography component="div">{props.children}</Typography></CardContent>
     </Card>
   );
 };

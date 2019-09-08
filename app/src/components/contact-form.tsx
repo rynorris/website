@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {IMessage, MessageService} from "../services/message-service";
 import ServiceProvider from "../services/service-provider";
-import { Toast, IToastAction } from "../state/actions";
+import { IToastAction, Toast } from "../state/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,15 +57,15 @@ const UnconnectedContactForm: React.SFC<IContactFormProps> = (props) => {
         label="Name"
         value={sender}
         onChange={(ev) => setSender(ev.currentTarget.value)}
-        fullWidth={true} />
-      <br/>
+        fullWidth={true}
+      />
       <TextField
         id="text-field-email"
         label="Email Address"
         value={email}
         onChange={(ev) => setEmail(ev.currentTarget.value)}
-        fullWidth={true} />
-      <br/>
+        fullWidth={true}
+      />
       <TextField
         id="text-field-message"
         label="Message"
@@ -73,8 +73,8 @@ const UnconnectedContactForm: React.SFC<IContactFormProps> = (props) => {
         onChange={(ev) => setBody(ev.currentTarget.value)}
         fullWidth={true}
         multiline={true}
-        rows={4} />
-      <br/>
+        rows={4}
+      />
       <Button className={classes.submitButton} variant="contained" color="primary" onClick={handleSubmit}>
         Send
         <SendIcon className={classes.buttonIcon} />

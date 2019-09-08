@@ -9,7 +9,7 @@ import ServiceProvider from "../services/service-provider";
 import { LoginWindow } from "./login-window";
 
 import { connect } from "react-redux";
-import { Login, ILoginAction, Logout, ILogoutAction, Toast, IToastAction } from "../state/actions";
+import { ILoginAction, ILogoutAction, IToastAction, Login, Logout, Toast } from "../state/actions";
 import { IAppState } from "../state/model";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,14 +39,17 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = (props) => {
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
   const { user, onLogin, onLogout, toast } = props;
 
+  const openDialog = React.useCallback(() => setDialogOpen(true), []);
+  const closeDialog = React.useCallback(() => setDialogOpen(false), []);
+
   React.useEffect(() => {
     if (user === null) {
       const auth = ServiceProvider.AuthService();
       (async () => {
         try {
-          const user = await auth.whoAmI();
-          if (user !== null) {
-            onLogin(user);
+          const userInfo = await auth.whoAmI();
+          if (userInfo !== null) {
+            onLogin(userInfo);
           } else {
             onLogout();
           }
@@ -65,7 +68,6 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = (props) => {
         onLogout();
         toast("Logged out");
       } catch (error) {
-        console.error("Failed to log out", error);
         toast("Failed to log out");
       }
     })();
@@ -83,7 +85,7 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = (props) => {
   const loginButton = user !== null ? (
     <Button onClick={doLogout}>Logout</Button>
   ) : (
-    <Button onClick={() => setDialogOpen(true)}>Login</Button>
+    <Button onClick={openDialog}>Login</Button>
   );
 
   return (
@@ -92,10 +94,10 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = (props) => {
       {loginButton}
       <LoginWindow
         open={dialogOpen}
-        onRequestClose={() => setDialogOpen(false)}
+        onRequestClose={closeDialog}
         onSuccess={onLoginSuccess}
         onFailure={onLoginFailure}
-        />
+      />
     </div>
   );
 };
