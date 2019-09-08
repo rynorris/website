@@ -3,23 +3,24 @@ import * as React from "react";
 
 const SCROLL_LISTEN_INTERVAL_DEFAULT: number = 50;
 
-interface ScrollListenerProps {
+interface IScrollListenerProps {
   onScroll: (top: number) => void;
   interval?: number;
 }
 
-interface ScrollListenerState {
+interface IScrollListenerState {
   onScroll: () => void;
 }
 
-export default class ScrollListener extends React.Component<ScrollListenerProps, ScrollListenerState> {
+export default class ScrollListener extends React.Component<IScrollListenerProps, IScrollListenerState> {
   private scroller: React.RefObject<HTMLDivElement>;
 
-  constructor(props: ScrollListenerProps) {
+  constructor(props: IScrollListenerProps) {
     super(props);
     const interval = this.props.interval || SCROLL_LISTEN_INTERVAL_DEFAULT;
     this.state = {
-      onScroll: throttle(() => this.scroller.current && props.onScroll(this.scroller.current.getClientRects()[0].top), interval),
+      onScroll: throttle(() =>
+        this.scroller.current && props.onScroll(this.scroller.current.getClientRects()[0].top), interval),
     };
     this.scroller = React.createRef();
   }

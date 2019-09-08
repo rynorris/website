@@ -35,6 +35,9 @@ export const LoginWindow: React.SFC<ILoginWindowProps> = (props) => {
   const [loginInProgress, setLoginInProgress] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string>("");
 
+  const onUsernameChange = React.useCallback((event) => setUsername(event.currentTarget.value), []);
+  const onPasswordChange = React.useCallback((event) => setPassword(event.currentTarget.value), []);
+
   const handleLogin = () => {
     const auth = ServiceProvider.AuthService();
     setLoginInProgress(true);
@@ -70,18 +73,18 @@ export const LoginWindow: React.SFC<ILoginWindowProps> = (props) => {
         id="text-field-username"
         label="Username"
         value={username}
-        onChange={(event) => setUsername(event.currentTarget.value)}
+        onChange={onUsernameChange}
         fullWidth={true}
-        />
+      />
       <TextField
         id="text-field-password"
         label="Password"
         type="password"
         value={password}
-        onChange={(event) => setPassword(event.currentTarget.value)}
+        onChange={onPasswordChange}
         fullWidth={true}
-        />
-        <Typography color="error" className={classes.errorMessage}>{errorMessage}</Typography>
+      />
+      <Typography color="error" className={classes.errorMessage}>{errorMessage}</Typography>
     </div>
   );
 

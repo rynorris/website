@@ -28,7 +28,7 @@ const UnconnectedToaster: React.SFC<IToasterProps> = (props) => {
         message={props.text}
         autoHideDuration={props.duration}
         onClose={props.closeToast}
-        />
+      />
     );
 };
 

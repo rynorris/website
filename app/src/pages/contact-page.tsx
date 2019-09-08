@@ -14,8 +14,8 @@ import { IAppState } from "../state/model";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     sectionDivider: {
-      marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
+      marginTop: theme.spacing(1),
     },
   }),
 );

@@ -35,6 +35,9 @@ export const Navbar: React.SFC<INavbarProps> = (props) => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
+  const closeDrawer = React.useCallback(() => setDrawerOpen(false), []);
+  const toggleDrawer = React.useCallback(() => setDrawerOpen((open) => !open), []);
+
   const { links, titles, fixed } = props;
 
   const navItems = map(zip(links, titles), (item: string[], ix: number) => (
@@ -45,7 +48,7 @@ export const Navbar: React.SFC<INavbarProps> = (props) => {
 
   const drawerItems = map(zip(links, titles), (item: string[], ix: number) => (
       <Link key={"drawer-item-" + ix} to={item[0]} className={classes.linkButton}>
-        <MenuItem onClick={() => setDrawerOpen(false)}>
+        <MenuItem onClick={closeDrawer}>
           {item[1]}
         </MenuItem>
       </Link>
@@ -55,7 +58,7 @@ export const Navbar: React.SFC<INavbarProps> = (props) => {
     <Paper className={fixed ? "app-navbar-container fixed" : "app-navbar-container"} elevation={1} square={true}>
         <Toolbar className={classes.navBar}>
           <div className="desktop-hide">
-            <Button onClick={() => setDrawerOpen((open) => !open)}>
+            <Button onClick={toggleDrawer}>
               <MenuIcon fontSize="large" />
             </Button>
           </div>
@@ -73,7 +76,7 @@ export const Navbar: React.SFC<INavbarProps> = (props) => {
 
       <Drawer
         open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
+        onClose={closeDrawer}
         classes={{ paper: "app-navdrawer" }}
       >
         <MenuList>

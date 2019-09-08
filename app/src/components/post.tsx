@@ -7,21 +7,21 @@ import * as React from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    postCard: {
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2),
-    },
     imagePostHeader: {
-      position: "relative",
       height: 300,
+      position: "relative",
     },
     imagePostTitle: {
-      position: "absolute",
-      bottom: 0,
-      width: "100%",
-      color: "#FFFFFF",
       background: "#000000",
+      bottom: 0,
+      color: "#FFFFFF",
       opacity: 0.5,
+      position: "absolute",
+      width: "100%",
+    },
+    postCard: {
+      marginBottom: theme.spacing(2),
+      marginTop: theme.spacing(2),
     },
     postHeader: {},
     postTitle: {},
