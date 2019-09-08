@@ -10,7 +10,7 @@ import NavigationCancel from "material-ui/svg-icons/navigation/cancel";
 import {Card, Page, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
 import { CardEditor } from "../components/card-editor";
-import DynamicCard from "../components/dynamic-card";
+import { DynamicCard } from "../components/dynamic-card";
 import EditContainer from "../components/edit-container";
 import Toaster from "../components/toaster";
 

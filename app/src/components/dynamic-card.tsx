@@ -13,14 +13,11 @@ interface IDynamicCardProps {
   card: Card;
 }
 
-export default class DynamicCard extends React.Component<IDynamicCardProps, {}> {
-  render() {
-    let card: Card = this.props.card;
+export const DynamicCard: React.SFC<IDynamicCardProps> = ({ card }) => {
     switch (card.type) {
       case "post":
         return <Post title={card.title} image={card.image}><Markdown className="card-body" source={card.text} /></Post>;
       case "bio":
         return <BioCard name={card.title} image={card.image}><Typography><Markdown source={card.text} /></Typography></BioCard>;
     }
-  }
-}
+};
