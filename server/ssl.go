@@ -12,7 +12,21 @@ import (
 )
 
 func getTlsConfig(useAcme bool, cacheDir string, domains []string) *tls.Config {
-	config := &tls.Config{
+	// If desired used ACME to automatically get a certificate.
+	if useAcme {
+		cache := autocert.DirCache(cacheDir)
+		hostPolicy := autocert.HostWhitelist(domains...)
+
+		m := autocert.Manager{
+			Prompt:     autocert.AcceptTOS,
+			Cache:      cache,
+			HostPolicy: hostPolicy,
+		}
+
+		return m.TLSConfig()
+	}
+
+	return &tls.Config{
 		// Causes servers to use Go's default ciphersuite preferences,
 		// which are tuned to avoid attacks. Does nothing on clients.
 		PreferServerCipherSuites: true,
@@ -36,22 +50,6 @@ func getTlsConfig(useAcme bool, cacheDir string, domains []string) *tls.Config {
 			// tls.TLS_RSA_WITH_AES_128_GCM_SHA256,
 		},
 	}
-
-	// If desired used ACME to automatically get a certificate.
-	if useAcme {
-		cache := autocert.DirCache(cacheDir)
-		hostPolicy := autocert.HostWhitelist(domains...)
-
-		m := autocert.Manager{
-			Prompt:     autocert.AcceptTOS,
-			Cache:      cache,
-			HostPolicy: hostPolicy,
-		}
-
-		config.GetCertificate = m.GetCertificate
-	}
-
-	return config
 }
 
 func startHttpRedirectServer(fromPort, toPort int) {
