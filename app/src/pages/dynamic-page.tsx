@@ -1,6 +1,6 @@
 import * as React from "react";
 import { map } from "lodash";
-import {Unsubscribe} from "redux";
+import {Unsubscribe, Dispatch} from "redux";
 import ContentAdd from "material-ui/svg-icons/content/add";
 import ContentCreate from "material-ui/svg-icons/content/create";
 import ContentSave from "material-ui/svg-icons/content/save";
@@ -12,29 +12,37 @@ import ServiceProvider from "../services/service-provider";
 import { CardEditor } from "../components/card-editor";
 import { DynamicCard } from "../components/dynamic-card";
 import { EditContainer } from "../components/edit-container";
-import { Toaster } from "../components/toaster";
 
-import {store} from "../state/store";
-import { string } from "prop-types";
 import { RouteComponentProps } from "react-router";
-import { Toast } from "../state/actions";
+import { Toast, ToastAction } from "../state/actions";
+import { AppState } from "../state/model";
+import { connect } from "react-redux";
 
 interface MatchParams {
   pageId: string;
 }
 
-interface IDynamicPageProps extends RouteComponentProps<MatchParams> {}
+interface IRouteProps extends RouteComponentProps<MatchParams> {}
+
+interface IStateProps {
+  allowedToEdit: boolean;
+}
+
+interface IDispatchProps {
+  toast: (text: string) => void;
+}
+
+type IDynamicPageProps = IRouteProps & IStateProps & IDispatchProps;
 
 interface IDynamicPageState {
   initialPage: Page;
   page: Page;
-  allowedToEdit: boolean;
   editable: boolean;
   editorOpen: boolean;
   cardToEdit: number;
 }
 
-export default class DynamicPage extends React.Component<IDynamicPageProps, IDynamicPageState> {
+class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamicPageState> {
   private unsubscribe: Unsubscribe;
 
   constructor(props: IDynamicPageProps) {
@@ -42,7 +50,6 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     this.state = {
       initialPage: {title: "", cards: []},
       page: {title: "", cards: []},
-      allowedToEdit: store.getState().auth.user ? true : false,
       editable: false,
       editorOpen: false,
       cardToEdit: 0,
@@ -51,13 +58,6 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
 
   componentDidMount() {
     this.loadPage();
-
-    this.unsubscribe = store.subscribe(() => {
-      let loggedIn = store.getState().auth.user ? true : false;
-      if (loggedIn !== this.state.allowedToEdit) {
-        this.setState(Object.assign({}, this.state, { allowedToEdit: loggedIn }));
-      }
-    });
   }
 
   componentDidUpdate(prevProps: IDynamicPageProps) {
@@ -144,7 +144,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     return (
       <div>
         {wrapped}
-        {this.state.allowedToEdit ? editorControls : null}
+        {this.props.allowedToEdit ? editorControls : null}
       </div>
     );
   }
@@ -233,10 +233,20 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     Promise.resolve(response).then(() => {
       this.setState({ initialPage: this.state.page });
       this.editModeOff();
-      store.dispatch(Toast("Page saved!"));
+      this.props.toast("Page saved!");
     }, (e) => {
       console.log("Something went wrong: ", e);
-      store.dispatch(Toast("Failed to save!"));
+      this.props.toast("Failed to save!");
     });
   }
 }
+
+const mapStateToProps = (state: AppState) => ({
+  allowedToEdit: state.auth.user !== null,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<ToastAction>) => ({
+  toast: (text: string) => dispatch(Toast(text)),
+});
+
+export const DynamicPage = connect(mapStateToProps, mapDispatchToProps)(UnconnectedDynamicPage);

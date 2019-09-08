@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {Container} from "./container";
 import { ConnectedContactPage } from "./pages/contact-page";
-import DynamicPage from "./pages/dynamic-page";
+import { DynamicPage } from "./pages/dynamic-page";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
 import { Header } from "./components/helmet";
