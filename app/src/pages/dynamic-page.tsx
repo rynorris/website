@@ -10,13 +10,13 @@ import {Dispatch, Unsubscribe} from "redux";
 import { CardEditor } from "../components/card-editor";
 import { DynamicCard } from "../components/dynamic-card";
 import { EditContainer } from "../components/edit-container";
-import {Card, Page, PagesService} from "../services/pages-service";
+import {ICard, IPage, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
 
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Toast, ToastAction } from "../state/actions";
-import { AppState } from "../state/model";
+import { Toast, IToastAction } from "../state/actions";
+import { IAppState } from "../state/model";
 
 interface MatchParams {
   pageId: string;
@@ -35,8 +35,8 @@ interface IDispatchProps {
 type IDynamicPageProps = IRouteProps & IStateProps & IDispatchProps;
 
 interface IDynamicPageState {
-  initialPage: Page;
-  page: Page;
+  initialPage: IPage;
+  page: IPage;
   editable: boolean;
   editorOpen: boolean;
   cardToEdit: number;
@@ -71,11 +71,11 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
   }
 
   public render() {
-    const cards: JSX.Element[] = map(this.state.page.cards, (card: Card, ix: number) => {
+    const cards: JSX.Element[] = map(this.state.page.cards, (card: ICard, ix: number) => {
       return <DynamicCard card={card} />;
     });
 
-    const wrapped: any = map(cards, (card: Card, ix: number) => {
+    const wrapped: any = map(cards, (card: ICard, ix: number) => {
       return (
         <EditContainer
           key={"card_" + ix}
@@ -136,7 +136,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
             open={this.state.editorOpen}
             onRequestClose={this.handleClose.bind(this)}
             card={cardToEdit}
-            onSave={((card: Card) => { this.saveCard(this.state.cardToEdit, card); }).bind(this)}
+            onSave={((card: ICard) => { this.saveCard(this.state.cardToEdit, card); }).bind(this)}
             />
         }
       </div>
@@ -161,7 +161,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
 
   private loadPage() {
     const pageService: PagesService = ServiceProvider.PagesService();
-    const response: Promise<Page> = pageService.loadPage(this.props.match.params.pageId);
+    const response: Promise<IPage> = pageService.loadPage(this.props.match.params.pageId);
     Promise.resolve(response).then((page) => {
       this.setState({ initialPage: page, page });
     }, () => {
@@ -188,8 +188,8 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     this.setState({ cardToEdit: ix, editorOpen: true });
   }
 
-  private addCard(ix: number, card?: Card) {
-    const newCard: Card = card || {
+  private addCard(ix: number, card?: ICard) {
+    const newCard: ICard = card || {
       type: "post",
       title: "New Card",
       text: "",
@@ -197,14 +197,14 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     };
 
     // Clone page.
-    const newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    const newPage: IPage = JSON.parse(JSON.stringify(this.state.page));
     newPage.cards.splice(ix, 0, newCard);
     this.setState({ page: newPage });
   }
 
-  private removeCard(ix: number): Card {
+  private removeCard(ix: number): ICard {
     // Clone page.
-    const newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    const newPage: IPage = JSON.parse(JSON.stringify(this.state.page));
     const removedCard = newPage.cards.splice(ix, 1);
     this.setState({ page: newPage });
     return removedCard[0];
@@ -215,15 +215,15 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
       return;
     }
 
-    const newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    const newPage: IPage = JSON.parse(JSON.stringify(this.state.page));
     const card = newPage.cards.splice(fromIx, 1);
     newPage.cards.splice(toIx, 0, card[0]);
     this.setState({ page: newPage });
   }
 
-  private saveCard(ix: number, card: Card) {
+  private saveCard(ix: number, card: ICard) {
     // Clone page.
-    const newPage: Page = JSON.parse(JSON.stringify(this.state.page));
+    const newPage: IPage = JSON.parse(JSON.stringify(this.state.page));
     newPage.cards[ix] = card;
     this.setState({ page: newPage, editorOpen: false });
   }
@@ -242,11 +242,11 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
   }
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: IAppState) => ({
   allowedToEdit: state.auth.user !== null,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ToastAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IToastAction>) => ({
   toast: (text: string) => dispatch(Toast(text)),
 });
 

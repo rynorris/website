@@ -21,11 +21,11 @@ export default class HttpJsonService {
     url = this.basePath + url;
 
     const requestInit: any = {
-      method,
+      credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      method,
     };
 
     if ((method !== "HEAD") && (method !== "GET")) {

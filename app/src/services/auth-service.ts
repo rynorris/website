@@ -1,16 +1,16 @@
 import HttpJsonService from "./http-json-service";
 
-export interface LoginRequest {
+export interface ILoginRequest {
   username: string;
   password: string;
 }
 
-export interface UserInfo {
+export interface IUserInfo {
   username: string;
 }
 
 export class AuthService extends HttpJsonService {
-  public login(r: LoginRequest): Promise<any> {
+  public login(r: ILoginRequest): Promise<any> {
     return this.post("/login", r);
   }
 
@@ -18,7 +18,7 @@ export class AuthService extends HttpJsonService {
     return this.post("/logout", null);
   }
 
-  public whoAmI(): Promise<UserInfo> {
+  public whoAmI(): Promise<IUserInfo> {
     return this.get("/user");
   }
 }

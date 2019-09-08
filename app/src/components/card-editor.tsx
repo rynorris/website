@@ -10,34 +10,34 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-import {Card} from "../services/pages-service";
+import {ICard} from "../services/pages-service";
 import { DynamicCard } from "./dynamic-card";
 import { ImageSelector } from "./image-selector";
 
 interface ICardEditorProps {
-  onSave: (card: Card) => void;
-  card: Card;
+  onSave: (card: ICard) => void;
+  card: ICard;
   open: boolean;
   onRequestClose: () => void;
 }
 
 export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
-  const clonedCard: Card = JSON.parse(JSON.stringify(props.card));
+  const clonedCard: ICard = JSON.parse(JSON.stringify(props.card));
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [card, setCard] = React.useState<Card>(clonedCard);
+  const [card, setCard] = React.useState<ICard>(clonedCard);
   const [imageSelectorOpen, setImageSelectorOpen] = React.useState<boolean>(false);
 
   const doSave = () => props.onSave(card);
 
-  const setTitle = (ev: any) => setCard((prevCard: Card) => ({ ...prevCard, title: ev.currentTarget.value }));
+  const setTitle = (ev: any) => setCard((prevCard: ICard) => ({ ...prevCard, title: ev.currentTarget.value }));
 
-  const setText = (ev: any) => setCard((prevCard: Card) => ({ ...prevCard, text: ev.currentTarget.value }));
+  const setText = (ev: any) => setCard((prevCard: ICard) => ({ ...prevCard, text: ev.currentTarget.value }));
 
   const setImage = (image: string) => {
-    setCard((prevCard: Card) => ({ ...prevCard, image }));
+    setCard((prevCard: ICard) => ({ ...prevCard, image }));
     setImageSelectorOpen(false);
   };
 

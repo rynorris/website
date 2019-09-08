@@ -5,9 +5,9 @@ import SendIcon from "@material-ui/icons/Send";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {Message, MessageService} from "../services/message-service";
+import {IMessage, MessageService} from "../services/message-service";
 import ServiceProvider from "../services/service-provider";
-import { Toast, ToastAction } from "../state/actions";
+import { Toast, IToastAction } from "../state/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,7 +37,7 @@ const UnconnectedContactForm: React.SFC<IContactFormProps> = (props) => {
 
   const handleSubmit = async () => {
     const service: MessageService = ServiceProvider.MessageService();
-    const message: Message = { sender, email, message: body };
+    const message: IMessage = { sender, email, message: body };
 
     try {
       const response = await service.send(message);
@@ -83,7 +83,7 @@ const UnconnectedContactForm: React.SFC<IContactFormProps> = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ToastAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IToastAction>) => ({
   toast: (text: string) => dispatch(Toast(text)),
 });
 

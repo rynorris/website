@@ -4,13 +4,13 @@ import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 import {Dispatch} from "redux";
 
-import {UserInfo} from "../services/auth-service";
+import {IUserInfo} from "../services/auth-service";
 import ServiceProvider from "../services/service-provider";
 import { LoginWindow } from "./login-window";
 
 import { connect } from "react-redux";
-import { Login, LoginAction, Logout, LogoutAction, Toast, ToastAction } from "../state/actions";
-import { AppState } from "../state/model";
+import { Login, ILoginAction, Logout, ILogoutAction, Toast, IToastAction } from "../state/actions";
+import { IAppState } from "../state/model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,11 +23,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IStateProps {
-  user: UserInfo | null;
+  user: IUserInfo | null;
 }
 
 interface IDispatchProps {
-  onLogin: (user: UserInfo) => void;
+  onLogin: (user: IUserInfo) => void;
   onLogout: () => void;
   toast: (text: string) => void;
 }
@@ -100,12 +100,12 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: IAppState) => ({
   user: state.auth.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<LoginAction | LogoutAction | ToastAction>) => ({
-  onLogin: (user: UserInfo) => dispatch(Login(user)),
+const mapDispatchToProps = (dispatch: Dispatch<ILoginAction | ILogoutAction | IToastAction>) => ({
+  onLogin: (user: IUserInfo) => dispatch(Login(user)),
   onLogout: () => dispatch(Logout()),
   toast: (text: string) => dispatch(Toast(text)),
 });

@@ -4,14 +4,14 @@ import Typography from "@material-ui/core/Typography";
 
 import { BioCard } from "../components/bio-card";
 import { Post } from "../components/post";
-import { Card } from "../services/pages-service";
+import { ICard } from "../services/pages-service";
 
 // Hack in the module since I can't figure out how to write typings.
 declare var require: any;
 const Markdown: any = require("react-markdown");
 
 interface IDynamicCardProps {
-  card: Card;
+  card: ICard;
 }
 
 export const DynamicCard: React.SFC<IDynamicCardProps> = ({ card }) => {

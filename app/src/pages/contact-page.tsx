@@ -8,8 +8,8 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 import { ContactForm } from "../components/contact-form";
-import { ContactDetails } from "../services/site-service";
-import { AppState } from "../state/model";
+import { IContactDetails } from "../services/site-service";
+import { IAppState } from "../state/model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IDispatchProps {
-  contact: ContactDetails;
+  contact: IContactDetails;
 }
 
 type IContactPageProps = IDispatchProps;
@@ -48,7 +48,7 @@ const ContactPage: React.SFC<IContactPageProps> = ({ contact }) => {
   );
 };
 
-const mapStateToProps = ({ site }: AppState) => ({
+const mapStateToProps = ({ site }: IAppState) => ({
   contact: site.contact,
 });
 

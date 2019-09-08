@@ -1,7 +1,7 @@
 import * as React from "react";
 import Helmet from "react-helmet";
 import { connect } from "react-redux";
-import { AppState } from "../state/model";
+import { IAppState } from "../state/model";
 
 interface IStateProps {
     title: string;
@@ -15,7 +15,7 @@ const UnconnectedHeader = ({ title }: IHeaderProps) => (
     </Helmet>
 );
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: IAppState) => ({
     title: state.site.title,
 });
 

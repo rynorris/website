@@ -1,33 +1,33 @@
 import HttpJsonService from "./http-json-service";
 
-export interface Site {
-    banner: BannerConfig;
-    contact: ContactDetails;
+export interface ISite {
+    banner: IBannerConfig;
+    contact: IContactDetails;
     logo: string;
-    pages: PageListing[];
+    pages: IPageListing[];
     title: string;
 }
 
-export interface BannerConfig {
+export interface IBannerConfig {
     images: string[];
 }
 
-export interface ContactDetails {
+export interface IContactDetails {
     email: string;
     phone: string;
 }
 
-export interface PageListing {
+export interface IPageListing {
     id: string;
     title: string;
 }
 
 export class SiteService extends HttpJsonService {
-  public loadSite(): Promise<Site> {
+  public loadSite(): Promise<ISite> {
     return this.get(`/`);
   }
 
-  public saveSite(site: Site): Promise<any> {
+  public saveSite(site: ISite): Promise<any> {
     return this.put(`/`, site);
   }
 }

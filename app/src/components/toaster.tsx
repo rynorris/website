@@ -3,8 +3,8 @@ import * as React from "react";
 import {Dispatch} from "redux";
 
 import { connect } from "react-redux";
-import { CloseToast, CloseToastAction } from "../state/actions";
-import { AppState } from "../state/model";
+import { CloseToast, ICloseToastAction } from "../state/actions";
+import { IAppState } from "../state/model";
 
 interface IStateProps {
   isOpen: boolean;
@@ -32,12 +32,12 @@ const UnconnectedToaster: React.SFC<IToasterProps> = (props) => {
     );
 };
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: IAppState) => ({
   isOpen: state.toaster.open,
   text: state.toaster.text,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<CloseToastAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ICloseToastAction>) => ({
   closeToast: () => dispatch(CloseToast()),
 });
 

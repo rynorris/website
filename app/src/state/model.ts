@@ -1,12 +1,12 @@
-import { UserInfo } from "../services/auth-service";
-import { Site } from "../services/site-service";
+import { IUserInfo } from "../services/auth-service";
+import { ISite } from "../services/site-service";
 
 // State model.
-export interface AppState {
+export interface IAppState {
   auth: {
-    user: UserInfo | null;
+    user: IUserInfo | null;
   };
-  site: Site;
+  site: ISite;
   toaster: {
     open: boolean;
     text: string;

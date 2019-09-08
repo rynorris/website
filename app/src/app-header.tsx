@@ -10,16 +10,16 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import ScrollListener from "./components/scroll-listener";
 import ServiceProvider from "./services/service-provider";
-import { Site, SiteService } from "./services/site-service";
-import { SetSite, SetSiteAction } from "./state/actions";
-import { AppState } from "./state/model";
+import { ISite, SiteService } from "./services/site-service";
+import { SetSite, ISetSiteAction } from "./state/actions";
+import { IAppState } from "./state/model";
 
 interface IStateProps {
-  site: Site;
+  site: ISite;
 }
 
 interface IDispatchProps {
-  setSite: (site: Site) => void;
+  setSite: (site: ISite) => void;
 }
 
 type IAppHeaderProps = IStateProps & IDispatchProps;
@@ -66,15 +66,15 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
   }
 }
 
-function mapStateToProps(state: AppState): IStateProps {
+function mapStateToProps(state: IAppState): IStateProps {
   return {
     site: state.site,
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<SetSiteAction>): IDispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<ISetSiteAction>): IDispatchProps {
   return {
-    setSite: (site: Site) => dispatch(SetSite(site)),
+    setSite: (site: ISite) => dispatch(SetSite(site)),
   };
 }
 

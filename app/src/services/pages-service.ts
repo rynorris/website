@@ -1,15 +1,15 @@
 import HttpJsonService from "./http-json-service";
 
-export interface Card {
+export interface ICard {
   type: "post" | "bio";
   title: string;
   text: string;
   image: string;
 }
 
-export interface Page {
+export interface IPage {
   title: string;
-  cards: Card[];
+  cards: ICard[];
 }
 
 export class PagesService extends HttpJsonService {
@@ -17,11 +17,11 @@ export class PagesService extends HttpJsonService {
     return this.get(`/`);
   }
 
-  public loadPage(key: string): Promise<Page> {
+  public loadPage(key: string): Promise<IPage> {
     return this.get(`/${key}`);
   }
 
-  public savePage(key: string, page: Page): Promise<any> {
+  public savePage(key: string, page: IPage): Promise<any> {
     return this.put(`/${key}`, page);
   }
 }

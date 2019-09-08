@@ -1,35 +1,35 @@
 import { Action, ActionCreator } from "redux";
 
-import { UserInfo } from "../services/auth-service";
-import { Site } from "../services/site-service";
+import { IUserInfo } from "../services/auth-service";
+import { ISite } from "../services/site-service";
 
 // --- Site state.
-export interface SetSiteAction extends Action {
+export interface ISetSiteAction extends Action {
     type: "SITE/SET";
-    site: Site;
+    site: ISite;
 }
-export const SetSite: ActionCreator<SetSiteAction> = (site: Site) => ({ type: "SITE/SET", site });
+export const SetSite: ActionCreator<ISetSiteAction> = (site: ISite) => ({ type: "SITE/SET", site });
 
 // --- Login/logout.
-export interface LoginAction extends Action {
+export interface ILoginAction extends Action {
   type: "LOGIN";
-  user: UserInfo;
+  user: IUserInfo;
 }
-export const Login: ActionCreator<LoginAction> = (user: UserInfo) => ({ type: "LOGIN", user });
+export const Login: ActionCreator<ILoginAction> = (user: IUserInfo) => ({ type: "LOGIN", user });
 
-export interface LogoutAction extends Action {
+export interface ILogoutAction extends Action {
   type: "LOGOUT";
 }
-export const Logout: ActionCreator<LogoutAction> = () => ({ type: "LOGOUT" });
+export const Logout: ActionCreator<ILogoutAction> = () => ({ type: "LOGOUT" });
 
 // --- Toasts.
-export interface ToastAction extends Action {
+export interface IToastAction extends Action {
   type: "TOAST";
   text: string;
 }
-export const Toast: ActionCreator<ToastAction> = (text: string) => ({ type: "TOAST", text });
+export const Toast: ActionCreator<IToastAction> = (text: string) => ({ type: "TOAST", text });
 
-export interface CloseToastAction extends Action {
+export interface ICloseToastAction extends Action {
   type: "CLOSE-TOAST";
 }
-export const CloseToast: ActionCreator<CloseToastAction> = () => ({ type: "CLOSE-TOAST" });
+export const CloseToast: ActionCreator<ICloseToastAction> = () => ({ type: "CLOSE-TOAST" });
