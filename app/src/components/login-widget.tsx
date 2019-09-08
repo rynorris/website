@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Dispatch} from "redux";
 import Button from "@material-ui/core/Button";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 import LoginWindow from "./login-window";
 import Toaster from "./toaster";
@@ -10,6 +11,16 @@ import ServiceProvider from "../services/service-provider";
 import { Login, Logout, LogoutAction, LoginAction } from "../state/actions";
 import { AppState } from "../state/model";
 import { connect } from "react-redux";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    loginWidget: {
+      position: "absolute",
+      right: 0,
+      zIndex: 1000,
+    }
+  }),
+);
 
 interface IStateProps {
   user: UserInfo | null;
@@ -22,87 +33,70 @@ interface IDispatchProps {
 
 type LoginWidgetProps = IStateProps & IDispatchProps;
 
-interface ILoginWidgetState {
-  dialogOpen: boolean;
-}
+const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = props => {
+  const classes = useStyles();
+  const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
+  const { user, onLogin, onLogout } = props;
 
-class UnconnectedLoginWidget extends React.Component<LoginWidgetProps, ILoginWidgetState> {
-
-  constructor(props: LoginWidgetProps) {
-    super(props);
-    this.state = {
-      dialogOpen: false,
-    };
-  }
-
-  componentDidMount() {
+  React.useEffect(() => {
     const auth = ServiceProvider.AuthService();
 
     (async () => {
       try {
         const user = await auth.whoAmI();
         if (user !== null) {
-          this.props.onLogin(user);
+          onLogin(user);
         } else {
-          this.props.onLogout();
+          onLogout();
         }
       } catch (error) {
-        this.props.onLogout();
+        onLogout();
       }
     })();
-  }
+  });
 
-  render() {
-    const { user } = this.props;
-
-    let loginButton: JSX.Element;
-    if (user) {
-      loginButton = <Button onClick={this.doLogout.bind(this)}>Logout</Button>;
-    } else {
-      loginButton = <Button onClick={this.openDialog.bind(this)}>Login</Button>;
-    }
-
-    return (
-      <div className="login-widget">
-        {user ? <span>Logged in as {user.username}</span> : null}
-        {loginButton}
-        <LoginWindow
-          open={this.state.dialogOpen}
-          onRequestClose={this.closeDialog.bind(this)}
-          onSuccess={this.onLoginSuccess.bind(this)}
-          onFailure={this.onLoginFailure.bind(this)}
-          />
-      </div>
-    );
-  }
-
-  private doLogout() {
+  const doLogout = () => {
     let auth = ServiceProvider.AuthService();
-    auth.logout().then(() => {
-      this.props.onLogout();
-      Toaster.toast("Logged out");
-    }).catch(() => {
-      Toaster.toast("Failed to log out");
-    });
-  }
+    (async () => {
+      try {
+        await auth.logout();
+        onLogout();
+        Toaster.toast("Logged out");
+      } catch (error) {
+        console.error("Failed to log out", error);
+        Toaster.toast("Failed to log out");
+      }
+    })();
+  };
 
-  private onLoginSuccess() {
+  const onLoginSuccess = () => {
     Toaster.toast("Login Successful");
-    this.closeDialog();
-  }
+    setDialogOpen(false);
+  };
 
-  private onLoginFailure() {
+  const onLoginFailure = () => {
     Toaster.toast("Login Failed");
-  }
+  };
 
-  private closeDialog() {
-    this.setState(Object.assign({}, this.state, { dialogOpen: false }));
-  }
+  const loginButton = user !== null ? (
+    <Button onClick={doLogout}>Logout</Button>
+  ) : (
+    <Button onClick={() => setDialogOpen(true)}>Login</Button>
+  );
 
-  private openDialog() {
-    this.setState(Object.assign({}, this.state, { dialogOpen: true }));
-  }
-}
+  return (
+    <div className={classes.loginWidget}>
+      {user ? <span>Logged in as {user.username}</span> : null}
+      {loginButton}
+      <LoginWindow
+        open={dialogOpen}
+        onRequestClose={() => setDialogOpen(false)}
+        onSuccess={onLoginSuccess}
+        onFailure={onLoginFailure}
+        />
+    </div>
+  );
+};
 
 const mapStateToProps = (state: AppState) => ({
   user: state.auth.user,
