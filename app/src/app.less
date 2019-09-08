@@ -197,7 +197,8 @@ body {
 
 .app-bio-image-container {
   .--responsive-image-container;
-  width: @bio-height;
+  min-width: @bio-height;
+  max-width: @bio-height;
   height: @bio-height;
   background-color: @primary-color;
   display: inline-block;
