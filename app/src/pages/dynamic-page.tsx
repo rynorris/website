@@ -1,11 +1,11 @@
 import * as React from "react";
 import { map } from "lodash";
 import {Unsubscribe, Dispatch} from "redux";
-import ContentAdd from "material-ui/svg-icons/content/add";
-import ContentCreate from "material-ui/svg-icons/content/create";
-import ContentSave from "material-ui/svg-icons/content/save";
-import FloatingActionButton from "material-ui/FloatingActionButton";
-import NavigationCancel from "material-ui/svg-icons/navigation/cancel";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import CancelIcon from "@material-ui/icons/Cancel";
+import CreateIcon from "@material-ui/icons/Create";
+import SaveIcon from "@material-ui/icons/Save";
 
 import {Card, Page, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
@@ -91,31 +91,32 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     });
 
     let editButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onClick={this.editModeOn.bind(this)}>
-        <ContentCreate />
-      </FloatingActionButton>
+      <Fab className="floating-button" size="medium" color="primary" onClick={this.editModeOn.bind(this)}>
+        <CreateIcon />
+      </Fab>
     );
 
     let cancelButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onClick={this.cancelEdit.bind(this)}>
-        <NavigationCancel />
-      </FloatingActionButton>
+      <Fab className="floating-button" size="medium" color="primary" onClick={this.cancelEdit.bind(this)}>
+        <CancelIcon />
+      </Fab>
     );
 
     let saveButton: JSX.Element = (
-      <FloatingActionButton className="floating-button" mini={true} onClick={this.savePage.bind(this)}>
-        <ContentSave />
-      </FloatingActionButton>
+      <Fab className="floating-button" size="medium" color="primary" onClick={this.savePage.bind(this)}>
+        <SaveIcon />
+      </Fab>
     );
 
     let addButton: JSX.Element = (
-      <FloatingActionButton
+      <Fab
         className="floating-button"
-        mini={true}
+        size="medium"
+        color="primary"
         onClick={(() => { this.addCard(this.state.page.cards.length); }).bind(this)}
         >
-        <ContentAdd />
-      </FloatingActionButton>
+        <AddIcon />
+      </Fab>
     );
 
     const cardToEdit = this.state.page.cards[this.state.cardToEdit];
