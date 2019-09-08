@@ -3,7 +3,7 @@ import Paper from "material-ui/Paper";
 
 import { FloatingLogo } from "./components/floating-logo";
 import { ImageGallery } from "./components/image-gallery";
-import LoginWidget from "./components/login-widget";
+import { LoginWidget } from "./components/login-widget";
 import Navbar from "./components/navbar";
 
 import ScrollListener from "./components/scroll-listener";

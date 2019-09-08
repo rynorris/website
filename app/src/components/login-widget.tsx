@@ -1,69 +1,70 @@
 import * as React from "react";
-import {Unsubscribe} from "redux";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
+import {Dispatch} from "redux";
+import Button from "@material-ui/core/Button";
 
 import LoginWindow from "./login-window";
 import Toaster from "./toaster";
 import {UserInfo} from "../services/auth-service";
 import ServiceProvider from "../services/service-provider";
 
-import { Login, Logout } from "../state/actions";
-import {store} from "../state/store";
+import { Login, Logout, LogoutAction, LoginAction } from "../state/actions";
+import { AppState } from "../state/model";
+import { connect } from "react-redux";
+
+interface IStateProps {
+  user: UserInfo | null;
+}
+
+interface IDispatchProps {
+  onLogin: (user: UserInfo) => void;
+  onLogout: () => void;
+}
+
+type LoginWidgetProps = IStateProps & IDispatchProps;
 
 interface ILoginWidgetState {
-  user: UserInfo | null;
   dialogOpen: boolean;
 }
 
-export default class LoginWidget extends React.Component<{}, ILoginWidgetState> {
-  private unsubscribe: Unsubscribe;
+class UnconnectedLoginWidget extends React.Component<LoginWidgetProps, ILoginWidgetState> {
 
-  constructor(props: {}) {
+  constructor(props: LoginWidgetProps) {
     super(props);
     this.state = {
-      user: null,
       dialogOpen: false,
     };
   }
 
   componentDidMount() {
-      this.unsubscribe = store.subscribe(() => {
-      const user = store.getState().auth.user;
-      if (user !== this.state.user) {
-        this.setState(Object.assign({}, this.state, { user: user }));
-      }
-    });
+    const auth = ServiceProvider.AuthService();
 
-    let auth = ServiceProvider.AuthService();
-    auth.whoAmI().then((userInfo: any) => {
-      // If not logged in,  we get empty.
-      if (userInfo === null) {
-        return Promise.reject("Not Logged In");
+    (async () => {
+      try {
+        const user = await auth.whoAmI();
+        if (user !== null) {
+          this.props.onLogin(user);
+        } else {
+          this.props.onLogout();
+        }
+      } catch (error) {
+        this.props.onLogout();
       }
-      return Promise.resolve(userInfo);
-    }).then((userInfo) => {
-      store.dispatch(Login(userInfo));
-    }).catch(() => {
-      store.dispatch(Logout());
-    });
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
+    })();
   }
 
   render() {
+    const { user } = this.props;
+
     let loginButton: JSX.Element;
-    if (this.state.user) {
-      loginButton = <FlatButton label="Logout" onClick={this.doLogout.bind(this)} />;
+    if (user) {
+      loginButton = <Button onClick={this.doLogout.bind(this)}>Logout</Button>;
     } else {
-      loginButton = <FlatButton label="Login" onClick={this.openDialog.bind(this)} />;
+      loginButton = <Button onClick={this.openDialog.bind(this)}>Login</Button>;
     }
 
     return (
       <div className="login-widget">
-        {this.state.user ? <span>Logged in as {this.state.user.username}</span> : null}
+        {user ? <span>Logged in as {user.username}</span> : null}
         {loginButton}
         <LoginWindow
           open={this.state.dialogOpen}
@@ -78,7 +79,7 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
   private doLogout() {
     let auth = ServiceProvider.AuthService();
     auth.logout().then(() => {
-      store.dispatch(Logout());
+      this.props.onLogout();
       Toaster.toast("Logged out");
     }).catch(() => {
       Toaster.toast("Failed to log out");
@@ -102,3 +103,14 @@ export default class LoginWidget extends React.Component<{}, ILoginWidgetState> 
     this.setState(Object.assign({}, this.state, { dialogOpen: true }));
   }
 }
+
+const mapStateToProps = (state: AppState) => ({
+  user: state.auth.user,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<LoginAction | LogoutAction>) => ({
+  onLogin: (user: UserInfo) => dispatch(Login(user)),
+  onLogout: () => dispatch(Logout()),
+});
+
+export const LoginWidget = connect(mapStateToProps, mapDispatchToProps)(UnconnectedLoginWidget);
