@@ -1,16 +1,12 @@
 import * as React from "react";
-import Paper from "material-ui/Paper";
+import Paper from "@material-ui/core/Paper";
 
 interface FloatingLogoProps {
   src: string;
 }
 
-export default class FloatingLogo extends React.Component<FloatingLogoProps, {}> {
-  render() {
-    return (
-      <Paper className="floating-logo">
-        <img className="floating-logo-img" src={this.props.src}/>
-      </Paper>
-    );
-  }
-}
+export const FloatingLogo: React.SFC<FloatingLogoProps> = ({ src }) => (
+  <Paper className="floating-logo">
+    <img className="floating-logo-img" src={src}/>
+  </Paper>
+);
