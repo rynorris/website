@@ -1,12 +1,39 @@
 import * as React from "react";
 
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import {List, ListItem, makeSelectable} from "material-ui/List";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles, Theme, createStyles, useTheme } from "@material-ui/core/styles";
 
 import ServiceProvider from "../services/service-provider";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-let SelectableList = makeSelectable(List);
+interface StyleProps {
+  fullScreen: boolean;
+}
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    imageSelectorContent: {
+      display: "flex",
+      flexDirection: ({ fullScreen }: StyleProps) => fullScreen ? "column" : "row",
+      padding: theme.spacing(2),
+    },
+    imageList: {
+      width: ({ fullScreen }: StyleProps) => fullScreen ? "100%" : "auto",
+    },
+    imagePreview: {
+      minWidth: 100,
+      minHeight: 100,
+      margin: theme.spacing(2),
+    }
+  }),
+);
 
 interface IImageSelectorProps {
   open: boolean;
@@ -19,82 +46,62 @@ interface IImageSelectorState {
   selectedValue: string;
 }
 
-export default class ImageSelector extends React.Component<IImageSelectorProps, IImageSelectorState> {
-  constructor(props: IImageSelectorProps) {
-    super(props);
-    this.state = {
-      imageKeys: [],
-      selectedValue: "",
-    };
-  }
+export const ImageSelector: React.SFC<IImageSelectorProps> = props => {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  componentDidMount() {
+  const classes = useStyles({ fullScreen });
+
+  const [imageKeys, setImageKeys] = React.useState<string[]>([]);
+  const [selectedValue, setSelectedValue] = React.useState<string>("");
+
+  React.useEffect(() => {
     let image = ServiceProvider.ImageService();
-    image.listImages().then((images) => {
-      this.setState(Object.assign({}, this.state, { imageKeys: images, selectedValue: "" }));
-    }).catch(() => {
-      console.log("Failed to load image list");
-    });
-  }
 
-  render() {
-    let actions: any[] = [
-      <FlatButton
-        label="Cancel"
-        onClick={this.props.onRequestClose.bind(this)} />,
-      <FlatButton
-        label="Choose"
-        onClick={this.handleChoose.bind(this)} />
-    ];
+    (async () => {
+      try {
+        const images = await image.listImages();
+        setImageKeys(images);
+      } catch (error) {
+        console.log("Failed to load image list", error);
+      }
+    })();
+  });
 
-    let items = this.state.imageKeys.map((key) => {
-      return (
-        <ListItem value={key} primaryText={key} />
-      );
-    });
+  const handleChoose = () => {
+    let image = ServiceProvider.ImageService();
+    props.onDone(image.getUrl(selectedValue));
+    props.onRequestClose();
+  };
 
+  let items = imageKeys.map((key) => {
     return (
-      <div>
-        <Dialog
-          title="Choose Image"
-          open={this.props.open}
-          actions={actions}
-          onRequestClose={this.props.onRequestClose}
-          contentClassName="image-selector"
-          bodyClassName="image-selector-body"
-          >
-          <div className="image-selector-preview">
-            {this.state.selectedValue !== "" ? <img src={"/api/images/" + this.state.selectedValue} /> : null}
-          </div>
-          <div className="image-selector-list">
-            <SelectableList
-              value={this.state.selectedValue}
-              onChange={this.handleSelectImage.bind(this)}
-              >
-              {items}
-            </SelectableList>
-          </div>
-        </Dialog>
-      </div>
+      <ListItem
+        button
+        key={key}
+        onClick={() => setSelectedValue(key)}
+        selected={selectedValue === key}
+        >
+        <ListItemText>{key}</ListItemText>
+      </ListItem>
     );
-  }
+  });
 
-  private handleChoose() {
-    let image = ServiceProvider.ImageService();
-    this.props.onDone(image.getUrl(this.state.selectedValue));
-    this.props.onRequestClose();
-  }
-
-  private handleSelectImage(ev: any, value: any) {
-    this.setState(Object.assign({}, this.state, { selectedValue: value }));
-  }
-
-  private selectedImageUri(): string {
-    if (this.state.selectedValue === "") {
-      return "";
-    }
-
-    let image = ServiceProvider.ImageService();
-    return image.getUrl(this.state.selectedValue);
-  }
-}
+  return (
+    <div>
+      <Dialog fullScreen={fullScreen} open={props.open} onClose={props.onRequestClose}>
+        <DialogTitle>Choose Image</DialogTitle>
+        <DialogContent className={classes.imageSelectorContent}>
+            <List className={classes.imageList}>{items}</List>
+            <div className={classes.imagePreview}>
+              {selectedValue !== "" ? <img src={"/api/images/" + selectedValue} /> : null}
+            </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.onRequestClose.bind(this)}>Cancel</Button>
+          <Button onClick={handleChoose}>Choose</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
