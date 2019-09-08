@@ -9,12 +9,14 @@ import { ConnectedContactPage } from "./pages/contact-page";
 import DynamicPage from "./pages/dynamic-page";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
+import { Header } from "./components/helmet";
 
 const appElement = document.getElementById("app");
 
 if (appElement != null) {
   ReactDOM.render((
     <Provider store={store}>
+      <Header />
       <MuiThemeProvider>
         <BrowserRouter>
           <Container>

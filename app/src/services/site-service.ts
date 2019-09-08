@@ -5,6 +5,7 @@ export interface Site {
     contact: ContactDetails;
     logo: string;
     pages: PageListing[];
+    title: string;
 }
 
 export interface BannerConfig {

@@ -5,6 +5,7 @@ type Site struct {
 	Contact ContactInfo   `json:"contact"`
 	Logo    string        `json:"logo"`
 	Pages   []PageListing `json:"pages"`
+	Title   string        `json:"title"`
 }
 
 type BannerConfig struct {
