@@ -1,10 +1,12 @@
 import * as React from "react";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import TextField from "material-ui/TextField";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
 import {Card} from "../services/pages-service";
 import DynamicCard from "./dynamic-card";
 import ImageSelector from "./image-selector";
+import { Typography, DialogContent, DialogActions } from "@material-ui/core";
 
 interface ICardEditorProps {
   onSave: (card: Card) => void;
@@ -13,117 +15,66 @@ interface ICardEditorProps {
   onRequestClose: () => void;
 }
 
-interface ICardEditorState {
-  card?: Card;
-  imageSelectorOpen: boolean;
-}
+export const CardEditor: React.SFC<ICardEditorProps> = props => {
+  let clonedCard: Card = JSON.parse(JSON.stringify(props.card));
 
-export default class CardEditor extends React.Component<ICardEditorProps, ICardEditorState> {
-  constructor(props: ICardEditorProps) {
-    super(props);
-    let initialState: ICardEditorState = {
-      imageSelectorOpen: false,
-    };
+  const [card, setCard] = React.useState<Card>(clonedCard);
+  const [imageSelectorOpen, setImageSelectorOpen] = React.useState<boolean>(false);
 
-    if (props.card) {
-      let clonedCard: Card = JSON.parse(JSON.stringify(props.card));
-      initialState.card = clonedCard;
-    }
+  const doSave = () => props.onSave(card);
 
-    this.state = initialState;
-  }
+  const setTitle = (ev: any) => setCard((prevCard: Card) => ({ ...prevCard, title: ev.currentTarget.value }));
 
-  componentWillReceiveProps(props: ICardEditorProps) {
-    if (props.card) {
-      let clonedCard: Card = JSON.parse(JSON.stringify(props.card));
-      this.setState(Object.assign({}, this.state, { card: clonedCard }));
-    }
-  }
+  const setText = (ev: any) => setCard((prevCard: Card) => ({ ...prevCard, text: ev.currentTarget.value }));
 
-  render() {
-    if (!this.state.card) {
-      return <div></div>;
-    }
+  const setImage = (image: string) => {
+    setCard((prevCard: Card) => ({ ...prevCard, image }));
+    setImageSelectorOpen(false);
+  };
 
-    let actions: any[] = [
-      <FlatButton
-        label="Cancel"
-        onClick={this.props.onRequestClose} />,
-      <FlatButton
-        label="Ok"
-        onClick={(() => this.state.card ? this.props.onSave(this.state.card) : null).bind(this)} />
-    ];
+  const removeImage = () => setImage("");
 
-    return (
-      <Dialog
-        title="Edit"
-        actions={actions}
-        open={this.props.open}
-        onRequestClose={this.props.onRequestClose}
-        autoScrollBodyContent={true}
-        contentClassName="card-editor-dialog"
-        modal={true}
-        >
-        <div className="card-editor">
-          <TextField
-            id="text-field-title"
-            floatingLabelText="Title"
-            value={this.state.card.title}
-            onChange={this.setTitle.bind(this)}
-            fullWidth={true} />
-          <br/>
-          <TextField
-            id="text-field-text"
-            floatingLabelText="Text"
-            value={this.state.card.text}
-            onChange={this.setText.bind(this)}
-            fullWidth={true}
-            multiLine={true}
-            rows={4} />
-        </div>
-        <FlatButton label="Choose Image" onClick={this.openImageSelector.bind(this)} />
-        <FlatButton label="Remove Image" onClick={(() => { this.setImage(""); }).bind(this)} />
-        <h3>Preview</h3>
-        <DynamicCard card={this.state.card} />
-        <ImageSelector
-          open={this.state.imageSelectorOpen}
-          onRequestClose={this.closeImageSelector.bind(this)}
-          onDone={this.setImage.bind(this)}
-          />
-      </Dialog>
-    );
-  }
+  const closeImageSelector = () => setImageSelectorOpen(false);
 
-  private setTitle(ev: any) {
-    let card: Card | undefined = this.state.card;
-    if (card) {
-      card.title = ev.currentTarget.value;
-      this.setState(Object.assign({}, this.state, { card: card }));
-    }
-  }
+  const openImageSelector = () => setImageSelectorOpen(true);
 
-  private setText(ev: any) {
-    let card: Card | undefined = this.state.card;
-    if (card) {
-      card.text = ev.currentTarget.value;
-      this.setState(Object.assign({}, this.state, { card: card }));
-    }
-  }
-
-  private setImage(image: string) {
-    let card: Card | undefined = this.state.card;
-    if (card) {
-      card.image = image;
-      this.setState(Object.assign({}, this.state, { card: card }));
-    }
-    this.closeImageSelector();
-  }
-
-  private closeImageSelector() {
-    this.setState(Object.assign({}, this.state, { imageSelectorOpen: false }));
-  }
-
-  private openImageSelector() {
-    this.setState(Object.assign({}, this.state, { imageSelectorOpen: true }));
-  }
-}
+  return (
+    <Dialog
+      open={props.open}
+      onClose={props.onRequestClose}
+      aria-labelledby="card-editor-dialog-title"
+      >
+      <DialogTitle id="card-editor-dialog-title">Edit</DialogTitle>
+      <DialogContent>
+        <TextField
+          id="text-field-title"
+          label="Title"
+          value={card.title}
+          onChange={setTitle}
+          fullWidth={true} />
+        <br/>
+        <TextField
+          id="text-field-text"
+          label="Text"
+          value={card.text}
+          onChange={setText}
+          fullWidth={true}
+          multiline={true}
+          rows={4} />
+      <Button onClick={openImageSelector}>Choose Image</Button>
+      <Button onClick={removeImage}>Remove Image</Button>
+      <Typography variant="h4">Preview</Typography>
+      <DynamicCard card={card} />
+      <ImageSelector
+        open={imageSelectorOpen}
+        onRequestClose={closeImageSelector}
+        onDone={setImage}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.onRequestClose}>Cancel</Button>
+        <Button onClick={doSave}>Confirm</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};

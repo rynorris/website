@@ -9,7 +9,7 @@ import NavigationCancel from "material-ui/svg-icons/navigation/cancel";
 
 import {Card, Page, PagesService} from "../services/pages-service";
 import ServiceProvider from "../services/service-provider";
-import CardEditor from "../components/card-editor";
+import { CardEditor } from "../components/card-editor";
 import DynamicCard from "../components/dynamic-card";
 import EditContainer from "../components/edit-container";
 import Toaster from "../components/toaster";
@@ -117,6 +117,7 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
       </FloatingActionButton>
     );
 
+    const cardToEdit = this.state.page.cards[this.state.cardToEdit];
 
     let editorControls: JSX.Element = (
       <div>
@@ -126,12 +127,14 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
           {!this.state.editable ? null : cancelButton}
           {!this.state.editable ? null : saveButton}
         </div>
-        <CardEditor
-          open={this.state.editorOpen}
-          onRequestClose={this.handleClose.bind(this)}
-          card={this.state.page.cards[this.state.cardToEdit]}
-          onSave={((card: Card) => { this.saveCard(this.state.cardToEdit, card); }).bind(this)}
-          />
+        {(cardToEdit !== undefined && this.state.editorOpen) &&
+          <CardEditor
+            open={this.state.editorOpen}
+            onRequestClose={this.handleClose.bind(this)}
+            card={cardToEdit}
+            onSave={((card: Card) => { this.saveCard(this.state.cardToEdit, card); }).bind(this)}
+            />
+        }
       </div>
     );
 
