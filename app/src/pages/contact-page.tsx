@@ -13,6 +13,10 @@ import { IAppState } from "../state/model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    contactCard: {
+      marginBottom: theme.spacing(2),
+      marginTop: theme.spacing(2),
+    },
     sectionDivider: {
       marginBottom: theme.spacing(1),
       marginTop: theme.spacing(1),
@@ -30,21 +34,19 @@ const ContactPage: React.SFC<IContactPageProps> = ({ contact }) => {
   const classes = useStyles();
 
   return (
-    <div className="contact-page">
-      <Card>
-        <CardHeader title="Contact Us" />
-        <CardContent>
-          <Typography>Email: <a href={`mailto:${contact.email}`}>{contact.email}</a></Typography>
-          <Divider className={classes.sectionDivider}/>
+    <Card className={classes.contactCard}>
+      <CardHeader title="Contact Us" />
+      <CardContent>
+        <Typography>Email: <a href={`mailto:${contact.email}`}>{contact.email}</a></Typography>
+        <Divider className={classes.sectionDivider}/>
 
-          <Typography>Phone: <a href={`tel:${contact.phone}`}>{contact.phone}</a></Typography>
-          <Divider className={classes.sectionDivider}/>
+        <Typography>Phone: <a href={`tel:${contact.phone}`}>{contact.phone}</a></Typography>
+        <Divider className={classes.sectionDivider}/>
 
-          <Typography>Or via this webform:</Typography>
-          <ContactForm />
-        </CardContent>
-      </Card>
-    </div>
+        <Typography>Or via this webform:</Typography>
+        <ContactForm />
+      </CardContent>
+    </Card>
   );
 };
 
