@@ -12,11 +12,12 @@ import ServiceProvider from "../services/service-provider";
 import { CardEditor } from "../components/card-editor";
 import { DynamicCard } from "../components/dynamic-card";
 import { EditContainer } from "../components/edit-container";
-import Toaster from "../components/toaster";
+import { Toaster } from "../components/toaster";
 
 import {store} from "../state/store";
 import { string } from "prop-types";
 import { RouteComponentProps } from "react-router";
+import { Toast } from "../state/actions";
 
 interface MatchParams {
   pageId: string;
@@ -232,10 +233,10 @@ export default class DynamicPage extends React.Component<IDynamicPageProps, IDyn
     Promise.resolve(response).then(() => {
       this.setState({ initialPage: this.state.page });
       this.editModeOff();
-      Toaster.toast("Page saved!");
+      store.dispatch(Toast("Page saved!"));
     }, (e) => {
       console.log("Something went wrong: ", e);
-      Toaster.toast("Failed to save.");
+      store.dispatch(Toast("Failed to save!"));
     });
   }
 }

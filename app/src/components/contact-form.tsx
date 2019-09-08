@@ -4,9 +4,11 @@ import TextField from "@material-ui/core/TextField";
 import SendIcon from "@material-ui/icons/Send";
 import {Message, MessageService} from "../services/message-service";
 import ServiceProvider from "../services/service-provider";
-import Toaster from "./toaster";
 import { makeStyles } from "@material-ui/core/styles";
 import { Theme, createStyles } from "@material-ui/core";
+import { Dispatch } from "redux";
+import { Toast, ToastAction } from "../state/actions";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -16,12 +18,20 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export const ContactForm: React.SFC<{}> = () => {
+interface IDispatchProps {
+  toast: (text: string) => void;
+}
+
+type IContactFormProps = IDispatchProps;
+
+const UnconnectedContactForm: React.SFC<IContactFormProps> = props => {
   const classes = useStyles();
 
   const [sender, setSender] = React.useState<string>("");
   const [email, setEmail] = React.useState<string>("");
   const [body, setBody] = React.useState<string>("");
+
+  const { toast } = props;
 
   const handleSubmit = async () => {
     let service: MessageService = ServiceProvider.MessageService();
@@ -29,12 +39,12 @@ export const ContactForm: React.SFC<{}> = () => {
 
     try {
       let response = await service.send(message);
-      Toaster.toast("Message Sent!");
+      toast("Message Sent!");
       setSender("");
       setEmail("");
       setBody("");
     } catch (error) {
-      Toaster.toast("Failed to send. Please email or call us directly.");
+      toast("Failed to send. Please email or call us directly.");
     }
   };
 
@@ -70,3 +80,9 @@ export const ContactForm: React.SFC<{}> = () => {
     </div>
   );
 };
+
+const mapDispatchToProps = (dispatch: Dispatch<ToastAction>) => ({
+  toast: (text: string) => dispatch(Toast(text)),
+});
+
+export const ContactForm = connect(null, mapDispatchToProps)(UnconnectedContactForm);

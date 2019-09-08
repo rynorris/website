@@ -4,11 +4,10 @@ import Button from "@material-ui/core/Button";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 import { LoginWindow } from "./login-window";
-import Toaster from "./toaster";
 import {UserInfo} from "../services/auth-service";
 import ServiceProvider from "../services/service-provider";
 
-import { Login, Logout, LogoutAction, LoginAction } from "../state/actions";
+import { Login, Logout, LogoutAction, LoginAction, ToastAction, Toast } from "../state/actions";
 import { AppState } from "../state/model";
 import { connect } from "react-redux";
 
@@ -29,6 +28,7 @@ interface IStateProps {
 interface IDispatchProps {
   onLogin: (user: UserInfo) => void;
   onLogout: () => void;
+  toast: (text: string) => void;
 }
 
 type LoginWidgetProps = IStateProps & IDispatchProps;
@@ -36,7 +36,7 @@ type LoginWidgetProps = IStateProps & IDispatchProps;
 const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = props => {
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
-  const { user, onLogin, onLogout } = props;
+  const { user, onLogin, onLogout, toast } = props;
 
   React.useEffect(() => {
     if (user === null) {
@@ -62,21 +62,21 @@ const UnconnectedLoginWidget: React.SFC<LoginWidgetProps> = props => {
       try {
         await auth.logout();
         onLogout();
-        Toaster.toast("Logged out");
+        toast("Logged out");
       } catch (error) {
         console.error("Failed to log out", error);
-        Toaster.toast("Failed to log out");
+        toast("Failed to log out");
       }
     })();
   };
 
   const onLoginSuccess = () => {
-    Toaster.toast("Login Successful");
+    toast("Login Successful");
     setDialogOpen(false);
   };
 
   const onLoginFailure = () => {
-    Toaster.toast("Login Failed");
+    toast("Login Failed");
   };
 
   const loginButton = user !== null ? (
@@ -103,9 +103,10 @@ const mapStateToProps = (state: AppState) => ({
   user: state.auth.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<LoginAction | LogoutAction>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<LoginAction | LogoutAction | ToastAction>) => ({
   onLogin: (user: UserInfo) => dispatch(Login(user)),
   onLogout: () => dispatch(Logout()),
+  toast: (text: string) => dispatch(Toast(text)),
 });
 
 export const LoginWidget = connect(mapStateToProps, mapDispatchToProps)(UnconnectedLoginWidget);

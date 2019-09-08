@@ -1,71 +1,44 @@
 import * as React from "react";
-import {Unsubscribe} from "redux";
-import Snackbar from "material-ui/Snackbar";
+import {Dispatch} from "redux";
+import Snackbar from "@material-ui/core/Snackbar";
 
-import { Toast } from "../state/actions";
-import {store} from "../state/store";
+import { CloseToastAction, CloseToast } from "../state/actions";
+import { AppState } from "../state/model";
+import { connect } from "react-redux";
 
-interface IToasterProps {
-  duration?: number;
-}
-
-interface IToasterState {
-  open: boolean;
+interface IStateProps {
+  isOpen: boolean;
   text: string;
 }
 
-export default class Toaster extends React.Component<IToasterProps, IToasterState> {
-  private unsubscribe: Unsubscribe;
+interface IDispatchProps {
+  closeToast: () => void;
+}
 
-  constructor(props: IToasterProps) {
-    super(props);
-    this.state = {
-      open: false ,
-      text: "",
-    };
-  }
+interface IOwnProps {
+  duration: number;
+}
 
-  public static defaultProps: IToasterProps = {
-    duration: 2000,
-  };
+type IToasterProps = IStateProps & IDispatchProps & IOwnProps;
 
-  public static toast(text: string) {
-    store.dispatch(Toast(text));
-  }
-
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(() => {
-      let toaster: any = store.getState().toaster;
-      if ((toaster.open !== this.state.open) ||
-          (toaster.text !== this.state.text)) {
-        this.setState({
-          open: toaster.open,
-          text: toaster.text,
-        });
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  render() {
+const UnconnectedToaster: React.SFC<IToasterProps> = props => {
     return (
       <Snackbar
-        open={this.state.open}
-        message={this.state.text}
-        autoHideDuration={this.props.duration}
-        onRequestClose={this.handleRequestClose.bind(this)}
+        open={props.isOpen}
+        message={props.text}
+        autoHideDuration={props.duration}
+        onClose={props.closeToast}
         />
     );
-  }
+};
 
-  private handleRequestClose() {
-    this.setState({ open: false, text: this.state.text });
-  }
+const mapStateToProps = (state: AppState) => ({
+  isOpen: state.toaster.open,
+  text: state.toaster.text,
+});
 
-  private handleTouchTap() {
-    this.setState({ open: false, text: this.state.text });
-  }
-}
+const mapDispatchToProps = (dispatch: Dispatch<CloseToastAction>) => ({
+  closeToast: () => dispatch(CloseToast()),
+});
+
+export const Toaster = connect(mapStateToProps, mapDispatchToProps)(UnconnectedToaster);

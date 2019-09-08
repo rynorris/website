@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ConnectedAppHeader } from "./app-header";
-import Toaster from "./components/toaster";
+import { Toaster } from "./components/toaster";
 
 export const Container: React.SFC<{}> = (props) =>
   (
@@ -9,6 +9,6 @@ export const Container: React.SFC<{}> = (props) =>
       <div className="app-body">
         {props.children}
       </div>
-      <Toaster />
+      <Toaster duration={2000} />
     </div>
   );
