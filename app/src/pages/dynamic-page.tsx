@@ -196,7 +196,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     this.setState({ page: newPage, editorOpen: false });
   }
 
-  private savePage() {
+  private savePage = () => {
     const pageService: PagesService = ServiceProvider.PagesService();
     const response: Promise<any> = pageService.savePage(this.props.match.params.pageId, this.state.page);
     Promise.resolve(response).then(() => {
