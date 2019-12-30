@@ -61,12 +61,14 @@ func createRouter(
 
 		site, err := siteService.Get()
 		if err != nil {
+			log.Print(err.Error())
 			http.Error(w, "Failed to render index", http.StatusServiceUnavailable)
 			return
 		}
 
 		siteJSON, err := json.Marshal(site)
 		if err != nil {
+			log.Print(err.Error())
 			http.Error(w, "Failed to render index", http.StatusServiceUnavailable)
 			return
 		}
