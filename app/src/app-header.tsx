@@ -15,7 +15,7 @@ import { ISetSiteAction, SetSite } from "./state/actions";
 import { IAppState } from "./state/model";
 
 interface IStateProps {
-  site: ISite;
+  site?: ISite;
 }
 
 interface IDispatchProps {
@@ -34,22 +34,24 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
   };
 
   public componentDidMount() {
-    const siteService: SiteService = ServiceProvider.SiteService();
-    siteService.loadSite().then(this.props.setSite);
+    if (this.props.site == null) {
+      const siteService: SiteService = ServiceProvider.SiteService();
+      siteService.loadSite().then(this.props.setSite);
+    }
   }
 
   public render() {
     const { site } = this.props;
 
-    const bannerImages = site.banner.images.map((id) => `/api/images/${id}`);
-    const navbarLinks = site.pages.map((p) => `/${p.id}`);
-    const navbarTitles = site.pages.map((p) => p.title);
+    const bannerImages = site != null ? site.banner.images.map((id) => `/api/images/${id}`) : [];
+    const navbarLinks = site != null ? site.pages.map((p) => `/${p.id}`) : [];
+    const navbarTitles = site != null ? site.pages.map((p) => p.title) : [];
 
     return (
       <div className="app-header">
         <Paper elevation={1} square={true}>
           <LoginWidget />
-          <FloatingLogo src={`/api/images/${site.logo}`} />
+          {site && <FloatingLogo src={`/api/images/${site.logo}`} />}
           <div className="app-header-image-container">
             <ImageGallery images={bannerImages} interval={10000} />
           </div>

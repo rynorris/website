@@ -8,12 +8,19 @@ import { BrowserRouter } from "react-router-dom";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 import { Header } from "./components/helmet";
-import {Container} from "./container";
+import { Container } from "./container";
 import { ConnectedContactPage } from "./pages/contact-page";
 import { DynamicPage } from "./pages/dynamic-page";
 import { store } from "./state/store";
+import { getInjectedConfiguration } from "./utils";
+import { SetSite } from "./state/actions";
 
 const appElement = document.getElementById("app");
+
+const siteConfig = getInjectedConfiguration();
+if (siteConfig != null) {
+  store.dispatch(SetSite(siteConfig));
+}
 
 // TODO: Get theme from API.
 const theme = createMuiTheme({

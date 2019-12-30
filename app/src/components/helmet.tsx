@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { IAppState } from "../state/model";
 
 interface IStateProps {
-    title: string;
+    title?: string;
 }
 
 type IHeaderProps = IStateProps;
@@ -16,7 +16,7 @@ const UnconnectedHeader = ({ title }: IHeaderProps) => (
 );
 
 const mapStateToProps = (state: IAppState) => ({
-    title: state.site.title,
+    title: state.site != null ? state.site.title : undefined,
 });
 
 export const Header = connect(mapStateToProps)(UnconnectedHeader);

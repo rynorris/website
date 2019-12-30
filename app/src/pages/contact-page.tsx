@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IDispatchProps {
-  contact: IContactDetails;
+  contact?: IContactDetails;
 }
 
 type IContactPageProps = IDispatchProps;
@@ -33,25 +33,31 @@ type IContactPageProps = IDispatchProps;
 const ContactPage: React.SFC<IContactPageProps> = ({ contact }) => {
   const classes = useStyles();
 
+  const content = contact != null ? (
+    <CardContent>
+      <Typography>Email: <a href={`mailto:${contact.email}`}>{contact.email}</a></Typography>
+      <Divider className={classes.sectionDivider} />
+
+      <Typography>Phone: <a href={`tel:${contact.phone}`}>{contact.phone}</a></Typography>
+      <Divider className={classes.sectionDivider} />
+
+      <Typography>Or via this webform:</Typography>
+      <ContactForm />
+    </CardContent>
+  ) : (
+      <CardContent />
+    );
+
   return (
     <Card className={classes.contactCard}>
       <CardHeader title="Contact Us" />
-      <CardContent>
-        <Typography>Email: <a href={`mailto:${contact.email}`}>{contact.email}</a></Typography>
-        <Divider className={classes.sectionDivider}/>
-
-        <Typography>Phone: <a href={`tel:${contact.phone}`}>{contact.phone}</a></Typography>
-        <Divider className={classes.sectionDivider}/>
-
-        <Typography>Or via this webform:</Typography>
-        <ContactForm />
-      </CardContent>
+      {content}
     </Card>
   );
 };
 
 const mapStateToProps = ({ site }: IAppState) => ({
-  contact: site.contact,
+  contact: site != null ? site.contact : undefined,
 });
 
 export const ConnectedContactPage = connect(mapStateToProps)(ContactPage);
