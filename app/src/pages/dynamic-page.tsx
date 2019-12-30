@@ -21,7 +21,7 @@ interface IMatchParams {
   pageId: string;
 }
 
-interface IRouteProps extends RouteComponentProps<IMatchParams> {}
+interface IRouteProps extends RouteComponentProps<IMatchParams> { }
 
 interface IStateProps {
   allowedToEdit: boolean;
@@ -48,8 +48,8 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
       cardToEdit: 0,
       editable: false,
       editorOpen: false,
-      initialPage: {title: "", cards: []},
-      page: {title: "", cards: []},
+      initialPage: { title: "", cards: [] },
+      page: { title: "", cards: [] },
     };
   }
 
@@ -113,12 +113,12 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     const buttonsToShow = this.state.editable ? [addButton, cancelButton, saveButton] : [editButton];
 
     const cardEditor = (
-          <CardEditor
-            open={this.state.editorOpen}
-            onRequestClose={this.handleClose}
-            card={cardToEdit}
-            onSave={this.saveCard(this.state.cardToEdit)}
-          />
+      <CardEditor
+        open={this.state.editorOpen}
+        onRequestClose={this.handleClose}
+        card={cardToEdit}
+        onSave={this.saveCard(this.state.cardToEdit)}
+      />
     );
 
     const editorControls: JSX.Element = (
@@ -136,7 +136,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
     );
   }
 
-  private handleClose = () => this.setState({ editorOpen: false});
+  private handleClose = () => this.setState({ editorOpen: false });
 
   private cancelEdit = () => {
     this.editModeOff();
@@ -174,6 +174,7 @@ class UnconnectedDynamicPage extends React.Component<IDynamicPageProps, IDynamic
   private removeCard = (ix: number) => () => {
     // Clone page.
     const newPage: IPage = JSON.parse(JSON.stringify(this.state.page));
+    newPage.cards.splice(ix, 1);
     this.setState({ page: newPage });
   }
 
