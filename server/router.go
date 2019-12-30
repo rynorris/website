@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"html/template"
 	"log"
 	"net/http"
 
@@ -46,11 +48,31 @@ func createRouter(
 		http.ServeFile(w, r, themeFile)
 	})
 
-	// For all other paths just serve the app and defer to the front-end to handle it.
+	// For all other paths just serve the index page and defer to the front-end to handle it.
+	t, err := template.New("index").ParseFiles(indexPage)
+	log.Print(t.Templates())
+	if err != nil {
+		panic("Failed to create index template")
+	}
+
 	r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Print("Serving index")
 		w.Header().Set("Cache-Control", "no-cache")
-		http.ServeFile(w, r, indexPage)
+
+		site, err := siteService.Get()
+		if err != nil {
+			http.Error(w, "Failed to render index", http.StatusServiceUnavailable)
+			return
+		}
+
+		siteJSON, err := json.Marshal(site)
+		if err != nil {
+			http.Error(w, "Failed to render index", http.StatusServiceUnavailable)
+			return
+		}
+
+		log.Print("Loaded site config, rendering index template...")
+		t.ExecuteTemplate(w, "index.html", string(siteJSON))
 	})
 
 	return r
