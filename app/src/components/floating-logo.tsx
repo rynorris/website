@@ -5,8 +5,10 @@ interface IFloatingLogoProps {
   src: string;
 }
 
-export const FloatingLogo: React.SFC<IFloatingLogoProps> = ({ src }) => (
-  <Paper className="floating-logo">
-    <img className="floating-logo-img" src={src}/>
-  </Paper>
-);
+export const FloatingLogo: React.SFC<IFloatingLogoProps> = ({ src }) => {
+  return (
+    <Paper className="floating-logo">
+      <img className="floating-logo-img" src={src} />
+    </Paper>
+  );
+};

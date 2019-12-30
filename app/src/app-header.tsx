@@ -9,8 +9,7 @@ import { Navbar } from "./components/navbar";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { ScrollListener } from "./components/scroll-listener";
-import ServiceProvider from "./services/service-provider";
-import { ISite, SiteService } from "./services/site-service";
+import { ISite } from "./services/site-service";
 import { ISetSiteAction, SetSite } from "./state/actions";
 import { IAppState } from "./state/model";
 
@@ -28,45 +27,34 @@ interface IAppHeaderState {
   navbarFixed: boolean;
 }
 
-class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
-  public state: Readonly<IAppHeaderState> = {
-    navbarFixed: false,
+const AppHeader = (props: IAppHeaderProps) => {
+  const { site } = props;
+
+  const [navbarFixed, setNavbarFixed] = React.useState(false);
+
+  const bannerImages = site != null ? site.banner.images.map((id) => `/api/images/${id}`) : [];
+  const navbarLinks = site != null ? site.pages.map((p) => `/${p.id}`) : [];
+  const navbarTitles = site != null ? site.pages.map((p) => p.title) : [];
+
+  const handleScroll = (top: number) => {
+    const fixed = top <= 0 ? true : false;
+    setNavbarFixed(fixed);
   };
 
-  public componentDidMount() {
-    if (this.props.site == null) {
-      const siteService: SiteService = ServiceProvider.SiteService();
-      siteService.loadSite().then(this.props.setSite);
-    }
-  }
-
-  public render() {
-    const { site } = this.props;
-
-    const bannerImages = site != null ? site.banner.images.map((id) => `/api/images/${id}`) : [];
-    const navbarLinks = site != null ? site.pages.map((p) => `/${p.id}`) : [];
-    const navbarTitles = site != null ? site.pages.map((p) => p.title) : [];
-
-    return (
-      <div className="app-header">
-        <Paper elevation={1} square={true}>
-          <LoginWidget />
-          {site && <FloatingLogo src={`/api/images/${site.logo}`} />}
-          <div className="app-header-image-container">
-            <ImageGallery images={bannerImages} interval={10000} />
-          </div>
-          <ScrollListener onScroll={this.handleScroll} />
-        </Paper>
-        <Navbar links={navbarLinks} titles={navbarTitles} fixed={this.state.navbarFixed} />
-      </div>
-    );
-  }
-
-  private handleScroll = (top: number) => {
-    const navbarFixed = top <= 0 ? true : false;
-    this.setState({ navbarFixed });
-  }
-}
+  return (
+    <div className="app-header">
+      <Paper elevation={1} square={true}>
+        <LoginWidget />
+        {site && <FloatingLogo src={`/api/images/${site.logo}`} />}
+        <div className="app-header-image-container">
+          <ImageGallery images={bannerImages} interval={10000} />
+        </div>
+        <ScrollListener onScroll={handleScroll} />
+      </Paper>
+      <Navbar links={navbarLinks} titles={navbarTitles} fixed={navbarFixed} />
+    </div>
+  );
+};
 
 function mapStateToProps(state: IAppState): IStateProps {
   return {

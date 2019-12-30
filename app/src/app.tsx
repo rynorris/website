@@ -11,9 +11,10 @@ import { Header } from "./components/helmet";
 import { Container } from "./container";
 import { ConnectedContactPage } from "./pages/contact-page";
 import { DynamicPage } from "./pages/dynamic-page";
+import { ITheme } from "./services/site-service";
+import { SetSite } from "./state/actions";
 import { store } from "./state/store";
 import { getInjectedConfiguration } from "./utils";
-import { SetSite } from "./state/actions";
 
 const appElement = document.getElementById("app");
 
@@ -22,15 +23,34 @@ if (siteConfig != null) {
   store.dispatch(SetSite(siteConfig));
 }
 
-// TODO: Get theme from API.
+const themeConfig: ITheme = siteConfig != null ? siteConfig.theme : {
+  colors: {
+    background: "#DDDDDD",
+    error: "#FF7777",
+    primary: "#C2DC5D",
+    secondary: "#59BBEo",
+  },
+};
+
 const theme = createMuiTheme({
   palette: {
-    background: { default: "#DDDDDD" },
-    error: { main: "#FF7777" },
-    primary: { main: "#C2DC5D" },
-    secondary: { main: "#59BBE0" },
+    background: { default: themeConfig.colors.background },
+    error: { main: themeConfig.colors.error },
+    primary: { main: themeConfig.colors.primary },
+    secondary: { main: themeConfig.colors.secondary },
   },
 });
+
+const themeCss = `:root {
+    --background-color: ${themeConfig.colors.background};
+    --primary-color: ${themeConfig.colors.primary};
+    --secondary-color: ${themeConfig.colors.secondary};
+    --error-color: ${themeConfig.colors.error};
+}`;
+
+const themeElement = document.createElement("style");
+themeElement.innerText = themeCss;
+document.head.appendChild(themeElement);
 
 if (appElement != null) {
   ReactDOM.render((

@@ -18,5 +18,13 @@
         { "id": "teachers", "title": "Our Teachers" },
         { "id": "services", "title": "Our Services" }
     ],
-    "title": "Dyslexia Tuition Centre"
+    "title": "Dyslexia Tuition Centre",
+    "theme": {
+        "colors": {
+            "primary": "#00FF00",
+            "secondary": "#0000FF",
+            "error": "#FF0000",
+            "background": "#FFFFFF"
+        }
+    }
 }

@@ -6,6 +6,7 @@ type Site struct {
 	Logo    string        `json:"logo"`
 	Pages   []PageListing `json:"pages"`
 	Title   string        `json:"title"`
+	Theme   ThemeConfig   `json:"theme"`
 }
 
 type BannerConfig struct {
@@ -20,6 +21,17 @@ type ContactInfo struct {
 type PageListing struct {
 	Id    string `json:"id"`
 	Title string `json:"title"`
+}
+
+type ThemeConfig struct {
+	Colors ThemeColors `json:"colors"`
+}
+
+type ThemeColors struct {
+	Primary    string `json:"primary"`
+	Secondary  string `json:"secondary"`
+	Background string `json:"background"`
+	Error      string `json:"error"`
 }
 
 type Service interface {
