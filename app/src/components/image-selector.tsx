@@ -1,4 +1,5 @@
 import * as React from "react";
+import { connect } from "react-redux";
 
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -12,6 +13,8 @@ import { createStyles, makeStyles, Theme, useTheme } from "@material-ui/core/sty
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ServiceProvider from "../services/service-provider";
+import { AppDispatch, IAppState } from "../state/model";
+import { fetchImageList } from "../state/thunk";
 
 interface IStyleProps {
   fullScreen: boolean;
@@ -40,37 +43,23 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IImageSelectorProps {
   open: boolean;
+  imageKeys: string[];
+  loadKeys: () => void;
   onRequestClose: () => void;
   onDone: (imageUrl: string) => void;
 }
 
-interface IImageSelectorState {
-  imageKeys: string[];
-  selectedValue: string;
-}
-
-export const ImageSelector: React.SFC<IImageSelectorProps> = (props) => {
+const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const classes = useStyles({ fullScreen });
 
-  const [imageKeys, setImageKeys] = React.useState<string[]>([]);
   const [selectedValue, setSelectedValue] = React.useState<string>("");
 
   React.useEffect(() => {
-    const image = ServiceProvider.ImageService();
-
-    (async () => {
-      try {
-        const images = await image.listImages();
-        setImageKeys(images);
-      } catch (error) {
-        // tslint:disable: no-console
-        console.error("Failed to load image list", error);
-      }
-    })();
-  });
+    props.loadKeys();
+  }, []);
 
   const handleChoose = () => {
     const image = ServiceProvider.ImageService();
@@ -78,7 +67,7 @@ export const ImageSelector: React.SFC<IImageSelectorProps> = (props) => {
     props.onRequestClose();
   };
 
-  const items = imageKeys.map((key) => {
+  const items = props.imageKeys.map((key) => {
     return (
       <ListItem
         button={true}
@@ -109,3 +98,13 @@ export const ImageSelector: React.SFC<IImageSelectorProps> = (props) => {
     </div>
   );
 };
+
+const mapStateToProps = (state: IAppState) => ({
+  imageKeys: state.image.list,
+});
+
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  loadKeys: () => dispatch(fetchImageList()),
+});
+
+export const ImageSelector = connect(mapStateToProps, mapDispatchToProps)(UnconnectedImageSelector);

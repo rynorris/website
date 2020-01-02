@@ -1,12 +1,15 @@
 import { Action, Reducer } from "redux";
 
-import { ILoginAction, ISetSiteAction, IToastAction } from "./actions";
+import { ILoginAction, ISetImageListAction, ISetSiteAction, IToastAction } from "./actions";
 import { IAppState } from "./model";
 
 // Initial State.
 const initialState: IAppState = {
   auth: {
     user: null,
+  },
+  image: {
+    list: [],
   },
   toaster: {
     open: false,
@@ -30,6 +33,9 @@ export const appReducer: Reducer<IAppState> = (state = initialState, action: Act
 
     case "CLOSE-TOAST":
       return { ...state, toaster: { open: false, text: "" } };
+
+    case "IMAGE/LIST/SET":
+      return { ...state, image: { ...state.image, list: (action as ISetImageListAction).list } };
 
     default:
       return state;

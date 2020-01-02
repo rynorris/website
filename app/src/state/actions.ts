@@ -5,8 +5,8 @@ import { ISite } from "../services/site-service";
 
 // --- Site state.
 export interface ISetSiteAction extends Action {
-    type: "SITE/SET";
-    site: ISite;
+  type: "SITE/SET";
+  site: ISite;
 }
 export const SetSite: ActionCreator<ISetSiteAction> = (site: ISite) => ({ type: "SITE/SET", site });
 
@@ -33,3 +33,10 @@ export interface ICloseToastAction extends Action {
   type: "CLOSE-TOAST";
 }
 export const CloseToast: ActionCreator<ICloseToastAction> = () => ({ type: "CLOSE-TOAST" });
+
+export interface ISetImageListAction extends Action {
+  type: "IMAGE/LIST/SET";
+  list: string[];
+}
+
+export const SetImageList: ActionCreator<ISetImageListAction> = (list: string[]) => ({ type: "IMAGE/LIST/SET", list });
