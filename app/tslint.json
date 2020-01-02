@@ -1,7 +1,18 @@
 {
-    "extends": ["tslint:latest", "tslint-react"],
+    "extends": [
+        "tslint:latest",
+        "tslint-react"
+    ],
     "rules": {
         "jsx-no-lambda": false,
-        "no-submodule-imports": [true, "@material-ui/core", "@material-ui/icons"]
+        "no-submodule-imports": [
+            true,
+            "@material-ui/core",
+            "@material-ui/icons"
+        ],
+        "object-literal-key-quotes": [
+            true,
+            "as-needed"
+        ]
     }
 }

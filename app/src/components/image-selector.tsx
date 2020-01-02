@@ -23,9 +23,12 @@ const useStyles = makeStyles((theme: Theme) =>
       width: ({ fullScreen }: IStyleProps) => fullScreen ? "100%" : "auto",
     },
     imagePreview: {
+      "& img": {
+        width: "100%",
+      },
       margin: theme.spacing(2),
       minHeight: 100,
-      minWidth: 100,
+      width: 200,
     },
     imageSelectorContent: {
       display: "flex",
@@ -93,10 +96,10 @@ export const ImageSelector: React.SFC<IImageSelectorProps> = (props) => {
       <Dialog fullScreen={fullScreen} open={props.open} onClose={props.onRequestClose}>
         <DialogTitle>Choose Image</DialogTitle>
         <DialogContent className={classes.imageSelectorContent}>
-            <List className={classes.imageList}>{items}</List>
-            <div className={classes.imagePreview}>
-              {selectedValue !== "" ? <img src={"/api/images/" + selectedValue} /> : null}
-            </div>
+          <List className={classes.imageList}>{items}</List>
+          <div className={classes.imagePreview}>
+            {selectedValue !== "" ? <img src={"/api/images/" + selectedValue} /> : null}
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={props.onRequestClose}>Cancel</Button>
