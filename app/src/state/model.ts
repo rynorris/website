@@ -6,7 +6,7 @@ export interface IAppState {
   auth: {
     user: IUserInfo | null;
   };
-  site: ISite;
+  site?: ISite;
   toaster: {
     open: boolean;
     text: string;

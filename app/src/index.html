@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"
-    />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1" />
+  <meta name="x-site-configuration" content="{{.}}" />
   <% for (var css in htmlWebpackPlugin.files.css) { %>
   <link rel="stylesheet" type="text/css" href="assets/<%= htmlWebpackPlugin.files.css[css] %>">
   <% } %>
-  <link href="styles/theme.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 </head>
 
@@ -19,4 +18,5 @@
   <% } %>
 
 </body>
+
 </html>

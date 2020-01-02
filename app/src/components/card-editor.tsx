@@ -10,7 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-import {ICard} from "../services/pages-service";
+import { ICard } from "../services/pages-service";
 import { DynamicCard } from "./dynamic-card";
 import { ImageSelector } from "./image-selector";
 
@@ -32,9 +32,11 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
 
   const doSave = () => props.onSave(card);
 
-  const setTitle = (ev: any) => setCard((prevCard: ICard) => ({ ...prevCard, title: ev.currentTarget.value }));
+  const setTitle = (ev: any) =>
+    setCard((prevCard: ICard) => ev.target != null ? ({ ...prevCard, title: ev.target.value }) : prevCard);
 
-  const setText = (ev: any) => setCard((prevCard: ICard) => ({ ...prevCard, text: ev.currentTarget.value }));
+  const setText = (ev: any) =>
+    setCard((prevCard: ICard) => ev.target != null ? ({ ...prevCard, text: ev.target.value }) : prevCard);
 
   const setImage = (image: string) => {
     setCard((prevCard: ICard) => ({ ...prevCard, image }));
@@ -63,7 +65,7 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
           onChange={setTitle}
           fullWidth={true}
         />
-        <br/>
+        <br />
         <TextField
           id="text-field-text"
           label="Text"
@@ -73,15 +75,15 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
           multiline={true}
           rows={4}
         />
-      <Button onClick={openImageSelector}>Choose Image</Button>
-      <Button onClick={removeImage}>Remove Image</Button>
-      <Typography variant="h4">Preview</Typography>
-      <DynamicCard card={card} />
-      <ImageSelector
-        open={imageSelectorOpen}
-        onRequestClose={closeImageSelector}
-        onDone={setImage}
-      />
+        <Button onClick={openImageSelector}>Choose Image</Button>
+        <Button onClick={removeImage}>Remove Image</Button>
+        <Typography variant="h4">Preview</Typography>
+        <DynamicCard card={card} />
+        <ImageSelector
+          open={imageSelectorOpen}
+          onRequestClose={closeImageSelector}
+          onDone={setImage}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onRequestClose}>Cancel</Button>

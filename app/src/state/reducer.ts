@@ -8,18 +8,6 @@ const initialState: IAppState = {
   auth: {
     user: null,
   },
-  site: {
-      banner: {
-          images: [],
-      },
-      contact: {
-          email: "",
-          phone: "",
-      },
-      logo: "",
-      pages: [],
-      title: "Website",
-  },
   toaster: {
     open: false,
     text: "",
