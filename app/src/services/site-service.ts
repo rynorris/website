@@ -36,10 +36,10 @@ export interface IThemeColors {
 
 export class SiteService extends HttpJsonService {
   public loadSite(): Promise<ISite> {
-    return this.get(`/`);
+    return this.get<ISite>(`/`).then(this.rejectNull);
   }
 
-  public saveSite(site: ISite): Promise<any> {
-    return this.put(`/`, site);
+  public saveSite(site: ISite): Promise<void> {
+    return this.put<ISite, void>(`/`, site).then(this.rejectNull);
   }
 }

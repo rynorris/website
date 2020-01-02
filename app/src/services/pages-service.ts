@@ -13,15 +13,16 @@ export interface IPage {
 }
 
 export class PagesService extends HttpJsonService {
-  public listPages(): Promise<string[]> {
-    return this.get(`/`);
+  public async listPages(): Promise<string[]> {
+    const list = await this.get<string[]>(`/`);
+    return list != null ? list : [];
   }
 
-  public loadPage(key: string): Promise<IPage> {
-    return this.get(`/${key}`);
+  public async loadPage(key: string): Promise<IPage> {
+    return this.get<IPage>(`/${key}`).then(this.rejectNull);
   }
 
-  public savePage(key: string, page: IPage): Promise<any> {
-    return this.put(`/${key}`, page);
+  public savePage(key: string, page: IPage): Promise<void> {
+    return this.put<IPage, void>(`/${key}`, page).then(this.rejectNull);
   }
 }

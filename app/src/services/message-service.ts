@@ -7,7 +7,7 @@ export interface IMessage {
 }
 
 export class MessageService extends HttpJsonService {
-  public send(m: IMessage): Promise<any> {
-    return this.post("/send", m);
+  public send(m: IMessage): Promise<void> {
+    return this.post<IMessage, void>("/send", m).then(this.rejectNull);
   }
 }
