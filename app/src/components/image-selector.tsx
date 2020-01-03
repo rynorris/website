@@ -24,14 +24,20 @@ interface IStyleProps {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     imageList: {
+      width: "100%",
+    },
+    imageListContainer: {
+      flexGrow: ({ fullScreen }: IStyleProps) => fullScreen ? 1 : 0,
       minWidth: ({ fullScreen }: IStyleProps) => fullScreen ? "100%" : 250,
+      overflowX: "hidden",
+      overflowY: "scroll",
       width: ({ fullScreen }: IStyleProps) => fullScreen ? "100%" : 250,
     },
     imagePreview: {
       "& img": {
         width: "100%",
       },
-      flexGrow: 1,
+      flexGrow: ({ fullScreen }: IStyleProps) => fullScreen ? 0 : 1,
       margin: theme.spacing(2),
       minHeight: 100,
     },
@@ -40,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: ({ fullScreen }: IStyleProps) => fullScreen ? "column" : "row",
       height: ({ fullScreen }: IStyleProps) => fullScreen ? "100%" : 500,
+      overflow: "hidden",
       padding: theme.spacing(2),
     },
     imageSelectorDialog: {
@@ -105,7 +112,9 @@ const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
       >
         <DialogTitle>Choose Image</DialogTitle>
         <DialogContent className={classes.imageSelectorContent}>
-          <List className={classes.imageList}>{items}</List>
+          <div className={classes.imageListContainer}>
+            <List className={classes.imageList}>{items}</List>
+          </div>
           <div className={classes.imagePreview}>
             {selectedValue !== "" ? <img src={"/api/images/" + selectedValue} /> : null}
           </div>
