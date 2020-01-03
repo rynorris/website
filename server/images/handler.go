@@ -14,8 +14,6 @@ import (
 	"github.com/rynorris/website/server/utils"
 )
 
-var imageCache = map[cache.Key]Image{}
-
 func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 	etagCache := cache.NewMD5EtagCache()
 
@@ -44,7 +42,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 		lastQuote := strings.LastIndex(ifNoneMatch, "\"")
 		if len(ifNoneMatch) > 0 && firstQuote != -1 && lastQuote > firstQuote {
 			etag := ifNoneMatch[firstQuote+1 : lastQuote]
-			if etagCache.Matches(cacheKey, cache.ETag(etag)) {
+			if _, ok := etagCache.Get(cacheKey, cache.ETag(etag)); ok {
 				log.Printf("ETag matches,  returning 304 Not Modified")
 				w.WriteHeader(304)
 				w.Header().Set("ETag", string(ifNoneMatch))
@@ -52,33 +50,24 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 			}
 		}
 		
-		// Look in cache first.
-		var err error
-		image, ok := imageCache[cacheKey]
-		if !ok {
-			log.Printf("No cached image with key: %s", cacheKey)
-			image, err = service.Get(key)
+		image, err := service.Get(key)
+		if err != nil {
+			utils.LogAndFail(w, fmt.Sprintf("failed to load image %v", err), 404)
+			return
+		}
+
+		// Transform if requested.
+		if transform != "" {
+			log.Printf("image transform requested: %s", transform)
+			image, err = TransformImage(image, transform)
 			if err != nil {
-				utils.LogAndFail(w, fmt.Sprintf("failed to load image %v", err), 404)
+				utils.LogAndFail(w, fmt.Sprintf("failed to apply requested image transform: %v", err), 500)
 				return
 			}
-
-			// Transform if requested.
-			if transform != "" {
-				log.Printf("image transform requested: %s", transform)
-				image, err = TransformImage(image, transform)
-				if err != nil {
-					utils.LogAndFail(w, fmt.Sprintf("failed to apply requested image transform: %v", err), 500)
-					return
-				}
-			}
-		} else {
-			log.Printf("Found cached image with key: %s", cacheKey)
 		}
 
 		// Save to caches.
 		newEtag := etagCache.Put(cacheKey, image.Blob)
-		imageCache[cacheKey] = image
 
 		log.Printf("Returning ETag: %s", newEtag)
 		w.Header().Set("ETag", fmt.Sprintf("\"%s\"", newEtag))
@@ -120,7 +109,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 			return
 		}
 
-		etagCache.Invalidate(cache.Key(key))
+		etagCache.InvalidatePrefix(key)
 
 		w.WriteHeader(http.StatusNoContent)
 		return
@@ -137,7 +126,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 			utils.LogAndFail(w, fmt.Sprintf("failed to delete image: %v", err), 503)
 		}
 
-		etagCache.Invalidate(cache.Key(key))
+		etagCache.InvalidatePrefix(key)
 
 		return
 	})).Methods("DELETE")
