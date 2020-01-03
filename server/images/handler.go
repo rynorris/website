@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rynorris/website/server/auth"
 	"github.com/rynorris/website/server/cache"
+	"github.com/rynorris/website/server/utils"
 )
 
 func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
@@ -19,7 +20,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		keys, err := service.List()
 		if err != nil {
-			http.Error(w, fmt.Sprintf("failed to list images"), 503)
+			utils.LogAndFail(w, fmt.Sprintf("failed to list images"), 503)
 			return
 		}
 		encoder := json.NewEncoder(w)
@@ -47,7 +48,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 
 		image, err := service.Get(key)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("failed to load image %v", err), 404)
+			utils.LogAndFail(w, fmt.Sprintf("failed to load image %v", err), 404)
 			return
 		}
 
@@ -68,7 +69,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 
 		blob, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("failed to read image from request body: %v", err), 400)
+			utils.LogAndFail(w, fmt.Sprintf("failed to read image from request body: %v", err), 400)
 			return
 		}
 
@@ -78,7 +79,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 		// If content-type is set,  then double-check with it.
 		contentType := r.Header.Get("Content-Type")
 		if len(contentType) > 0 && contentType != typeToContentType(imageType) {
-			http.Error(w, fmt.Sprintf("content-type does not match desired file extension"), 400)
+			utils.LogAndFail(w, fmt.Sprintf("content-type %s does not match desired file extension %s", contentType, key), 400)
 			return
 		}
 
@@ -88,7 +89,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 		}
 		err = service.Put(key, image)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("failed to store image: %v", err), 503)
+			utils.LogAndFail(w, fmt.Sprintf("failed to store image: %v", err), 503)
 			return
 		}
 
@@ -106,7 +107,7 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 
 		err := service.Delete(key)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("failed to delete image: %v", err), 503)
+			utils.LogAndFail(w, fmt.Sprintf("failed to delete image: %v", err), 503)
 		}
 
 		etagCache.Invalidate(cache.Key(key))
@@ -120,10 +121,12 @@ func typeToContentType(t ImageType) string {
 	case PNG:
 		return "image/png"
 	case JPG:
-		return "image/jpg"
+		return "image/jpeg"
 	case GIF:
 		return "image/gif"
+	case UNKNOWN:
+		fallthrough;
 	default:
-		return ""
+		return "image/unknown"
 	}
 }

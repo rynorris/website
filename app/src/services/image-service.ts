@@ -1,17 +1,13 @@
 import HttpJsonService from "./http-json-service";
+import { getFileExtension } from "../utils";
 
 const contentTypeFromKey = (key: string): string => {
-  const extIx = key.lastIndexOf(".");
-  if (extIx === -1) {
-    // Take a guess?
-    return "image/unknown";
-  }
-
-  const extension = key.slice(extIx + 1);
+  const extension = getFileExtension(key);
 
   switch (extension) {
     case "jpg":
-      return "image/jpg";
+    case "jpeg":
+      return "image/jpeg";
     case "png":
       return "image/png";
     case "gif":

@@ -82,6 +82,6 @@ export default class HttpJsonService {
   }
 
   private parseError<T>(response: Response): Promise<T> {
-    return response.json().then((data: string) => Promise.reject<T>(data));
+    return response.text().then((data: string) => Promise.reject<T>(data));
   }
 }

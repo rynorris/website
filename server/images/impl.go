@@ -14,10 +14,11 @@ type serviceImpl struct {
 var extToType = map[string]ImageType{
 	"png": PNG,
 	"jpg": JPG,
+	"jpeg": JPG,
 	"gif": GIF,
 }
 
-const defaultType = PNG
+const defaultType = UNKNOWN
 
 func NewService(s storage.Service) Service {
 	return &serviceImpl{

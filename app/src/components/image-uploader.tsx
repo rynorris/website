@@ -2,19 +2,23 @@ import * as React from "react";
 
 import {
     Button,
+    CircularProgress,
     createStyles,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    List,
     makeStyles,
     TextField,
     Theme,
     useMediaQuery,
     useTheme,
 } from "@material-ui/core";
+import { connect } from "react-redux";
 import ServiceProvider from "../services/service-provider";
+import { Toast } from "../state/actions";
+import { AppDispatch } from "../state/model";
+import { getFileExtension } from "../utils";
 
 interface IStyleProps {
     fullScreen: boolean;
@@ -50,9 +54,10 @@ interface IImageUploaderProps {
     open: boolean;
     onRequestClose: () => void;
     onDone: (key: string) => void;
+    toast: (text: string) => void;
 }
 
-export const ImageUploader: React.SFC<IImageUploaderProps> = (props) => {
+const UnconnectedImageUploader: React.SFC<IImageUploaderProps> = (props) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -60,6 +65,7 @@ export const ImageUploader: React.SFC<IImageUploaderProps> = (props) => {
 
     const [file, setFile] = React.useState<File | null>(null);
     const [filename, setFilename] = React.useState<string>("");
+    const [isUploading, setIsUploading] = React.useState<boolean>(false);
 
     const selectImage = (ev: React.ChangeEvent<HTMLInputElement>) => {
         const files = ev.target.files;
@@ -77,14 +83,21 @@ export const ImageUploader: React.SFC<IImageUploaderProps> = (props) => {
             return;
         }
 
-        const extIx = file.name.lastIndexOf(".");
-        const extension = file.name.slice(extIx);  // Includes "."
-        const finalName = filename.endsWith(extension) ? filename : filename + extension;
+        const originalExtension = getFileExtension(file.name);
+        const modifiedExtension = getFileExtension(filename);
+        const finalName = originalExtension === modifiedExtension ? filename : filename + originalExtension;
 
         const image = ServiceProvider.ImageService();
-        await image.putImage(finalName, file);
-        props.onDone(finalName);
-        props.onRequestClose();
+        try {
+            setIsUploading(true);
+            await image.putImage(finalName, file);
+            props.onDone(finalName);
+            props.onRequestClose();
+        } catch (e) {
+            props.toast(`Upload failed: ${JSON.stringify(e)}`);
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     const details = file == null ? null : (
@@ -116,9 +129,17 @@ export const ImageUploader: React.SFC<IImageUploaderProps> = (props) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={props.onRequestClose}>Cancel</Button>
-                    <Button onClick={handleUpload} disabled={disableUpload}>Upload</Button>
+                    <Button onClick={handleUpload} disabled={disableUpload}>
+                        {isUploading ? <CircularProgress /> : "Upload"}
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div>
     );
 };
+
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    toast: (text: string) => dispatch(Toast(text)),
+});
+
+export const ImageUploader = connect(null, mapDispatchToProps)(UnconnectedImageUploader);

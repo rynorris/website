@@ -4,6 +4,7 @@ const (
 	JPG ImageType = iota
 	PNG
 	GIF
+	UNKNOWN
 )
 
 type ImageType int

@@ -14,3 +14,8 @@ export const getInjectedConfiguration = (): ISite | undefined => {
     const siteConfig = JSON.parse(content);
     return siteConfig;
 };
+
+export const getFileExtension = (filename: string): string => {
+    const extIx = filename.lastIndexOf(".");
+    return filename.slice(extIx + 1).toLowerCase();
+};
