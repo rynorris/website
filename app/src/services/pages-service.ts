@@ -22,7 +22,7 @@ export class PagesService extends HttpJsonService {
     return this.get<IPage>(`/${key}`).then(this.rejectNull);
   }
 
-  public savePage(key: string, page: IPage): Promise<void> {
-    return this.put<IPage, void>(`/${key}`, page).then(this.rejectNull);
+  public savePage(key: string, page: IPage): Promise<null | void> {
+    return this.put<IPage, void>(`/${key}`, page);
   }
 }
