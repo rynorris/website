@@ -5,6 +5,8 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import * as React from "react";
 
+import { transformUrl } from "../services/image-service";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     imagePostHeader: {
@@ -38,7 +40,7 @@ export const Post: React.SFC<IPostProps> = (props) => {
 
   const image = (
     <div className="post-header-image-container">
-      <img className="post-header-image" src={props.image} />
+      <img className="post-header-image" src={transformUrl(props.image, "header")} />
     </div>
   );
 

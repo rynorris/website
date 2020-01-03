@@ -1,5 +1,5 @@
-import HttpJsonService from "./http-json-service";
 import { getFileExtension } from "../utils";
+import HttpJsonService from "./http-json-service";
 
 const contentTypeFromKey = (key: string): string => {
   const extension = getFileExtension(key);
@@ -15,6 +15,10 @@ const contentTypeFromKey = (key: string): string => {
     default:
       return "image/unknown";
   }
+};
+
+export const transformUrl = (url: string, transform: string): string => {
+  return url + "?transform=" + transform;
 };
 
 export class ImageService extends HttpJsonService {
