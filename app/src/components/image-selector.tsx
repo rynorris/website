@@ -15,6 +15,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ServiceProvider from "../services/service-provider";
 import { AppDispatch, IAppState } from "../state/model";
 import { fetchImageList } from "../state/thunk";
+import { ImageUploader } from "./image-uploader";
 
 interface IStyleProps {
   fullScreen: boolean;
@@ -61,6 +62,7 @@ const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
 
   const classes = useStyles({ fullScreen });
 
+  const [uploaderOpen, setUploaderOpen] = React.useState<boolean>(false);
   const [selectedValue, setSelectedValue] = React.useState<string>("");
 
   React.useEffect(() => {
@@ -72,6 +74,10 @@ const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
     props.onDone(image.getUrl(selectedValue));
     props.onRequestClose();
   };
+
+  const openUploader = () => setUploaderOpen(true);
+  const closeUploader = () => setUploaderOpen(false);
+  const uploadDone = (key: string) => setSelectedValue(key);
 
   const items = props.imageKeys.map((key) => {
     return (
@@ -103,9 +109,11 @@ const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={props.onRequestClose}>Cancel</Button>
+          <Button onClick={openUploader}>Upload</Button>
           <Button onClick={handleChoose}>Choose</Button>
         </DialogActions>
       </Dialog>
+      <ImageUploader open={uploaderOpen} onRequestClose={closeUploader} onDone={uploadDone} />
     </div>
   );
 };
