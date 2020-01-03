@@ -14,6 +14,8 @@ import (
 	"github.com/rynorris/website/server/utils"
 )
 
+var imageCache = map[cache.Key]Image{}
+
 func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 	etagCache := cache.NewMD5EtagCache()
 
@@ -49,24 +51,35 @@ func AddRoutes(r *mux.Router, service Service, authService auth.Service) {
 				return
 			}
 		}
-
-		image, err := service.Get(key)
-		if err != nil {
-			utils.LogAndFail(w, fmt.Sprintf("failed to load image %v", err), 404)
-			return
-		}
-
-		// Transform if requested.
-		if transform != "" {
-			log.Printf("image transform requested: %s", transform)
-			image, err = TransformImage(image, transform)
+		
+		// Look in cache first.
+		var err error
+		image, ok := imageCache[cacheKey]
+		if !ok {
+			log.Printf("No cached image with key: %s", cacheKey)
+			image, err = service.Get(key)
 			if err != nil {
-				utils.LogAndFail(w, fmt.Sprintf("failed to apply requested image transform", err), 500)
+				utils.LogAndFail(w, fmt.Sprintf("failed to load image %v", err), 404)
 				return
 			}
+
+			// Transform if requested.
+			if transform != "" {
+				log.Printf("image transform requested: %s", transform)
+				image, err = TransformImage(image, transform)
+				if err != nil {
+					utils.LogAndFail(w, fmt.Sprintf("failed to apply requested image transform: %v", err), 500)
+					return
+				}
+			}
+		} else {
+			log.Printf("Found cached image with key: %s", cacheKey)
 		}
 
+		// Save to caches.
 		newEtag := etagCache.Put(cacheKey, image.Blob)
+		imageCache[cacheKey] = image
+
 		log.Printf("Returning ETag: %s", newEtag)
 		w.Header().Set("ETag", fmt.Sprintf("\"%s\"", newEtag))
 		w.Header().Set("Cache-Control", "max-age=600")
