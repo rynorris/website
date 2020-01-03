@@ -1,6 +1,20 @@
 import * as React from "react";
 
-import { useMediaQuery, useTheme, makeStyles, Theme, createStyles, Dialog, DialogTitle, DialogContent, List, DialogActions, Button } from "@material-ui/core";
+import {
+    Button,
+    createStyles,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    List,
+    makeStyles,
+    TextField,
+    Theme,
+    useMediaQuery,
+    useTheme,
+} from "@material-ui/core";
+import ServiceProvider from "../services/service-provider";
 
 interface IStyleProps {
     fullScreen: boolean;
@@ -26,6 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
         imageUploaderDialog: {
             width: "100%",
         },
+        nameEntry: {
+            margin: theme.spacing(2),
+        },
     }),
 );
 
@@ -41,8 +58,45 @@ export const ImageUploader: React.SFC<IImageUploaderProps> = (props) => {
 
     const classes = useStyles({ fullScreen });
 
-    const handleUpload = () => null;
-    const selectImage = () => null;
+    const [file, setFile] = React.useState<File | null>(null);
+    const [filename, setFilename] = React.useState<string>("");
+
+    const selectImage = (ev: React.ChangeEvent<HTMLInputElement>) => {
+        const files = ev.target.files;
+        if (files == null || files.length === 0) {
+            return;
+        }
+
+        setFile(files[0]);
+        setFilename(files[0].name);
+    };
+    const onNameChange = (ev: React.ChangeEvent<HTMLInputElement>) => setFilename(ev.target.value);
+
+    const handleUpload = async () => {
+        if (file == null || filename.length === 0) {
+            return;
+        }
+
+        const extIx = file.name.lastIndexOf(".");
+        const extension = file.name.slice(extIx);  // Includes "."
+        const finalName = filename.endsWith(extension) ? filename : filename + extension;
+
+        const image = ServiceProvider.ImageService();
+        await image.putImage(finalName, file);
+        props.onDone(finalName);
+        props.onRequestClose();
+    };
+
+    const details = file == null ? null : (
+        <>
+            <TextField label="Name" className={classes.nameEntry} value={filename} onChange={onNameChange} />
+            <div className={classes.imagePreview}>
+                <img src={URL.createObjectURL(file)} />
+            </div>
+        </>
+    );
+
+    const disableUpload = file == null || filename.length === 0;
 
     return (
         <div>
@@ -54,11 +108,15 @@ export const ImageUploader: React.SFC<IImageUploaderProps> = (props) => {
             >
                 <DialogTitle>Choose Image</DialogTitle>
                 <DialogContent className={classes.imageUploaderContent}>
-                    <Button onClick={selectImage}>Choose Image</Button>
+                    <Button variant="contained" component="label">
+                        Select File
+                        <input type="file" accept="image/*" style={{ display: "none" }} onChange={selectImage} />
+                    </Button>
+                    {details}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={props.onRequestClose}>Cancel</Button>
-                    <Button onClick={handleUpload}>Upload</Button>
+                    <Button onClick={handleUpload} disabled={disableUpload}>Upload</Button>
                 </DialogActions>
             </Dialog>
         </div>

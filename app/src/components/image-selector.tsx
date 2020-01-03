@@ -77,7 +77,10 @@ const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
 
   const openUploader = () => setUploaderOpen(true);
   const closeUploader = () => setUploaderOpen(false);
-  const uploadDone = (key: string) => setSelectedValue(key);
+  const uploadDone = (key: string) => {
+    props.loadKeys();
+    setSelectedValue(key);
+  };
 
   const items = props.imageKeys.map((key) => {
     return (

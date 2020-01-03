@@ -27,14 +27,14 @@ export class ImageService extends HttpJsonService {
     return list != null ? list : [];
   }
 
-  public putImage(key: string, blob: Blob): Promise<void> {
+  public putImage(key: string, blob: Blob): Promise<void | null> {
     return this.rawFetch(
       "PUT",
-      this.getUrl(key),
+      "/" + key,
       (_) => Promise.resolve<void>(undefined),
       blob,
       contentTypeFromKey(key),
-    ).then(this.rejectNull);
+    );
   }
 
   public getUrl(key: string): string {
