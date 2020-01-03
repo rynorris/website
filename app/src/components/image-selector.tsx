@@ -60,7 +60,8 @@ interface IImageSelectorProps {
   imageKeys: string[];
   loadKeys: () => void;
   onRequestClose: () => void;
-  onDone: (imageUrl: string) => void;
+  onSetAsHeader: (imageUrl: string) => void;
+  onInsertImage: (name: string, url: string) => void;
 }
 
 const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
@@ -76,10 +77,14 @@ const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
     props.loadKeys();
   }, []);
 
-  const handleChoose = () => {
+  const handleSetAsHeader = () => {
     const image = ServiceProvider.ImageService();
-    props.onDone(image.getUrl(selectedValue));
-    props.onRequestClose();
+    props.onSetAsHeader(image.getUrl(selectedValue));
+  };
+
+  const handleInsertImage = () => {
+    const image = ServiceProvider.ImageService();
+    props.onInsertImage(selectedValue, image.getUrl(selectedValue));
   };
 
   const openUploader = () => setUploaderOpen(true);
@@ -122,7 +127,8 @@ const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
         <DialogActions>
           <Button onClick={props.onRequestClose}>Cancel</Button>
           <Button onClick={openUploader}>Upload</Button>
-          <Button onClick={handleChoose}>Choose</Button>
+          <Button onClick={handleSetAsHeader}>Set as Header</Button>
+          <Button onClick={handleInsertImage}>Insert</Button>
         </DialogActions>
       </Dialog>
       <ImageUploader open={uploaderOpen} onRequestClose={closeUploader} onDone={uploadDone} />

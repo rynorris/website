@@ -51,12 +51,22 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
     setCard((prevCard: ICard) => ({ ...prevCard, text: value }));
   };
 
-  const setImage = (image: string) => {
+  const setHeaderImage = (image: string) => {
     setCard((prevCard: ICard) => ({ ...prevCard, image }));
     setImageSelectorOpen(false);
   };
 
-  const removeImage = () => setImage("");
+  const insertImage = (name: string, url: string) => {
+    setCard((prevCard: ICard) => {
+      const prevText = prevCard.text;
+      const markdownImage = `![${name}](${url})`;
+      const text = prevText + "\n" + markdownImage;
+      return { ...prevCard, text };
+    });
+    setImageSelectorOpen(false);
+  };
+
+  const removeHeaderImage = () => setHeaderImage("");
 
   const closeImageSelector = () => setImageSelectorOpen(false);
 
@@ -79,7 +89,6 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
           onChange={setTitle}
           fullWidth={true}
         />
-        <br />
         <TextField
           id="text-field-text"
           label="Text"
@@ -89,14 +98,15 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
           multiline={true}
           rows={4}
         />
-        <Button onClick={openImageSelector}>Choose Image</Button>
-        <Button onClick={removeImage}>Remove Image</Button>
+        <Button onClick={openImageSelector}>Image Gallery</Button>
+        <Button onClick={removeHeaderImage}>Remove Header Image</Button>
         <Typography variant="h4">Preview</Typography>
         <DynamicCard card={card} />
         <ImageSelector
           open={imageSelectorOpen}
           onRequestClose={closeImageSelector}
-          onDone={setImage}
+          onSetAsHeader={setHeaderImage}
+          onInsertImage={insertImage}
         />
       </DialogContent>
       <DialogActions>
