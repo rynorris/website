@@ -5,7 +5,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { useTheme } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme, useTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -13,6 +13,14 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ICard } from "../services/pages-service";
 import { DynamicCard } from "./dynamic-card";
 import { ImageSelector } from "./image-selector";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    cardEditorDialog: {
+      width: "100%",
+    },
+  }),
+);
 
 interface ICardEditorProps {
   onSave: (card: ICard) => void;
@@ -24,6 +32,7 @@ interface ICardEditorProps {
 export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
   const clonedCard: ICard = JSON.parse(JSON.stringify(props.card));
 
+  const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -55,6 +64,7 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
       onClose={props.onRequestClose}
       fullScreen={fullScreen}
       aria-labelledby="card-editor-dialog-title"
+      PaperProps={{ className: classes.cardEditorDialog }}
     >
       <DialogTitle id="card-editor-dialog-title">Edit</DialogTitle>
       <DialogContent>

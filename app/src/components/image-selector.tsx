@@ -23,20 +23,26 @@ interface IStyleProps {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     imageList: {
-      width: ({ fullScreen }: IStyleProps) => fullScreen ? "100%" : "auto",
+      minWidth: ({ fullScreen }: IStyleProps) => fullScreen ? "100%" : 250,
+      width: ({ fullScreen }: IStyleProps) => fullScreen ? "100%" : 250,
     },
     imagePreview: {
       "& img": {
         width: "100%",
       },
+      flexGrow: 1,
       margin: theme.spacing(2),
       minHeight: 100,
-      width: 200,
     },
     imageSelectorContent: {
+      alignItems: "stretch",
       display: "flex",
       flexDirection: ({ fullScreen }: IStyleProps) => fullScreen ? "column" : "row",
+      height: ({ fullScreen }: IStyleProps) => fullScreen ? "100%" : 500,
       padding: theme.spacing(2),
+    },
+    imageSelectorDialog: {
+      width: "100%",
     },
   }),
 );
@@ -82,7 +88,12 @@ const UnconnectedImageSelector: React.SFC<IImageSelectorProps> = (props) => {
 
   return (
     <div>
-      <Dialog fullScreen={fullScreen} open={props.open} onClose={props.onRequestClose}>
+      <Dialog
+        PaperProps={{ className: classes.imageSelectorDialog }}
+        fullScreen={fullScreen}
+        open={props.open}
+        onClose={props.onRequestClose}
+      >
         <DialogTitle>Choose Image</DialogTitle>
         <DialogContent className={classes.imageSelectorContent}>
           <List className={classes.imageList}>{items}</List>
