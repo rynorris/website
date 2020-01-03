@@ -41,11 +41,15 @@ export const CardEditor: React.SFC<ICardEditorProps> = (props) => {
 
   const doSave = () => props.onSave(card);
 
-  const setTitle = (ev: any) =>
-    setCard((prevCard: ICard) => ev.target != null ? ({ ...prevCard, title: ev.target.value }) : prevCard);
+  const setTitle = (ev: any) => {
+    const value = ev.target.value;
+    setCard((prevCard: ICard) => ({ ...prevCard, title: value }));
+  };
 
-  const setText = (ev: any) =>
-    setCard((prevCard: ICard) => ev.target != null ? ({ ...prevCard, text: ev.target.value }) : prevCard);
+  const setText = (ev: any) => {
+    const value = ev.target.value;
+    setCard((prevCard: ICard) => ({ ...prevCard, text: value }));
+  };
 
   const setImage = (image: string) => {
     setCard((prevCard: ICard) => ({ ...prevCard, image }));
