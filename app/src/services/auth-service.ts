@@ -10,12 +10,12 @@ export interface IUserInfo {
 }
 
 export class AuthService extends HttpJsonService {
-  public login(r: ILoginRequest): Promise<void> {
-    return this.post<ILoginRequest, void>("/login", r).then(this.rejectNull);
+  public login(r: ILoginRequest): Promise<null> {
+    return this.post<ILoginRequest, null>("/login", r);
   }
 
-  public logout(): Promise<void> {
-    return this.post<null, void>("/logout", null).then(this.rejectNull);
+  public logout(): Promise<null> {
+    return this.post<null, null>("/logout", null);
   }
 
   public whoAmI(): Promise<IUserInfo> {
